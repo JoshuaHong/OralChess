@@ -16,3 +16,8 @@ browser.browserAction.onClicked.addListener((tab) => {
         });
     }
 })
+
+//HERE
+/*AddonManager.getAddonByID(id, function(addon) {
+    addon.userDisabled = true;
+});*/
