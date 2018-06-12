@@ -1,10 +1,9 @@
-//Checks if addon is enabled
-var isEnabled = 0;
+//Determines if addon is enabled
+var isEnabled = true;
 
 //Gets message from background script
 browser.runtime.onMessage.addListener(request => {
-	isEnabled += request.greeting;
-	alert(isEnabled);
+	isEnabled = request.greeting;
 });
 
 //Gets position of mouse click

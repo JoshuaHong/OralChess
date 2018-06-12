@@ -1,5 +1,7 @@
-//Toggles between enabled and disabled icons
+//Determines if addon is enabled
 let isEnabled = true;
+
+//Toggles between enabled and disabled icons
 browser.browserAction.onClicked.addListener((tab) => {
     isEnabled = !isEnabled
     if (isEnabled) {
@@ -20,22 +22,30 @@ browser.browserAction.onClicked.addListener((tab) => {
 //Sends message to content script
 function sendMessageToTabs(tabs) {
     for (let tab of tabs) {
-        browser.tabs.sendMessage(
-            tab.id,
-            {
-                greeting: 1
-            }
-        );
+        if (!isEnabled) {
+            browser.tabs.sendMessage(
+                tab.id,
+                {
+                    greeting: false
+                }
+            ).catch(onError);
+        } else {
+            browser.tabs.sendMessage(
+                tab.id,
+                {
+                    greeting: true
+                }
+            ).catch(onError);
+        }
     }
 }
 
 browser.browserAction.onClicked.addListener(() => {
     browser.tabs.query({
-        currentWindow: true,
-        active: true
+
     }).then(sendMessageToTabs).catch(onError);
 });
 
 function onError(error) {
-  console.error(`Error: ${error}`);
+    console.error(`Error: ${error}`);
 }
