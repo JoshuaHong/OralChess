@@ -3,12 +3,10 @@
 	"name": "Oral Chess",
 	"version": "1.0",
 	"description": "Play Chess Orally!",
+	"permissions": ["storage"],
 	"icons": {
 		"225": "icons/icon.png"
 	},
-	"permissions": [
-		"activeTab"
-	],
 	"browser_action": {
 		"default_icon": "icons/icon.png",
 		"default_title": "Oral Chess",
