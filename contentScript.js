@@ -4,9 +4,9 @@ function onError(error) {
 
 function onGot(item) {
 	if (item.color == null) {
-		alert("NULL");
+		//alert("NULL");
 	} else {
-		alert(item.color);
+		//alert(item.color);
 	}
 }
 
