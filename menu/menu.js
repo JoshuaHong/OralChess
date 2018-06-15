@@ -39,7 +39,7 @@ var startup = browser.storage.local.get();
 startup.then(onOpen, onError);
 
 function onOpen(item) {
-	if (item.menu != null && !item.menu.addonIsEnabled) {
+	if (item != null && item.addonIsEnabled != null && !item.addonIsEnabled) {
 		enableAddonButton.innerHTML = "Disabled";
 		enableAddonButton.value = "disabled";
 		enableAddonButton.classList.remove("enabled");
@@ -53,13 +53,26 @@ function onOpen(item) {
 		enableAddonButton.value = "enabled";
 		enableAddonButton.classList.remove("disabled");
 		enableAddonButton.classList.add("enabled");
+	}
 
-		if (item.menu == null) {
-			//FILL ME
-		}
-		
+	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
+		enableBlindfoldButton.value = "enabled";
+		enableBlindfoldButton.classList.remove("disabled");
+		enableBlindfoldButton.classList.add("enabled");
+	} else {
+		enableBlindfoldButton.value = "disabled";
+		enableBlindfoldButton.classList.remove("enabled");
+		enableBlindfoldButton.classList.add("disabled");
+	}
 
-		//continue the if statements here for tts and blindfold
+	if (item != null && item.textToSpeechIsEnabled != null && !item.textToSpeechIsEnabled) {
+		enableTextToSpeechButton.value = "disabled";
+		enableTextToSpeechButton.classList.remove("enabled");
+		enableTextToSpeechButton.classList.add("disabled");
+	} else {
+		enableTextToSpeechButton.value = "enabled";
+		enableTextToSpeechButton.classList.remove("disabled");
+		enableTextToSpeechButton.classList.add("enabled");
 	}
 }
 
@@ -73,12 +86,12 @@ function onError(error) {
 */
 document.addEventListener("click", function(event) {
 	if (event.target.id == "enableAddonButtonID") {
-		if (event.target.value == "disabled") {
+		if (enableAddonButton.value == "disabled") {
 			browser.storage.local.set({
-				menu: {addonIsEnabled: true}
+				addonIsEnabled: true
 			});
-			event.target.value = "enabled";
-			event.target.innerHTML = "Enabled";
+			enableAddonButton.value = "enabled";
+			enableAddonButton.innerHTML = "Enabled";
 			enableAddonButton.classList.remove("disabled");
 			enableAddonButton.classList.add("enabled");
 			automaticallyRecalibrateButton.style.display = "block";
@@ -87,10 +100,10 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.style.display = "block";
 		} else {
 			browser.storage.local.set({
-				menu: {addonIsEnabled: false}
+				addonIsEnabled: false
 			});
-			event.target.value = "disabled";
-			event.target.innerHTML = "Disabled";
+			enableAddonButton.value = "disabled";
+			enableAddonButton.innerHTML = "Disabled";
 			enableAddonButton.classList.remove("enabled");
 			enableAddonButton.classList.add("disabled");
 			automaticallyRecalibrateButton.style.display = "none";
@@ -98,7 +111,41 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
 		}
-	} else if (true) {
+	} else if (event.target.id == "automaticallyRecalibrateButtonID") {
 		
+	} else if (event.target.id == "manuallyRecalibrateButtonID") {
+
+	} else if (event.target.id == "enableBlindfoldButtonID") {
+		if (enableBlindfoldButton.value == "enabled") {
+			browser.storage.local.set({
+				blindfoldIsEnabled: false
+			});
+			enableBlindfoldButton.value = "disabled";
+			enableBlindfoldButton.classList.remove("enabled");
+			enableBlindfoldButton.classList.add("disabled");
+		} else {
+			browser.storage.local.set({
+				blindfoldIsEnabled: true
+			});
+			enableBlindfoldButton.value = "enabled";
+			enableBlindfoldButton.classList.remove("disabled");
+			enableBlindfoldButton.classList.add("enabled");
+		}
+	} else if (event.target.id == "enableTextToSpeechButtonID") {
+		if (enableTextToSpeechButton.value == "disabled") {
+			browser.storage.local.set({
+				textToSpeechIsEnabled: true
+			});
+			enableTextToSpeechButton.value = "enabled";
+			enableTextToSpeechButton.classList.remove("disabled");
+			enableTextToSpeechButton.classList.add("enabled");
+		} else {
+			browser.storage.local.set({
+				textToSpeechIsEnabled: false
+			});
+			enableTextToSpeechButton.value = "disabled";
+			enableTextToSpeechButton.classList.remove("enabled");
+			enableTextToSpeechButton.classList.add("disabled");
+		}
 	}
 });
