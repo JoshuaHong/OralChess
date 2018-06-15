@@ -112,9 +112,13 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.style.display = "none";
 		}
 	} else if (event.target.id == "automaticallyRecalibrateButtonID") {
-		
+		browser.tabs.executeScript({
+			file: "../scripts/automaticallyRecalibrate.js"
+		});
 	} else if (event.target.id == "manuallyRecalibrateButtonID") {
-
+		browser.tabs.executeScript({
+			file: "../scripts/manuallyRecalibrate.js"
+		});
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
 			browser.storage.local.set({
@@ -131,6 +135,9 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.classList.remove("disabled");
 			enableBlindfoldButton.classList.add("enabled");
 		}
+		browser.tabs.executeScript({
+			file: "../scripts/blindfold.js"
+		});
 	} else if (event.target.id == "enableTextToSpeechButtonID") {
 		if (enableTextToSpeechButton.value == "disabled") {
 			browser.storage.local.set({

@@ -3,7 +3,7 @@
 	"name": "Oral Chess",
 	"version": "1.0",
 	"description": "Play Chess Orally!",
-	"permissions": ["storage"],
+	"permissions": ["storage", "activeTab"],
 	"icons": {
 		"225": "icons/icon.png"
 	},
@@ -18,7 +18,7 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["contentScript.js"]
+			"js": ["scripts/automaticallyRecalibrate.js"]
 		}
 	]
 }
