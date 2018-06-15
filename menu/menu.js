@@ -4,30 +4,30 @@
 var enableAddonButton = document.createElement("BUTTON");
 var automaticallyRecalibrateButton = document.createElement("BUTTON");
 var manuallyRecalibrateButton = document.createElement("BUTTON");
-var enableBlindfoldModeButton = document.createElement("BUTTON");
+var enableBlindfoldButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 
 automaticallyRecalibrateButton.innerHTML = "Automatically Recalibrate";
 manuallyRecalibrateButton.innerHTML = "Manually Recalibrate";
-enableBlindfoldModeButton.innerHTML = "Blindfold Mode";
+enableBlindfoldButton.innerHTML = "Blindfold Mode";
 enableTextToSpeechButton.innerHTML = "Text To Speech";
 
 enableAddonButton.id = "enableAddonButtonID";
 automaticallyRecalibrateButton.id = "automaticallyRecalibrateButtonID";
 manuallyRecalibrateButton.id = "manuallyRecalibrateButtonID";
-enableBlindfoldModeButton.id = "enableBlindfoldModeButtonID";
+enableBlindfoldButton.id = "enableBlindfoldButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
 enableAddonButton.classList.add("button");
 automaticallyRecalibrateButton.classList.add("button");
 manuallyRecalibrateButton.classList.add("button");
-enableBlindfoldModeButton.classList.add("button");
+enableBlindfoldButton.classList.add("button");
 enableTextToSpeechButton.classList.add("button");
 
 document.body.appendChild(enableAddonButton);
 document.body.appendChild(automaticallyRecalibrateButton);
 document.body.appendChild(manuallyRecalibrateButton);
-document.body.appendChild(enableBlindfoldModeButton);
+document.body.appendChild(enableBlindfoldButton);
 document.body.appendChild(enableTextToSpeechButton);
 
 
@@ -46,7 +46,7 @@ function onOpen(item) {
 		enableAddonButton.classList.add("disabled");
 		automaticallyRecalibrateButton.style.display = "none";
 		manuallyRecalibrateButton.style.display = "none";
-		enableBlindfoldModeButton.style.display = "none";
+		enableBlindfoldButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
 	} else {
 		enableAddonButton.innerHTML = "Enabled";
@@ -83,7 +83,7 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.classList.add("enabled");
 			automaticallyRecalibrateButton.style.display = "block";
 			manuallyRecalibrateButton.style.display = "block";
-			enableBlindfoldModeButton.style.display = "block";
+			enableBlindfoldButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
 		} else {
 			browser.storage.local.set({
@@ -95,7 +95,7 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.classList.add("disabled");
 			automaticallyRecalibrateButton.style.display = "none";
 			manuallyRecalibrateButton.style.display = "none";
-			enableBlindfoldModeButton.style.display = "none";
+			enableBlindfoldButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
 		}
 	} else if (true) {

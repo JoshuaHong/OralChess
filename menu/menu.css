@@ -9,9 +9,9 @@ html, body {
 }
 
 .enabled {
-	color: blue;
+	color: green;
 }
 
 .disabled {
-	color: grey;
+	color: red;
 }
