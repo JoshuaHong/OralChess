@@ -14,9 +14,6 @@ function onGot(item) {
 	}
 }
 
-
-
-
 function logStorageChange(changes, area) {
 	var testing = browser.storage.local.get();
 	testing.then(onGot, onError);
@@ -36,9 +33,9 @@ for( var i = 0; i < move.length; i++ ) {
 //GETS Changes
 var observer = new MutationObserver(function(mutations) {
 	if (document.querySelector(".result_wrap") != null) {
-		alert("END GAME");
+		//alert("END GAME");
 	} else {
-		alert("Changed");
+		//alert("Changed");
 	}
 });
 
@@ -48,3 +45,21 @@ observer.observe(document.querySelector(".moves"), config);
 
 // later, you can stop observing
 //observer.disconnect();
+
+
+
+var peice = "queen";
+var elem = document.querySelectorAll("." + peice);
+
+for (test of elem) {
+	alert(test.getBoundingClientRect().top + window.scrollY);
+}
+
+
+
+document.addEventListener("click", printMousePos);
+
+function printMousePos(event) {
+	//alert(event.pageX);
+	//alert(event.pageY);
+}
