@@ -52,7 +52,7 @@ var peice = "queen";
 var elem = document.querySelectorAll("." + peice);
 
 for (test of elem) {
-	alert(test.getBoundingClientRect().top + window.scrollY);
+	//alert(test.getBoundingClientRect().top + window.scrollY);
 }
 
 
@@ -63,3 +63,22 @@ function printMousePos(event) {
 	//alert(event.pageX);
 	//alert(event.pageY);
 }
+
+
+var enableAddonButton = document.createElement("BUTTON");
+enableAddonButton.id = "myBtn";
+enableAddonButton.innerHTML = "TEST";
+document.body.appendChild(enableAddonButton);
+
+
+
+
+
+/*document.addEventListener('keydown', function(ev){
+  alert(ev.which);
+});
+*/
+var e = new KeyboardEvent('keydown',{'keyCode':39,'which':39});
+document.getElementById("myBtn").addEventListener("click", function(){
+    document.dispatchEvent(e);
+}); 
