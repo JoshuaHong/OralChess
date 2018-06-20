@@ -2,31 +2,26 @@
 	Creates the popup menu components on opening
 */
 var enableAddonButton = document.createElement("BUTTON");
-var automaticallyRecalibrateButton = document.createElement("BUTTON");
-var manuallyRecalibrateButton = document.createElement("BUTTON");
+var recalibrateButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 
-automaticallyRecalibrateButton.innerHTML = "Automatically Recalibrate";
-manuallyRecalibrateButton.innerHTML = "Manually Recalibrate";
+recalibrateButton.innerHTML = "Recalibrate";
 enableBlindfoldButton.innerHTML = "Blindfold Mode";
 enableTextToSpeechButton.innerHTML = "Text To Speech";
 
 enableAddonButton.id = "enableAddonButtonID";
-automaticallyRecalibrateButton.id = "automaticallyRecalibrateButtonID";
-manuallyRecalibrateButton.id = "manuallyRecalibrateButtonID";
+recalibrateButton.id = "RecalibrateButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
 enableAddonButton.classList.add("button");
-automaticallyRecalibrateButton.classList.add("button");
-manuallyRecalibrateButton.classList.add("button");
+recalibrateButton.classList.add("button");
 enableBlindfoldButton.classList.add("button");
 enableTextToSpeechButton.classList.add("button");
 
 document.body.appendChild(enableAddonButton);
-document.body.appendChild(automaticallyRecalibrateButton);
-document.body.appendChild(manuallyRecalibrateButton);
+document.body.appendChild(recalibrateButton);
 document.body.appendChild(enableBlindfoldButton);
 document.body.appendChild(enableTextToSpeechButton);
 
@@ -44,8 +39,7 @@ function onOpen(item) {
 		enableAddonButton.value = "disabled";
 		enableAddonButton.classList.remove("enabled");
 		enableAddonButton.classList.add("disabled");
-		automaticallyRecalibrateButton.style.display = "none";
-		manuallyRecalibrateButton.style.display = "none";
+		recalibrateButton.style.display = "none";
 		enableBlindfoldButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
 	} else {
@@ -94,8 +88,7 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.innerHTML = "Enabled";
 			enableAddonButton.classList.remove("disabled");
 			enableAddonButton.classList.add("enabled");
-			automaticallyRecalibrateButton.style.display = "block";
-			manuallyRecalibrateButton.style.display = "block";
+			recalibrateButton.style.display = "block";
 			enableBlindfoldButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
 		} else {
@@ -106,18 +99,13 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.innerHTML = "Disabled";
 			enableAddonButton.classList.remove("enabled");
 			enableAddonButton.classList.add("disabled");
-			automaticallyRecalibrateButton.style.display = "none";
-			manuallyRecalibrateButton.style.display = "none";
+			recalibrateButton.style.display = "none";
 			enableBlindfoldButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
 		}
-	} else if (event.target.id == "automaticallyRecalibrateButtonID") {
+	} else if (event.target.id == "recalibrateButtonID") {
 		browser.tabs.executeScript({
-			file: "../scripts/automaticallyRecalibrate.js"
-		});
-	} else if (event.target.id == "manuallyRecalibrateButtonID") {
-		browser.tabs.executeScript({
-			file: "../scripts/manuallyRecalibrate.js"
+			file: "../scripts/recalibrate.js"
 		});
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {

@@ -41,7 +41,8 @@ var observer = new MutationObserver(function(mutations) {
 
 var config = { attributes: true, childList: true, characterData: true }
  
-observer.observe(document.querySelector(".moves"), config);
+ //make sure .moves exists first. Uncomment the below line.
+//observer.observe(document.querySelector(".moves"), config);
 
 // later, you can stop observing
 //observer.disconnect();
@@ -79,4 +80,4 @@ document.getElementById("myBtn").addEventListener("click", function(){
     document.dispatchEvent(e);
     document.querySelector(".ready").value = "e5";
     document.dispatchEvent(e);
-}); 
+});
