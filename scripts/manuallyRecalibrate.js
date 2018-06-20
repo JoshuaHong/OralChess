@@ -72,13 +72,11 @@ document.body.appendChild(enableAddonButton);
 
 
 
+//Keypresses
+var e = new KeyboardEvent('keydown',{'keyCode':13,'which':13});
 
-
-/*document.addEventListener('keydown', function(ev){
-  alert(ev.which);
-});
-*/
-var e = new KeyboardEvent('keydown',{'keyCode':39,'which':39});
 document.getElementById("myBtn").addEventListener("click", function(){
+    document.dispatchEvent(e);
+    document.querySelector(".ready").value = "e5";
     document.dispatchEvent(e);
 }); 
