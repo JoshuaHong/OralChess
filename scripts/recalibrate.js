@@ -1,12 +1,8 @@
 function logStorageChange() {
 	var testing = chrome.storage.local.get(null, function(item) {
 
-//If clicked on recalibrate OR storage changes, run the code once in If statement ONCE. 
-//do we need this? we we need to run on tab change? questions..
-//right now it runs twice when clicked on recalibrate. BUG> unknonw. is it a problem?
-		if (item.recalibrate == null || item.recalibrate == true) {
-			alert("TEST");
-		}
+//If clicked on recalibrate OR storage changes, run this function ONCE. Is this really needed? hmm
+		// alert("TEST");
 
 		if (item.addonIsEnabled) {
 			//alert("ENABLED");

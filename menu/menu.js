@@ -65,6 +65,12 @@ chrome.storage.local.get(null, function(item) {
 		enableTextToSpeechButton.classList.remove("disabled");
 		enableTextToSpeechButton.classList.add("enabled");
 	}
+
+	if (item != null && item.recalibrateIsEnabled != null && !item.recalibrateIsEnabled) {
+		recalibrateButton.value = "disabled";
+	} else {
+		recalibrateButton.value = "enabled";
+	}
 });
 
 
@@ -97,12 +103,17 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.style.display = "none";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
-		chrome.storage.local.set({
-			recalibrate: false
-		});
-		chrome.storage.local.set({
-			recalibrate: true
-		});
+		if (recalibrateButton.value == "enabled") {
+			chrome.storage.local.set({
+				recalibrateIsEnabled: false
+			});
+			enableBlindfoldButton.value = "disabled";
+		} else {
+			chrome.storage.local.set({
+				recalibrateIsEnabled: true
+			});
+			enableBlindfoldButton.value = "enabled";
+		}
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
 			chrome.storage.local.set({
