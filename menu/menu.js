@@ -11,7 +11,7 @@ enableBlindfoldButton.innerHTML = "Blindfold Mode";
 enableTextToSpeechButton.innerHTML = "Text To Speech";
 
 enableAddonButton.id = "enableAddonButtonID";
-recalibrateButton.id = "RecalibrateButtonID";
+recalibrateButton.id = "recalibrateButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
@@ -30,10 +30,7 @@ document.body.appendChild(enableTextToSpeechButton);
 	Edits popup menu components
 	Based on previously stored data
 */
-var startup = browser.storage.local.get();
-startup.then(onOpen, onError);
-
-function onOpen(item) {
+chrome.storage.local.get(null, function(item) {
 	if (item != null && item.addonIsEnabled != null && !item.addonIsEnabled) {
 		enableAddonButton.innerHTML = "Disabled";
 		enableAddonButton.value = "disabled";
@@ -68,11 +65,7 @@ function onOpen(item) {
 		enableTextToSpeechButton.classList.remove("disabled");
 		enableTextToSpeechButton.classList.add("enabled");
 	}
-}
-
-function onError(error) {
-	console.log('Error: ${error}');
-}
+});
 
 
 /*
@@ -81,7 +74,7 @@ function onError(error) {
 document.addEventListener("click", function(event) {
 	if (event.target.id == "enableAddonButtonID") {
 		if (enableAddonButton.value == "disabled") {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				addonIsEnabled: true
 			});
 			enableAddonButton.value = "enabled";
@@ -92,7 +85,7 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
 		} else {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				addonIsEnabled: false
 			});
 			enableAddonButton.value = "disabled";
@@ -104,38 +97,38 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.style.display = "none";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
-		browser.tabs.executeScript({
-			file: "../scripts/recalibrate.js"
+		chrome.storage.local.set({
+			recalibrate: false
+		});
+		chrome.storage.local.set({
+			recalibrate: true
 		});
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				blindfoldIsEnabled: false
 			});
 			enableBlindfoldButton.value = "disabled";
 			enableBlindfoldButton.classList.remove("enabled");
 			enableBlindfoldButton.classList.add("disabled");
 		} else {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				blindfoldIsEnabled: true
 			});
 			enableBlindfoldButton.value = "enabled";
 			enableBlindfoldButton.classList.remove("disabled");
 			enableBlindfoldButton.classList.add("enabled");
 		}
-		browser.tabs.executeScript({
-			file: "../scripts/blindfold.js"
-		});
 	} else if (event.target.id == "enableTextToSpeechButtonID") {
 		if (enableTextToSpeechButton.value == "disabled") {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				textToSpeechIsEnabled: true
 			});
 			enableTextToSpeechButton.value = "enabled";
 			enableTextToSpeechButton.classList.remove("disabled");
 			enableTextToSpeechButton.classList.add("enabled");
 		} else {
-			browser.storage.local.set({
+			chrome.storage.local.set({
 				textToSpeechIsEnabled: false
 			});
 			enableTextToSpeechButton.value = "disabled";
