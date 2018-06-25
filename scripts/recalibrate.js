@@ -1,24 +1,18 @@
-function logStorageChange() {
+//When storage changes it procs. Use to check if enabled or not
+chrome.storage.onChanged.addListener(function() {
 	var testing = chrome.storage.local.get(null, function(item) {
 
-//If clicked on recalibrate OR storage changes, run this function ONCE. Is this really needed? hmm
-		// alert("TEST");
 
-		if (item.addonIsEnabled) {
+
+		if (item == null || item.addonIsEnabled) {
 			//alert("ENABLED");
 		} else {
 			//alert("DISABLED");
 		}
 	});
-}
+});
 
-
-
-
-//When storage changes it procs. Use to check if enabled or not
-chrome.storage.onChanged.addListener(logStorageChange);
-
-
+/*
 
 //GETS MOVES
 var move = document.querySelectorAll("move");
@@ -37,8 +31,8 @@ var observer = new MutationObserver(function(mutations) {
 });
 
 var config = { attributes: true, childList: true, characterData: true }
- 
- //make sure .moves exists first. Uncomment the below line.
+
+//make sure .moves exists first. Uncomment the below line.
 //observer.observe(document.querySelector(".moves"), config);
 
 // later, you can stop observing
@@ -123,7 +117,7 @@ msg.text = 'Hello World';
 msg.lang = 'en-US';
 
 msg.onend = function(e) {
-  console.log('Finished in ' + event.elapsedTime + ' seconds.');
+	console.log('Finished in ' + event.elapsedTime + ' seconds.');
 };
 
 
@@ -132,3 +126,6 @@ speechSynthesis.speak(msg);
 /*
 https://codepen.io/matt-west/pen/wGzuJ
 */
+
+
+//Keyboard shortcuts for ANALYSIS: lichess.org/study/vCV8kZWo#keyboard   there are more for IN GAME. look them up.

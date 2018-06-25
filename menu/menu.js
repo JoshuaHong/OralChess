@@ -5,6 +5,7 @@ var enableAddonButton = document.createElement("BUTTON");
 var recalibrateButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
+var notice = document.createTextNode("Please Use Lichess");
 
 recalibrateButton.innerHTML = "Recalibrate";
 enableBlindfoldButton.innerHTML = "Blindfold Mode";
@@ -24,6 +25,32 @@ document.body.appendChild(enableAddonButton);
 document.body.appendChild(recalibrateButton);
 document.body.appendChild(enableBlindfoldButton);
 document.body.appendChild(enableTextToSpeechButton);
+
+
+/*
+	Checks for Chrome browser
+*/
+if (navigator.userAgent.indexOf("Chrome") != -1) {
+	chrome.storage.local.set({
+		isChrome: true
+	});
+} else {
+	document.body.innerHTML = "Please use Chrome";  //@@@@@@@@@@@@@@@@@@@@@@@@@@ Make notices pretty. See below (make it flash)
+}
+
+
+/*
+	Checks for Lichess URL
+*/
+chrome.tabs.getSelected(null, function(tab){
+	if (tab.url.indexOf("lichess.org") != -1) {
+		chrome.storage.local.set({
+			isLichess: true
+		});
+	} else {
+		document.body.appendChild(notice);  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Notices shoudl have its own div/class not just innerHTML
+	}
+});
 
 
 /*
@@ -65,12 +92,6 @@ chrome.storage.local.get(null, function(item) {
 		enableTextToSpeechButton.classList.remove("disabled");
 		enableTextToSpeechButton.classList.add("enabled");
 	}
-
-	if (item != null && item.recalibrateIsEnabled != null && !item.recalibrateIsEnabled) {
-		recalibrateButton.value = "disabled";
-	} else {
-		recalibrateButton.value = "enabled";
-	}
 });
 
 
@@ -103,17 +124,13 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.style.display = "none";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
-		if (recalibrateButton.value == "enabled") {
-			chrome.storage.local.set({
-				recalibrateIsEnabled: false
-			});
-			enableBlindfoldButton.value = "disabled";
-		} else {
-			chrome.storage.local.set({
-				recalibrateIsEnabled: true
-			});
-			enableBlindfoldButton.value = "enabled";
-		}
+		chrome.tabs.getSelected(null, function(tab){
+			if (tab.url.indexOf("lichess.org") > -1) {
+				chrome.tabs.reload({bypassCache: true});
+			} else {
+				//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Make it flash or something @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			}
+		});
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
 			chrome.storage.local.set({
