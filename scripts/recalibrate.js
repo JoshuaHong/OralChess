@@ -1,28 +1,56 @@
-//runs on page load
+/*
+	Verifies if enabled on Chrome
+*/
 run();
-//When storage changes it procs. Use to check if enabled or not
+
 chrome.storage.onChanged.addListener(function() {
-run();
-	
+	run();
 });
 
 function run() {
-
-	var testing = chrome.storage.local.get(null, function(item) {
-
+	chrome.storage.local.get(null, function(item) {
 		if (item.isChrome && item.addonIsEnabled) {
-			
-//First check for the keyboard enter box thing maybe in the above if statement
+			setTimeout(function() {
+				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
+					var recognition = new webkitSpeechRecognition();
+					recognition.lang = 'en-US';
+					recognition.start();
+					var end = false;
 
-			var recognition = new webkitSpeechRecognition();
-			recognition.lang = 'en-US';
-			recognition.continuous = true;
-			recognition.start();
+					recognition.onresult = function(event) {
+						if (event.results.length > 0) {
+							var command = event.results[0][0].transcript;
+							console.log(command);
+						}
+					}
 
+					recognition.onend = function() {
+						console.log("END");
+						if (end) {
+							console.log("ACTUAL END");
+							recognition.stop();
+						} else {
+							console.log("RESTARTING");
+							recognition.start();
+						}
+					}
 
+					recognition.onerror = function(event) {
+						console.log("Error occurred in recognition: " + event.error);
+					}
+
+					chrome.storage.onChanged.addListener(function() {
+						end = true;
+						recognition.stop();
+					});
+				}
+			}, 3000);
 		}
 	});
 }
+
+
+
 
 /*
 
@@ -70,21 +98,13 @@ document.getElementById("myBtn").addEventListener("click", function(){
 
 
 
-recognition.onresult = function(event) {
-	if (event.results.length > 0) {
-		var color = event.results[0][0].transcript;
-		console.log(color);
-		document.body.style.backgroundColor = color;
-	}
-}
+
 
 recognition.onspeechend = function() {
 	recognition.stop();
 }
 
-recognition.onerror = function(event) {
-	console.log("Error occurred in recognition: " + event.error);
-}
+
 
 
 
