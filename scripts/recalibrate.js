@@ -1,16 +1,28 @@
+//runs on page load
+run();
 //When storage changes it procs. Use to check if enabled or not
 chrome.storage.onChanged.addListener(function() {
+run();
+	
+});
+
+function run() {
+
 	var testing = chrome.storage.local.get(null, function(item) {
 
+		if (item.isChrome && item.addonIsEnabled) {
+			
+//First check for the keyboard enter box thing maybe in the above if statement
+
+			var recognition = new webkitSpeechRecognition();
+			recognition.lang = 'en-US';
+			recognition.continuous = true;
+			recognition.start();
 
 
-		if (item == null || item.addonIsEnabled) {
-			//alert("ENABLED");
-		} else {
-			//alert("DISABLED");
 		}
 	});
-});
+}
 
 /*
 
@@ -40,30 +52,6 @@ var config = { attributes: true, childList: true, characterData: true }
 
 
 
-//Not needed anymore?
-var peice = "queen";
-var elem = document.querySelectorAll("." + peice);
-
-for (test of elem) {
-	//alert(test.getBoundingClientRect().top + window.scrollY);
-}
-
-
-//This needed either?
-document.addEventListener("click", printMousePos);
-
-function printMousePos(event) {
-	//alert(event.pageX);
-	//alert(event.pageY);
-}
-
-
-
-//Temp button testing keypresses
-var enableAddonButton = document.createElement("BUTTON");
-enableAddonButton.id = "myBtn";
-enableAddonButton.innerHTML = "TEST";
-document.body.appendChild(enableAddonButton);
 
 
 
@@ -78,14 +66,9 @@ document.getElementById("myBtn").addEventListener("click", function(){
 
 
 
-//Speech Recognition
-var recognition = new webkitSpeechRecognition();
 
-recognition.lang = 'en-US';
 
-document.body.onclick = function() {
-	recognition.start();
-}
+
 
 recognition.onresult = function(event) {
 	if (event.results.length > 0) {

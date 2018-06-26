@@ -35,7 +35,7 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 		isChrome: true
 	});
 } else {
-	document.body.innerHTML = "Please use Chrome";  //@@@@@@@@@@@@@@@@@@@@@@@@@@ Make notices pretty. See below (make it flash)
+	document.body.innerHTML = "Please use Chrome";  //@@@@@@@@@@@@@@@@@@@@@@@@@@ Make notices pretty. See below (make it flash if clicked refesh without being on Lichess)
 }
 
 
@@ -43,22 +43,22 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 	Checks for Lichess URL
 */
 chrome.tabs.getSelected(null, function(tab){
-	if (tab.url.indexOf("lichess.org") != -1) {
-		chrome.storage.local.set({
-			isLichess: true
-		});
-	} else {
+	if (tab.url.indexOf("lichess.org") == -1) {
 		document.body.appendChild(notice);  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Notices shoudl have its own div/class not just innerHTML
 	}
 });
 
 
 /*
-	Edits popup menu components
-	Based on previously stored data
+	Edits popup menu components based on previously stored data
 */
 chrome.storage.local.get(null, function(item) {
-	if (item != null && item.addonIsEnabled != null && !item.addonIsEnabled) {
+	if (item != null && item.addonIsEnabled != null && item.addonIsEnabled) {
+		enableAddonButton.innerHTML = "Enabled";
+		enableAddonButton.value = "enabled";
+		enableAddonButton.classList.remove("disabled");
+		enableAddonButton.classList.add("enabled");
+	} else {
 		enableAddonButton.innerHTML = "Disabled";
 		enableAddonButton.value = "disabled";
 		enableAddonButton.classList.remove("enabled");
@@ -66,11 +66,6 @@ chrome.storage.local.get(null, function(item) {
 		recalibrateButton.style.display = "none";
 		enableBlindfoldButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
-	} else {
-		enableAddonButton.innerHTML = "Enabled";
-		enableAddonButton.value = "enabled";
-		enableAddonButton.classList.remove("disabled");
-		enableAddonButton.classList.add("enabled");
 	}
 
 	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
@@ -100,18 +95,7 @@ chrome.storage.local.get(null, function(item) {
 */
 document.addEventListener("click", function(event) {
 	if (event.target.id == "enableAddonButtonID") {
-		if (enableAddonButton.value == "disabled") {
-			chrome.storage.local.set({
-				addonIsEnabled: true
-			});
-			enableAddonButton.value = "enabled";
-			enableAddonButton.innerHTML = "Enabled";
-			enableAddonButton.classList.remove("disabled");
-			enableAddonButton.classList.add("enabled");
-			recalibrateButton.style.display = "block";
-			enableBlindfoldButton.style.display = "block";
-			enableTextToSpeechButton.style.display = "block";
-		} else {
+		if (enableAddonButton.value == "enabled") {
 			chrome.storage.local.set({
 				addonIsEnabled: false
 			});
@@ -122,6 +106,17 @@ document.addEventListener("click", function(event) {
 			recalibrateButton.style.display = "none";
 			enableBlindfoldButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
+		} else {
+			chrome.storage.local.set({
+				addonIsEnabled: true
+			});
+			enableAddonButton.value = "enabled";
+			enableAddonButton.innerHTML = "Enabled";
+			enableAddonButton.classList.remove("disabled");
+			enableAddonButton.classList.add("enabled");
+			recalibrateButton.style.display = "block";
+			enableBlindfoldButton.style.display = "block";
+			enableTextToSpeechButton.style.display = "block";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
 		chrome.tabs.getSelected(null, function(tab){
