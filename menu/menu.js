@@ -4,26 +4,31 @@
 var enableAddonButton = document.createElement("BUTTON");
 var recalibrateButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
+var enableConfirmationButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 var notice = document.createTextNode("Please Use Lichess");
 
 recalibrateButton.innerHTML = "Recalibrate";
 enableBlindfoldButton.innerHTML = "Blindfold Mode";
+enableConfirmationButton.innerHTML = "Confirmation Mode";
 enableTextToSpeechButton.innerHTML = "Text To Speech";
 
 enableAddonButton.id = "enableAddonButtonID";
 recalibrateButton.id = "recalibrateButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
+enableConfirmationButton.id = "enableConfirmationButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
 enableAddonButton.classList.add("button");
 recalibrateButton.classList.add("button");
 enableBlindfoldButton.classList.add("button");
+enableConfirmationButton.classList.add("button");
 enableTextToSpeechButton.classList.add("button");
 
 document.body.appendChild(enableAddonButton);
 document.body.appendChild(recalibrateButton);
 document.body.appendChild(enableBlindfoldButton);
+document.body.appendChild(enableConfirmationButton);
 document.body.appendChild(enableTextToSpeechButton);
 
 
@@ -65,6 +70,7 @@ chrome.storage.local.get(null, function(item) {
 		enableAddonButton.classList.add("disabled");
 		recalibrateButton.style.display = "none";
 		enableBlindfoldButton.style.display = "none";
+		enableConfirmationButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
 	}
 
@@ -76,6 +82,16 @@ chrome.storage.local.get(null, function(item) {
 		enableBlindfoldButton.value = "disabled";
 		enableBlindfoldButton.classList.remove("enabled");
 		enableBlindfoldButton.classList.add("disabled");
+	}
+
+	if (item != null && item.confirmationIsEnabled != null && !item.confirmationIsEnabled) {
+		enableConfirmationButton.value = "disabled";
+		enableConfirmationButton.classList.remove("enabled");
+		enableConfirmationButton.classList.add("disabled");
+	} else {
+		enableConfirmationButton.value = "enabled";
+		enableConfirmationButton.classList.remove("disabled");
+		enableConfirmationButton.classList.add("enabled");
 	}
 
 	if (item != null && item.textToSpeechIsEnabled != null && !item.textToSpeechIsEnabled) {
@@ -105,6 +121,7 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.classList.add("disabled");
 			recalibrateButton.style.display = "none";
 			enableBlindfoldButton.style.display = "none";
+			enableConfirmationButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
 		} else {
 			chrome.storage.local.set({
@@ -116,6 +133,7 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.classList.add("enabled");
 			recalibrateButton.style.display = "block";
 			enableBlindfoldButton.style.display = "block";
+			enableConfirmationButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
@@ -141,6 +159,22 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.value = "enabled";
 			enableBlindfoldButton.classList.remove("disabled");
 			enableBlindfoldButton.classList.add("enabled");
+		}
+	} else if (event.target.id == "enableConfirmationButtonID") {
+		if (enableConfirmationButton.value == "disabled") {
+			chrome.storage.local.set({
+				confirmationIsEnabled: true
+			});
+			enableConfirmationButton.value = "enabled";
+			enableConfirmationButton.classList.remove("disabled");
+			enableConfirmationButton.classList.add("enabled");
+		} else {
+			chrome.storage.local.set({
+				confirmationIsEnabled: false
+			});
+			enableConfirmationButton.value = "disabled";
+			enableConfirmationButton.classList.remove("enabled");
+			enableConfirmationButton.classList.add("disabled");
 		}
 	} else if (event.target.id == "enableTextToSpeechButtonID") {
 		if (enableTextToSpeechButton.value == "disabled") {
