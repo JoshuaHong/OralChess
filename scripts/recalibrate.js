@@ -10,15 +10,17 @@ chrome.storage.onChanged.addListener(function() {
 function run() {
 	chrome.storage.local.get(null, function(item) {
 		if (item.isChrome && item.addonIsEnabled) {
-			setTimeout(function() {
+			setTimeout(function() {//////////////////////////////////////////////////////////////////////////////Maybe disable opening another lichess before 3 seconds with local storage check idk
 				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
 					var recognition = new webkitSpeechRecognition();
 					recognition.lang = 'en-US';
 					recognition.start();
-					var end = false;
+					// var end = false;
+					var end;
 
 					recognition.onresult = function(event) {
 						if (event.results.length > 0) {
+							var end = false;
 							var command = event.results[0][0].transcript;
 							console.log(command);
 						}
@@ -38,6 +40,18 @@ function run() {
 					recognition.onerror = function(event) {
 						console.log("Error occurred in recognition: " + event.error);
 					}
+
+					window.addEventListener('focus', function() {
+						console.log("CHANGED");
+						end = false;
+						recognition.start();
+					});
+
+					window.addEventListener('blur', function() {
+						console.log("CHANGED");
+						end = true;
+						recognition.stop();
+					});
 
 					chrome.storage.onChanged.addListener(function() {
 						end = true;
