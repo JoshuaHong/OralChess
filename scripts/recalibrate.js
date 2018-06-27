@@ -3,19 +3,27 @@
 */
 run();
 
-chrome.storage.onChanged.addListener(function() {
+chrome.storage.onChanged.addListener(function(changes, area) {
 	run();
 });
 
+
+
+
 function run() {
 	chrome.storage.local.get(null, function(item) {
-		if (item.isChrome && item.addonIsEnabled) {
-			setTimeout(function() {//////////////////////////////////////////////////////////////////////////////Maybe disable opening another lichess before 3 seconds with local storage check idk
+		if (item.isChrome && item.addonIsEnabled && localStorage.getItem("loading") != "true") {
+
+			localStorage.setItem("loading", true);
+
+			setTimeout(function() {
+
+				localStorage.setItem("loading", false);
+
 				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
 					var recognition = new webkitSpeechRecognition();
 					recognition.lang = 'en-US';
 					recognition.start();
-					// var end = false;
 					var end;
 
 					recognition.onresult = function(event) {
@@ -42,13 +50,16 @@ function run() {
 					}
 
 					window.addEventListener('focus', function() {
-						console.log("CHANGED");
-						end = false;
-						recognition.start();
+						if (localStorage.getItem("loading") != "true") {
+							console.log("focus");
+							end = false;
+							run();
+							//recognition.start();
+						}
 					});
 
 					window.addEventListener('blur', function() {
-						console.log("CHANGED");
+						console.log("blur");
 						end = true;
 						recognition.stop();
 					});
