@@ -8,23 +8,19 @@ chrome.storage.onChanged.addListener(function(changes, area) {
 });
 
 
-
+//https://stackoverflow.com/questions/47277211/continuous-speech-recognition-on-browser-like-ok-google-or-hey-siri
 
 function run() {
 	chrome.storage.local.get(null, function(item) {
-		if (item.isChrome && item.addonIsEnabled && localStorage.getItem("loading") != "true") {
-
-			localStorage.setItem("loading", true);
-
+		if (item.isChrome && item.addonIsEnabled) {
 			setTimeout(function() {
 
-				localStorage.setItem("loading", false);
-
-				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
+				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null && localStorage.getItem("loading") != "true") {
 					var recognition = new webkitSpeechRecognition();
 					recognition.lang = 'en-US';
+					localStorage.setItem("loading", true);
 					recognition.start();
-					var end;
+					var end = false;
 
 					recognition.onresult = function(event) {
 						if (event.results.length > 0) {
@@ -38,9 +34,11 @@ function run() {
 						console.log("END");
 						if (end) {
 							console.log("ACTUAL END");
+							localStorage.setItem("loading", false);
 							recognition.stop();
-						} else {
+						} else if (localStorage.getItem("loading") != "true") {
 							console.log("RESTARTING");
+							localStorage.setItem("loading", true);
 							recognition.start();
 						}
 					}
@@ -61,6 +59,7 @@ function run() {
 					window.addEventListener('blur', function() {
 						console.log("blur");
 						end = true;
+						localStorage.setItem("loading", false);
 						recognition.stop();
 					});
 
@@ -73,7 +72,6 @@ function run() {
 		}
 	});
 }
-
 
 
 
