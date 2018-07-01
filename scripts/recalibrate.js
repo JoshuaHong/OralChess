@@ -1,14 +1,91 @@
+var isChrome;
+var addonIsEnabled;
+var blindfoldIsEnabled;
+var confirmationIsEnabled;
+var textToSpeechIsEnabled;
+
+var recognition = new webkitSpeechRecognition();
+recognition.lang = 'en-US';
+var end = false;
+
+chrome.storage.local.get(null, function(item) {
+	isChrome = item.isChrome;
+	addonIsEnabled = item.addonIsEnabled;
+	blindfoldIsEnabled = item.blindfoldIsEnabled;
+	confirmationIsEnabled = item.confirmationIsEnabled;
+	textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+
+	if (isChrome && addonIsEnabled) {
+		recognition.start();
+	}
+});
+
+recognition.onresult = function(event) {
+	if (event.results.length > 0) {
+		var end = false;
+		var command = event.results[0][0].transcript;
+		console.log(command);
+	}
+}
+
+recognition.onend = function() {
+	if (end) {
+		console.log("ACTUAL END");
+		recognition.stop();
+	} else {
+		console.log("RESTARTING");
+		recognition.start();
+	}
+}
+
+recognition.onerror = function(event) {
+	console.log("Error occurred in recognition: " + event.error);
+}
+
+window.addEventListener('focus', function() {
+	if (addonIsEnabled) {
+		console.log("FOCUS");
+		end = false;
+		recognition.start();
+	}
+});
+
+window.addEventListener('blur', function() {
+	console.log("BLUR");
+	end = true;
+	recognition.stop();
+});
+
+chrome.storage.onChanged.addListener(function() {
+	chrome.storage.local.get(null, function(item) {
+		isChrome = item.isChrome;
+		addonIsEnabled = item.addonIsEnabled;
+		blindfoldIsEnabled = item.blindfoldIsEnabled;
+		confirmationIsEnabled = item.confirmationIsEnabled;
+		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+	});
+});
+
+setTimeout(function() {
+	if (isChrome && addonIsEnabled && document.querySelector("#lichess") != null && document.querySelector(".ready")) {
+		
+	}
+}, 3000);
+
+
+
+
+
+
+
+
 /*
-	Verifies if enabled on Chrome
-*/
 run();
 
 chrome.storage.onChanged.addListener(function(changes, area) {
 	run();
 });
 
-
-//https://stackoverflow.com/questions/47277211/continuous-speech-recognition-on-browser-like-ok-google-or-hey-siri
 
 function run() {
 	chrome.storage.local.get(null, function(item) {
@@ -71,8 +148,7 @@ function run() {
 			}, 3000);
 		}
 	});
-}
-
+} */
 
 
 /*
