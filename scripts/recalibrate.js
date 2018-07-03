@@ -1,3 +1,5 @@
+var commands = ["knight", "bishop", "rook", "queen", "king"];
+
 var isChrome;
 var addonIsEnabled;
 var blindfoldIsEnabled;
@@ -25,6 +27,45 @@ recognition.onresult = function(event) {
 		var end = false;
 		var command = event.results[0][0].transcript;
 		console.log(command);
+
+		if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
+			command = command.toLowerCase();
+			
+			for (i = 0; i < commands.length; i++) {
+				if (i <= 0) {
+					command = command.replace(new RegExp(commands[i], 'g'), 'N');
+				} else if (i <= 1) {
+					command = command.replace(new RegExp(commands[i], 'g'), 'B');
+				} else if (i <= 2) {
+					command = command.replace(new RegExp(commands[i], 'g'), 'R');
+				} else if (i <= 3) {
+					command = command.replace(new RegExp(commands[i], 'g'), 'Q');
+				} else if (i <= 4) {
+					command = command.replace(new RegExp(commands[i], 'g'), 'K');
+				}
+			}
+
+			
+			for (i = 0; i < commands.length; i++) {
+				if (!command.includes(commands[i])) {
+
+				}
+			}
+			
+
+			console.log(command);
+			
+			
+			if (command == "Bishop") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.querySelector(".ready").value = "e5";
+				//document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+			} else {
+				//WORKS!
+				//if .takeback-yes exists CHECK
+				document.querySelector(".takeback-yes").click();
+			}
+		}
 	}
 }
 
@@ -66,89 +107,12 @@ chrome.storage.onChanged.addListener(function() {
 	});
 });
 
-setTimeout(function() {
-	if (isChrome && addonIsEnabled && document.querySelector("#lichess") != null && document.querySelector(".ready")) {
-		
-	}
-}, 3000);
 
 
 
 
 
 
-
-
-/*
-run();
-
-chrome.storage.onChanged.addListener(function(changes, area) {
-	run();
-});
-
-
-function run() {
-	chrome.storage.local.get(null, function(item) {
-		if (item.isChrome && item.addonIsEnabled) {
-			setTimeout(function() {
-
-				if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null && localStorage.getItem("loading") != "true") {
-					var recognition = new webkitSpeechRecognition();
-					recognition.lang = 'en-US';
-					localStorage.setItem("loading", true);
-					recognition.start();
-					var end = false;
-
-					recognition.onresult = function(event) {
-						if (event.results.length > 0) {
-							var end = false;
-							var command = event.results[0][0].transcript;
-							console.log(command);
-						}
-					}
-
-					recognition.onend = function() {
-						console.log("END");
-						if (end) {
-							console.log("ACTUAL END");
-							localStorage.setItem("loading", false);
-							recognition.stop();
-						} else if (localStorage.getItem("loading") != "true") {
-							console.log("RESTARTING");
-							localStorage.setItem("loading", true);
-							recognition.start();
-						}
-					}
-
-					recognition.onerror = function(event) {
-						console.log("Error occurred in recognition: " + event.error);
-					}
-
-					window.addEventListener('focus', function() {
-						if (localStorage.getItem("loading") != "true") {
-							console.log("focus");
-							end = false;
-							run();
-							//recognition.start();
-						}
-					});
-
-					window.addEventListener('blur', function() {
-						console.log("blur");
-						end = true;
-						localStorage.setItem("loading", false);
-						recognition.stop();
-					});
-
-					chrome.storage.onChanged.addListener(function() {
-						end = true;
-						recognition.stop();
-					});
-				}
-			}, 3000);
-		}
-	});
-} */
 
 
 /*
@@ -158,6 +122,11 @@ var move = document.querySelectorAll("move");
 for( var i = 0; i < move.length; i++ ) {
 	//alert(move[i].innerHTML);
 }
+
+
+
+
+
 
 
 //GETS Changes
@@ -177,31 +146,6 @@ var config = { attributes: true, childList: true, characterData: true }
 // later, you can stop observing
 //observer.disconnect();
 
-
-
-
-
-
-//Keypresses
-var e = new KeyboardEvent('keydown',{'keyCode':13,'which':13});
-
-document.getElementById("myBtn").addEventListener("click", function(){
-	document.dispatchEvent(e);
-	document.querySelector(".ready").value = "e5";
-	document.dispatchEvent(e);
-});
-
-
-
-
-
-
-
-
-
-recognition.onspeechend = function() {
-	recognition.stop();
-}
 
 
 
