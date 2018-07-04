@@ -50,13 +50,42 @@ recognition.onresult = function(event) {
 		if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
 			command = getCommand(command);
 
-			if (command == "takeback") {
-				//WORKS!
-				//if .takeback-yes exists CHECK
+			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
+			} else if (command == "draw" && (document.querySelector(".draw-yes") != null || document.querySelector(".yes") != null)) {
+				document.querySelector(".draw-yes").click();
+				document.querySelector(".yes").click();
+			} else if (command == "resign" && document.querySelector(".resign-confirm") != null || document.querySelector(".yes") != null) {
+				document.querySelector(".resign-confirm").click();
+				document.querySelector(".yes").click();
+			} else if (command == "abort" && document.querySelector(".abort") != null) {
+				document.querySelector(".abort").click();
+			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
+				document.querySelector(".rematch").click();
+			} else if (command == "button" && document.querySelector(".button") != null) {
+				document.querySelector(".button").click();
+			} else if (command == "analysis" && document.querySelector(".analysis") != null) {
+				document.querySelector(".analysis").click();
+			} else if (command == "zen" && document.querySelector(".fbt") != null) {
+				document.querySelector(".fbt").click();
+			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
+				document.querySelectorAll(".button")[1].click();
+			} else if (command == "beginning") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':38,'which':38}));
+			} else if (command == "backward") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':37,'which':37}));
+			} else if (command == "forward") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':39,'which':39}));
+			} else if (command == "end") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':40,'which':40}));
 			} else if (command != "") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 			}
 		}
 	}
@@ -104,12 +133,34 @@ function getCommand(command) {
 	var command = command;
 	command = command.toLowerCase();
 
-	if (command.includes("")) {
-		//FINISH THE CASES. IE RESIGN TAKEBACK KEYBOARD SHORTCUTS ETC...
-		//then return;
-
-		//full trihard ab3 ab4 ab5 ab6 etc...?????
-		//maybe afterwards
+	if (command.includes("take back")) {
+		return "takeback";
+	} else if (command.includes("claim") || command.includes("cancel")) {
+		return "button";
+	} else if (command.includes("draw")) {
+		return "draw";
+	} else if (command.includes("resign")) {
+		return "resign";
+	} else if (command.includes("abort")) {
+		return "abort";
+	} else if (command.includes("rematch")) {
+		return "rematch";
+	} else if (command.includes("confirm")) {
+		return "confirm";
+	} else if (command.includes("analysis")) {
+		return "analysis";
+	} else if (command.includes("zen")) {
+		return "zen";
+	} else if (command.includes("beginning")) {
+		return "beginning";
+	} else if (command.includes("backward")) {
+		return "backward";
+	} else if (command.includes("forward")) {
+		return "forward";
+	} else if (command.includes("end")) {
+		return "end";
+	} else if (command.includes("new")) {
+		return "new";
 	}
 
 	for (var i = 0; i < commands.length; i++) {
@@ -156,7 +207,7 @@ function getCommand(command) {
 			case (i <= commands.indexOf("a1")):
 				command = command.replace(new RegExp(commands[i], 'g'), 'a1');
 				break;
-			case (i <= commands.indexOf("b2")):
+			case (i <= commands.indexOf("a2")):
 				command = command.replace(new RegExp(commands[i], 'g'), 'a2');
 				break;
 			case (i <= commands.indexOf("a3")):
