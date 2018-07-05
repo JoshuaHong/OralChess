@@ -36,8 +36,16 @@ chrome.storage.local.get(null, function(item) {
 	confirmationIsEnabled = item.confirmationIsEnabled;
 	textToSpeechIsEnabled = item.textToSpeechIsEnabled;
 
-	if (isChrome && addonIsEnabled) {
-		recognition.start();
+	if (isChrome) {
+		if (addonIsEnabled) {
+			recognition.start();
+		}
+
+		if (document.querySelector("#lichess") != null && blindfoldIsEnabled) {
+			setTimeout(function() {
+				enableBlindfold();
+			}, 500);
+		}
 	}
 });
 
@@ -70,6 +78,30 @@ recognition.onresult = function(event) {
 				document.querySelector(".fbt").click();
 			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
 				document.querySelectorAll(".button")[1].click();
+			} else if (command == "give" && document.querySelector(".moretime") != null) {
+				document.querySelector(".moretime").click();
+			} else if (command == "blindfold") {
+				if (blindfoldIsEnabled) {
+					disableBlindfold();
+				} else {
+					enableBlindfold();
+				}
+			}else if (command == "0-0") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.querySelector(".ready").value = command;
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+			} else if (command == "0-0-0") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.querySelector(".ready").value = command;
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+			} else if (command == "0") {
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.querySelector(".ready").value = "0-0";
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.querySelector(".ready").value = "0-0-0";
+				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 			} else if (command == "beginning") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':38,'which':38}));
@@ -126,6 +158,12 @@ chrome.storage.onChanged.addListener(function() {
 		blindfoldIsEnabled = item.blindfoldIsEnabled;
 		confirmationIsEnabled = item.confirmationIsEnabled;
 		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+
+		if (blindfoldIsEnabled) {
+			enableBlindfold();
+		} else {
+			disableBlindfold();
+		}
 	});
 });
 
@@ -161,6 +199,18 @@ function getCommand(command) {
 		return "end";
 	} else if (command.includes("new")) {
 		return "new";
+	} else if (command.includes("give")) {
+		return "give";
+	} else if (command.includes("castle")) {
+		if (command.includes("king side")) {
+			return "0-0";
+		} else if (command.includes("queen side")) {
+			return "0-0-0";
+		} else {
+			return "0";
+		}
+	} else if (command.includes("blindfold")) {
+		return "blindfold";
 	}
 
 	for (var i = 0; i < commands.length; i++) {
@@ -429,8 +479,49 @@ function isSquare(command) {
 	return false;
 }
 
+function enableBlindfold() {
+	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
+		document.querySelectorAll(".pawn")[i].style.display = "none";
+	}
+	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
+		document.querySelectorAll(".knight")[i].style.display = "none";
+	}
+	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
+		document.querySelectorAll(".bishop")[i].style.display = "none";
+	}
+	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
+		document.querySelectorAll(".rook")[i].style.display = "none";
+	}
+	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
+		document.querySelectorAll(".queen")[i].style.display = "none";
+	}
+	document.querySelectorAll(".king")[0].style.display = "none";
+	document.querySelectorAll(".king")[1].style.display = "none";
+}
 
+function disableBlindfold() {
+	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
+		document.querySelectorAll(".pawn")[i].style.display = "block";
+	}
+	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
+		document.querySelectorAll(".knight")[i].style.display = "block";
+	}
+	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
+		document.querySelectorAll(".bishop")[i].style.display = "block";
+	}
+	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
+		document.querySelectorAll(".rook")[i].style.display = "block";
+	}
+	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
+		document.querySelectorAll(".queen")[i].style.display = "block";
+	}
+	document.querySelectorAll(".king")[0].style.display = "block";
+	document.querySelectorAll(".king")[1].style.display = "block";
+}
 
+setTimeout(function() {
+
+}, 3000);
 
 
 /*
