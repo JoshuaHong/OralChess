@@ -103,9 +103,19 @@ recognition.onresult = function(event) {
 					blindfoldIsEnabled = true;
 				}
 			}else if (command == "0-0") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
-				document.querySelector(".ready").value = command;
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				if (document.querySelector(".orientation-black") != null && canCastle()) {
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.querySelector(".ready").value = "e8";
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.querySelector(".ready").value = "g8";
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				} else if (canCastle()) {
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.querySelector(".ready").value = "e1";
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.querySelector(".ready").value = "g1";
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				}
 			} else if (command == "0-0-0") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
@@ -488,6 +498,22 @@ function isSquare(command) {
 	}
     
 	return false;
+}
+
+function canCastle() {
+	if (document.querySelector(".orientation-black") != null) {
+		if (document.querySelector(".king").style.transform == "translate(192px, 448px)") {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		if (document.querySelectorAll(".king")[1].style.transform == "translate(256px, 448px)") {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 function enableBlindfold() {
