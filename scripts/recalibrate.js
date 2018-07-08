@@ -1,4 +1,4 @@
-var commands = ["knight", "bishop", "rook", "queen", "king",
+var grammars = ["knight", "bishop", "rook", "queen", "king",
 				"a takes", "a",
 				"b takes", "b",
 				"c takes", "c",
@@ -16,7 +16,7 @@ var commands = ["knight", "bishop", "rook", "queen", "king",
 				"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
-var squares = ["N", "B", "R", "Q", "K",
+var commands = ["N", "B", "R", "Q", "K",
 				"a", "b", "c", "d", "e", "f", "g", "h",
 				"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
 				"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8",
@@ -38,7 +38,7 @@ recognition.lang = 'en-US';
 var end = false;
 
 var msg = new SpeechSynthesisUtterance();
-var voices = window.speechSynthesis.getVoices();
+var voices = speechSynthesis.getVoices();
 msg.voiceURI = 'native';
 msg.volume = 1; // 0 to 1
 msg.rate = 2; // 0.1 to 2
@@ -263,238 +263,238 @@ function getCommand(command) {
 		return "blindfold";
 	}
 
-	for (var i = 0; i < commands.length; i++) {
+	for (var i = 0; i < grammars.length; i++) {
 		switch (true) {
-			case (i <= commands.indexOf("knight")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'N');
+			case (i <= grammars.indexOf("knight")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'N');
 				break;
-			case (i <= commands.indexOf("bishop")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'B');
+			case (i <= grammars.indexOf("bishop")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'B');
 				break;
-			case (i <= commands.indexOf("rook")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'R');
+			case (i <= grammars.indexOf("rook")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'R');
 				break;
-			case (i <= commands.indexOf("queen")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'Q');
+			case (i <= grammars.indexOf("queen")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'Q');
 				break;
-			case (i <= commands.indexOf("king")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'K');
+			case (i <= grammars.indexOf("king")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'K');
 				break;
-			case (i <= commands.indexOf("a")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a');
+			case (i <= grammars.indexOf("a")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a');
 				break;
-			case (i <= commands.indexOf("b")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b');
+			case (i <= grammars.indexOf("b")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b');
 				break;
-			case (i <= commands.indexOf("c")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c');
+			case (i <= grammars.indexOf("c")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c');
 				break;
-			case (i <= commands.indexOf("d")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd');
+			case (i <= grammars.indexOf("d")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd');
 				break;
-			case (i <= commands.indexOf("e")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e');
+			case (i <= grammars.indexOf("e")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e');
 				break;
-			case (i <= commands.indexOf("f")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f');
+			case (i <= grammars.indexOf("f")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f');
 				break;
-			case (i <= commands.indexOf("g")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g');
+			case (i <= grammars.indexOf("g")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g');
 				break;
-			case (i <= commands.indexOf("h")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h');
+			case (i <= grammars.indexOf("h")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h');
 				break;
-			case (i <= commands.indexOf("a1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a1');
+			case (i <= grammars.indexOf("a1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a1');
 				break;
-			case (i <= commands.indexOf("a2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a2');
+			case (i <= grammars.indexOf("a2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a2');
 				break;
-			case (i <= commands.indexOf("a3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a3');
+			case (i <= grammars.indexOf("a3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a3');
 				break;
-			case (i <= commands.indexOf("a4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a4');
+			case (i <= grammars.indexOf("a4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a4');
 				break;
-			case (i <= commands.indexOf("a5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a5');
+			case (i <= grammars.indexOf("a5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a5');
 				break;
-			case (i <= commands.indexOf("a6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a6');
+			case (i <= grammars.indexOf("a6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a6');
 				break;
-			case (i <= commands.indexOf("a7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a7');
+			case (i <= grammars.indexOf("a7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a7');
 				break;
-			case (i <= commands.indexOf("a8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'a8');
+			case (i <= grammars.indexOf("a8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'a8');
 				break;
-			case (i <= commands.indexOf("b1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b1');
+			case (i <= grammars.indexOf("b1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b1');
 				break;
-			case (i <= commands.indexOf("b2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b2');
+			case (i <= grammars.indexOf("b2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b2');
 				break;
-			case (i <= commands.indexOf("b3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b3');
+			case (i <= grammars.indexOf("b3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b3');
 				break;
-			case (i <= commands.indexOf("b4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b4');
+			case (i <= grammars.indexOf("b4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b4');
 				break;
-			case (i <= commands.indexOf("b5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b5');
+			case (i <= grammars.indexOf("b5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b5');
 				break;
-			case (i <= commands.indexOf("b6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b6');
+			case (i <= grammars.indexOf("b6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b6');
 				break;
-			case (i <= commands.indexOf("b7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b7');
+			case (i <= grammars.indexOf("b7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b7');
 				break;
-			case (i <= commands.indexOf("b8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'b8');
+			case (i <= grammars.indexOf("b8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'b8');
 				break;
-			case (i <= commands.indexOf("c1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c1');
+			case (i <= grammars.indexOf("c1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c1');
 				break;
-			case (i <= commands.indexOf("c2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c2');
+			case (i <= grammars.indexOf("c2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c2');
 				break;
-			case (i <= commands.indexOf("c3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c3');
+			case (i <= grammars.indexOf("c3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c3');
 				break;
-			case (i <= commands.indexOf("c4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c4');
+			case (i <= grammars.indexOf("c4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c4');
 				break;
-			case (i <= commands.indexOf("c5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c5');
+			case (i <= grammars.indexOf("c5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c5');
 				break;
-			case (i <= commands.indexOf("c6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c6');
+			case (i <= grammars.indexOf("c6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c6');
 				break;
-			case (i <= commands.indexOf("c7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c7');
+			case (i <= grammars.indexOf("c7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c7');
 				break;
-			case (i <= commands.indexOf("c8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'c8');
+			case (i <= grammars.indexOf("c8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'c8');
 				break;
-			case (i <= commands.indexOf("d1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd1');
+			case (i <= grammars.indexOf("d1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd1');
 				break;
-			case (i <= commands.indexOf("d2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd2');
+			case (i <= grammars.indexOf("d2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd2');
 				break;
-			case (i <= commands.indexOf("d3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd3');
+			case (i <= grammars.indexOf("d3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd3');
 				break;
-			case (i <= commands.indexOf("d4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd4');
+			case (i <= grammars.indexOf("d4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd4');
 				break;
-			case (i <= commands.indexOf("d5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd5');
+			case (i <= grammars.indexOf("d5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd5');
 				break;
-			case (i <= commands.indexOf("d6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd6');
+			case (i <= grammars.indexOf("d6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd6');
 				break;
-			case (i <= commands.indexOf("d7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd7');
+			case (i <= grammars.indexOf("d7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd7');
 				break;
-			case (i <= commands.indexOf("d8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'd8');
+			case (i <= grammars.indexOf("d8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'd8');
 				break;
-			case (i <= commands.indexOf("e1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e1');
+			case (i <= grammars.indexOf("e1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e1');
 				break;
-			case (i <= commands.indexOf("e2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e2');
+			case (i <= grammars.indexOf("e2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e2');
 				break;
-			case (i <= commands.indexOf("e3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e3');
+			case (i <= grammars.indexOf("e3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e3');
 				break;
-			case (i <= commands.indexOf("e4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e4');
+			case (i <= grammars.indexOf("e4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e4');
 				break;
-			case (i <= commands.indexOf("e5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e5');
+			case (i <= grammars.indexOf("e5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e5');
 				break;
-			case (i <= commands.indexOf("e6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e6');
+			case (i <= grammars.indexOf("e6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e6');
 				break;
-			case (i <= commands.indexOf("e7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e7');
+			case (i <= grammars.indexOf("e7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e7');
 				break;
-			case (i <= commands.indexOf("e8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'e8');
+			case (i <= grammars.indexOf("e8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'e8');
 				break;
-			case (i <= commands.indexOf("f1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f1');
+			case (i <= grammars.indexOf("f1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f1');
 				break;
-			case (i <= commands.indexOf("f2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f2');
+			case (i <= grammars.indexOf("f2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f2');
 				break;
-			case (i <= commands.indexOf("f3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f3');
+			case (i <= grammars.indexOf("f3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f3');
 				break;
-			case (i <= commands.indexOf("f4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f4');
+			case (i <= grammars.indexOf("f4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f4');
 				break;
-			case (i <= commands.indexOf("f5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f5');
+			case (i <= grammars.indexOf("f5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f5');
 				break;
-			case (i <= commands.indexOf("f6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f6');
+			case (i <= grammars.indexOf("f6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f6');
 				break;
-			case (i <= commands.indexOf("f7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f7');
+			case (i <= grammars.indexOf("f7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f7');
 				break;
-			case (i <= commands.indexOf("f8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'f8');
+			case (i <= grammars.indexOf("f8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'f8');
 				break;
-			case (i <= commands.indexOf("g1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g1');
+			case (i <= grammars.indexOf("g1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g1');
 				break;
-			case (i <= commands.indexOf("g2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g2');
+			case (i <= grammars.indexOf("g2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g2');
 				break;
-			case (i <= commands.indexOf("g3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g3');
+			case (i <= grammars.indexOf("g3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g3');
 				break;
-			case (i <= commands.indexOf("g4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g4');
+			case (i <= grammars.indexOf("g4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g4');
 				break;
-			case (i <= commands.indexOf("g5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g5');
+			case (i <= grammars.indexOf("g5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g5');
 				break;
-			case (i <= commands.indexOf("g6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g6');
+			case (i <= grammars.indexOf("g6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g6');
 				break;
-			case (i <= commands.indexOf("g7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g7');
+			case (i <= grammars.indexOf("g7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g7');
 				break;
-			case (i <= commands.indexOf("g8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'g8');
+			case (i <= grammars.indexOf("g8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'g8');
 				break;
-			case (i <= commands.indexOf("h1")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h1');
+			case (i <= grammars.indexOf("h1")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h1');
 				break;
-			case (i <= commands.indexOf("h2")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h2');
+			case (i <= grammars.indexOf("h2")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h2');
 				break;
-			case (i <= commands.indexOf("h3")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h3');
+			case (i <= grammars.indexOf("h3")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h3');
 				break;
-			case (i <= commands.indexOf("h4")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h4');
+			case (i <= grammars.indexOf("h4")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h4');
 				break;
-			case (i <= commands.indexOf("h5")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h5');
+			case (i <= grammars.indexOf("h5")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h5');
 				break;
-			case (i <= commands.indexOf("h6")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h6');
+			case (i <= grammars.indexOf("h6")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h6');
 				break;
-			case (i <= commands.indexOf("h7")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h7');
+			case (i <= grammars.indexOf("h7")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h7');
 				break;
-			case (i <= commands.indexOf("h8")):
-				command = command.replace(new RegExp(commands[i], 'g'), 'h8');
+			case (i <= grammars.indexOf("h8")):
+				command = command.replace(new RegExp(grammars[i], 'g'), 'h8');
 				break;
 		}
 	}
@@ -502,7 +502,7 @@ function getCommand(command) {
 	command = command.split(" ");
 
 	for (var i = 0; i < command.length; i++) {
-		if (!isSquare(command[i])) {
+		if (!isCommand(command[i])) {
 			command.splice(i, 1);
 			i--;
 		}
@@ -514,9 +514,9 @@ function getCommand(command) {
 	return command;
 }
 
-function isSquare(command) {
-	for (var i = 0; i < squares.length; i++) {
-		if (command == squares[i]) {
+function isCommand(command) {
+	for (var i = 0; i < commands.length; i++) {
+		if (command == commands[i]) {
 			return true;
 		}
 	}
@@ -579,14 +579,6 @@ function disableBlindfold() {
 	document.querySelectorAll(".king")[0].style.display = "block";
 	document.querySelectorAll(".king")[1].style.display = "block";
 }
-
-
-
-
-
-
-
-
 
 var observer = new MutationObserver(function(mutations) {
 	if (document.querySelector(".result_wrap") != null) {
