@@ -102,7 +102,7 @@ recognition.onresult = function(event) {
 					});
 					blindfoldIsEnabled = true;
 				}
-			}else if (command == "0-0") {
+			} else if (command == "0-0") {
 				if (document.querySelector(".orientation-black") != null && canCastle()) {
 					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 					document.querySelector(".ready").value = "e8";
@@ -140,6 +140,22 @@ recognition.onresult = function(event) {
 			} else if (command == "end") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':40,'which':40}));
+			} else if (command == "Q") {
+				for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
+					document.querySelectorAll(".queen")[i].click();
+				}
+			} else if (command == "N") {
+				for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
+					document.querySelectorAll(".knight")[i].click();
+				}
+			} else if (command == "R") {
+				for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
+					document.querySelectorAll(".rook")[i].click();
+				}
+			} else if (command == "B") {
+				for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
+					document.querySelectorAll(".bishop")[i].click();
+				}
 			} else if (command != "") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
