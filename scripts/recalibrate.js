@@ -37,6 +37,14 @@ var recognition = new webkitSpeechRecognition();
 recognition.lang = 'en-US';
 var end = false;
 
+var msg = new SpeechSynthesisUtterance();
+var voices = window.speechSynthesis.getVoices();
+msg.voiceURI = 'native';
+msg.volume = 1; // 0 to 1
+msg.rate = 2; // 0.1 to 2
+msg.pitch = 1; //0 to 2]
+msg.lang = 'en-US';
+
 chrome.storage.local.get(null, function(item) {
 	isChrome = item.isChrome;
 	addonIsEnabled = item.addonIsEnabled;
@@ -573,13 +581,6 @@ function disableBlindfold() {
 }
 
 
-/*
-
-//GETS MOVES
-var move = document.querySelectorAll("move");
-for( var i = 0; i < move.length; i++ ) {
-	//alert(move[i].innerHTML);
-}
 
 
 
@@ -587,22 +588,25 @@ for( var i = 0; i < move.length; i++ ) {
 
 
 
-//GETS Changes
 var observer = new MutationObserver(function(mutations) {
 	if (document.querySelector(".result_wrap") != null) {
-		//alert("END GAME");
+		msg.text = "Game Over";
 	} else {
-		//alert("Changed");
+		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
+			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
+		} else {
+			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
+		}
 	}
+
+	speechSynthesis.speak(msg);
 });
 
-var config = { attributes: true, childList: true, characterData: true }
-
-//make sure .moves exists first. Uncomment the below line.
-//observer.observe(document.querySelector(".moves"), config);
-
-// later, you can stop observing
-//observer.disconnect();
+setTimeout(function() {
+	if (document.querySelector(".moves") != null) {
+		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
+	}
+}, 500);
 
 
 
@@ -610,26 +614,8 @@ var config = { attributes: true, childList: true, characterData: true }
 
 
 
-//Speech Synthesis
-var msg = new SpeechSynthesisUtterance();
-var voices = window.speechSynthesis.getVoices();
-msg.voiceURI = 'native';
-msg.volume = 1; // 0 to 1
-msg.rate = 2; // 0.1 to 2
-msg.pitch = 1; //0 to 2
-msg.text = 'Hello World';
-msg.lang = 'en-US';
 
-msg.onend = function(e) {
-	console.log('Finished in ' + event.elapsedTime + ' seconds.');
-};
-
-
-speechSynthesis.speak(msg);
 
 /*
 https://codepen.io/matt-west/pen/wGzuJ
 */
-
-
-//Keyboard shortcuts for ANALYSIS: lichess.org/study/vCV8kZWo#keyboard   there are more for IN GAME. look them up.
