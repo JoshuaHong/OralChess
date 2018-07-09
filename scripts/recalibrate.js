@@ -32,6 +32,7 @@ var addonIsEnabled;
 var blindfoldIsEnabled;
 var confirmationIsEnabled;
 var textToSpeechIsEnabled;
+var previousCommand;
 
 var recognition = new webkitSpeechRecognition();
 recognition.lang = 'en-US';
@@ -40,9 +41,6 @@ var end = false;
 var msg = new SpeechSynthesisUtterance();
 var voices = speechSynthesis.getVoices();
 msg.voiceURI = 'native';
-msg.volume = 1; // 0 to 1
-msg.rate = 2; // 0.1 to 2
-msg.pitch = 1; //0 to 2]
 msg.lang = 'en-US';
 
 chrome.storage.local.get(null, function(item) {
@@ -51,6 +49,18 @@ chrome.storage.local.get(null, function(item) {
 	blindfoldIsEnabled = item.blindfoldIsEnabled;
 	confirmationIsEnabled = item.confirmationIsEnabled;
 	textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+
+	if (item.volumeValue != null) {
+		msg.volume = item.volumeValue;
+	}
+
+	if (item.rateValue != null) {
+		msg.rate = item.rateValue;
+	}
+
+	if (item.pitchValue != null) {
+		msg.pitch = item.pitchValue;
+	}
 
 	if (isChrome) {
 		if (addonIsEnabled) {
@@ -73,6 +83,16 @@ recognition.onresult = function(event) {
 
 		if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
 			command = getCommand(command);
+
+			if (addonIsEnabled && (confirmationIsEnabled || confirmationIsEnabled == null)) {
+				if (command == "yes") {
+					command = previousCommand;
+				} else {
+					previousCommand = command;
+					alert(command);
+					return;
+				}
+			}
 
 			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
@@ -208,6 +228,18 @@ chrome.storage.onChanged.addListener(function() {
 		blindfoldIsEnabled = item.blindfoldIsEnabled;
 		confirmationIsEnabled = item.confirmationIsEnabled;
 		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+		
+		if (item.volumeValue != null) {
+			msg.volume = item.volumeValue;
+		}
+
+		if (item.rateValue != null) {
+			msg.rate = item.rateValue;
+		}
+
+		if (item.pitchValue != null) {
+			msg.pitch = item.pitchValue;
+		}
 
 		if (blindfoldIsEnabled) {
 			enableBlindfold();
@@ -221,7 +253,9 @@ function getCommand(command) {
 	var command = command;
 	command = command.toLowerCase();
 
-	if (command.includes("take back")) {
+	if (command.includes("yes")) {
+		return "yes";
+	} else if (command.includes("take back")) {
 		return "takeback";
 	} else if (command.includes("claim") || command.includes("cancel")) {
 		return "button";
@@ -591,7 +625,9 @@ var observer = new MutationObserver(function(mutations) {
 		}
 	}
 
-	speechSynthesis.speak(msg);
+	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+		speechSynthesis.speak(msg);
+	}
 });
 
 setTimeout(function() {

@@ -6,7 +6,29 @@ var recalibrateButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
 var enableConfirmationButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
+var volumeSlider = document.createElement("INPUT");
+var rateSlider = document.createElement("INPUT");
+var pitchSlider = document.createElement("INPUT");
+var volumeSpan = document.createElement("SPAN");
+var rateSpan = document.createElement("SPAN");
+var pitchSpan = document.createElement("SPAN");
 var notice = document.createTextNode("Please Use Lichess");
+
+volumeSlider.setAttribute("type", "range");
+rateSlider.setAttribute("type", "range");
+pitchSlider.setAttribute("type", "range");
+
+volumeSlider.min = "0.1";
+rateSlider.min = "0.1";
+pitchSlider.min = "0.1";
+
+volumeSlider.max = "1";
+rateSlider.max = "2";
+pitchSlider.max = "2";
+
+volumeSlider.step = "0.1";
+rateSlider.step = "0.1";
+pitchSlider.step = "0.1";
 
 recalibrateButton.innerHTML = "Recalibrate";
 enableBlindfoldButton.innerHTML = "Blindfold Mode";
@@ -24,13 +46,24 @@ recalibrateButton.classList.add("button");
 enableBlindfoldButton.classList.add("button");
 enableConfirmationButton.classList.add("button");
 enableTextToSpeechButton.classList.add("button");
+volumeSlider.classList.add("slider");
+rateSlider.classList.add("slider");
+pitchSlider.classList.add("slider");
+volumeSpan.classList.add("span");
+rateSpan.classList.add("span");
+pitchSpan.classList.add("span");
 
 document.body.appendChild(enableAddonButton);
 document.body.appendChild(recalibrateButton);
 document.body.appendChild(enableBlindfoldButton);
 document.body.appendChild(enableConfirmationButton);
 document.body.appendChild(enableTextToSpeechButton);
-
+document.body.appendChild(volumeSlider);
+document.body.appendChild(volumeSpan);
+document.body.appendChild(rateSlider);
+document.body.appendChild(rateSpan);
+document.body.appendChild(pitchSlider);
+document.body.appendChild(pitchSpan);
 
 /*
 	Checks for Chrome browser
@@ -72,6 +105,12 @@ chrome.storage.local.get(null, function(item) {
 		enableBlindfoldButton.style.display = "none";
 		enableConfirmationButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
+		volumeSlider.style.display = "none";
+		rateSlider.style.display = "none";
+		pitchSlider.style.display = "none";
+		volumeSpan.style.display = "none";
+		rateSpan.style.display = "none";
+		pitchSpan.style.display = "none";
 	}
 
 	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
@@ -98,10 +137,40 @@ chrome.storage.local.get(null, function(item) {
 		enableTextToSpeechButton.value = "disabled";
 		enableTextToSpeechButton.classList.remove("enabled");
 		enableTextToSpeechButton.classList.add("disabled");
+		volumeSlider.style.display = "none";
+		rateSlider.style.display = "none";
+		pitchSlider.style.display = "none";
+		volumeSpan.style.display = "none";
+		rateSpan.style.display = "none";
+		pitchSpan.style.display = "none";
 	} else {
 		enableTextToSpeechButton.value = "enabled";
 		enableTextToSpeechButton.classList.remove("disabled");
 		enableTextToSpeechButton.classList.add("enabled");
+	}
+
+	if (item != null && item.volumeValue != null) {
+		volumeSlider.value = item.volumeValue;
+		volumeSpan.innerHTML = item.volumeValue;
+	} else {
+		volumeSlider.value = "0.5";
+		volumeSpan.innerHTML = "0.5";
+	}
+
+	if (item != null && item.rateValue != null) {
+		rateSlider.value = item.rateValue;
+		rateSpan.innerHTML = item.rateValue;
+	} else {
+		rateSlider.value = "1";
+		rateSpan.innerHTML = "1";
+	}
+
+	if (item != null && item.pitchValue != null) {
+		pitchSlider.value = item.pitchValue;
+		pitchSpan.innerHTML = item.pitchValue;
+	} else {
+		pitchSlider.value = "1";
+		pitchSpan.innerHTML = "1";
 	}
 });
 
@@ -123,6 +192,12 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.style.display = "none";
 			enableConfirmationButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
+			volumeSlider.style.display = "none";
+			rateSlider.style.display = "none";
+			pitchSlider.style.display = "none";
+			volumeSpan.style.display = "none";
+			rateSpan.style.display = "none";
+			pitchSpan.style.display = "none";
 		} else {
 			chrome.storage.local.set({
 				addonIsEnabled: true
@@ -135,6 +210,12 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.style.display = "block";
 			enableConfirmationButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
+			volumeSlider.style.display = "block";
+			rateSlider.style.display = "block";
+			pitchSlider.style.display = "block";
+			volumeSpan.style.display = "block";
+			rateSpan.style.display = "block";
+			pitchSpan.style.display = "block";
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
 		chrome.tabs.getSelected(null, function(tab){
@@ -184,6 +265,12 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.value = "enabled";
 			enableTextToSpeechButton.classList.remove("disabled");
 			enableTextToSpeechButton.classList.add("enabled");
+			volumeSlider.style.display = "block";
+			rateSlider.style.display = "block";
+			pitchSlider.style.display = "block";
+			volumeSpan.style.display = "block";
+			rateSpan.style.display = "block";
+			pitchSpan.style.display = "block";
 		} else {
 			chrome.storage.local.set({
 				textToSpeechIsEnabled: false
@@ -191,6 +278,33 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.value = "disabled";
 			enableTextToSpeechButton.classList.remove("enabled");
 			enableTextToSpeechButton.classList.add("disabled");
+			volumeSlider.style.display = "none";
+			rateSlider.style.display = "none";
+			pitchSlider.style.display = "none";
+			volumeSpan.style.display = "none";
+			rateSpan.style.display = "none";
+			pitchSpan.style.display = "none";
 		}
 	}
+});
+
+volumeSlider.addEventListener("input", function() {
+	chrome.storage.local.set({
+		volumeValue: volumeSlider.value
+	});
+	volumeSpan.innerHTML = volumeSlider.value;
+});
+
+rateSlider.addEventListener("input", function() {
+	chrome.storage.local.set({
+		rateValue: rateSlider.value
+	});
+	rateSpan.innerHTML = rateSlider.value;
+});
+
+pitchSlider.addEventListener("input", function() {
+	chrome.storage.local.set({
+		pitchValue: pitchSlider.value
+	});
+	pitchSpan.innerHTML = pitchSlider.value;
 });

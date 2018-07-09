@@ -1,5 +1,6 @@
 html, body {
 	width: 300px;
+	display: inline-block;
 }
 
 .button {
@@ -15,3 +16,5 @@ html, body {
 .disabled {
 	color: red;
 }
+
+/* https://codepen.io/seanstopnik/pen/CeLqA */
