@@ -90,6 +90,12 @@ recognition.onresult = function(event) {
 				} else {
 					previousCommand = command;
 					alert(command);
+
+					if (textToSpeechIsEnabled || textToSpeechIsEnabled == null) {
+						msg.text = command;
+						speechSynthesis.speak(msg);
+					}
+
 					return;
 				}
 			}
@@ -129,6 +135,30 @@ recognition.onresult = function(event) {
 						blindfoldIsEnabled: true
 					});
 					blindfoldIsEnabled = true;
+				}
+			} else if (command == "confirmation") {
+				if (confirmationIsEnabled) {
+					chrome.storage.local.set({
+						confirmationIsEnabled: false
+					});
+					confirmationIsEnabled = false;
+				} else {
+					chrome.storage.local.set({
+						confirmationIsEnabled: true
+					});
+					confirmationIsEnabled = true;
+				}
+			} else if (command == "text to speech") {
+				if (textToSpeechIsEnabled) {
+					chrome.storage.local.set({
+						textToSpeechIsEnabled: false
+					});
+					textToSpeechIsEnabled = false;
+				} else {
+					chrome.storage.local.set({
+						textToSpeechIsEnabled: true
+					});
+					textToSpeechIsEnabled = true;
 				}
 			} else if (command == "0-0") {
 				if (document.querySelector(".orientation-black") != null && canCastle()) {
@@ -255,6 +285,12 @@ function getCommand(command) {
 
 	if (command.includes("yes")) {
 		return "yes";
+	} else if (command.includes("blindfold")) {
+		return "blindfold";
+	} else if (command.includes("confirmation")) {
+		return "confirmation";
+	} else if (command.includes("text to speech")) {
+		return "text to speech";
 	} else if (command.includes("take back")) {
 		return "takeback";
 	} else if (command.includes("claim") || command.includes("cancel")) {
@@ -293,8 +329,6 @@ function getCommand(command) {
 		} else {
 			return "0";
 		}
-	} else if (command.includes("blindfold")) {
-		return "blindfold";
 	}
 
 	for (var i = 0; i < grammars.length; i++) {
