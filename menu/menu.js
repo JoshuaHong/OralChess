@@ -12,11 +12,12 @@ var pitchSlider = document.createElement("INPUT");
 var volumeSpan = document.createElement("SPAN");
 var rateSpan = document.createElement("SPAN");
 var pitchSpan = document.createElement("SPAN");
+var voiceSelect = document.createElement("SELECT");
 var notice = document.createTextNode("Please Use Lichess");
 
-volumeSlider.setAttribute("type", "range");
-rateSlider.setAttribute("type", "range");
-pitchSlider.setAttribute("type", "range");
+volumeSlider.type = "range";
+rateSlider.type = "range";
+pitchSlider.type = "range";
 
 volumeSlider.min = "0.1";
 rateSlider.min = "0.1";
@@ -52,6 +53,7 @@ pitchSlider.classList.add("slider");
 volumeSpan.classList.add("span");
 rateSpan.classList.add("span");
 pitchSpan.classList.add("span");
+voiceSelect.classList.add("select");
 
 document.body.appendChild(enableAddonButton);
 document.body.appendChild(recalibrateButton);
@@ -64,6 +66,7 @@ document.body.appendChild(rateSlider);
 document.body.appendChild(rateSpan);
 document.body.appendChild(pitchSlider);
 document.body.appendChild(pitchSpan);
+document.body.appendChild(voiceSelect);
 
 /*
 	Checks for Chrome browser
@@ -111,6 +114,7 @@ chrome.storage.local.get(null, function(item) {
 		volumeSpan.style.display = "none";
 		rateSpan.style.display = "none";
 		pitchSpan.style.display = "none";
+		voiceSelect.style.display = "none";
 	}
 
 	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
@@ -143,6 +147,7 @@ chrome.storage.local.get(null, function(item) {
 		volumeSpan.style.display = "none";
 		rateSpan.style.display = "none";
 		pitchSpan.style.display = "none";
+		voiceSelect.style.display = "none";
 	} else {
 		enableTextToSpeechButton.value = "enabled";
 		enableTextToSpeechButton.classList.remove("disabled");
@@ -172,6 +177,10 @@ chrome.storage.local.get(null, function(item) {
 		pitchSlider.value = "1";
 		pitchSpan.innerHTML = "1";
 	}
+
+	if (item != null && item.voiceValue != null) {
+		voiceSelect.selectedIndex = item.voiceValue;
+	}
 });
 
 
@@ -198,6 +207,7 @@ document.addEventListener("click", function(event) {
 			volumeSpan.style.display = "none";
 			rateSpan.style.display = "none";
 			pitchSpan.style.display = "none";
+			voiceSelect.style.display = "none";
 		} else {
 			chrome.storage.local.set({
 				addonIsEnabled: true
@@ -210,12 +220,16 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.style.display = "block";
 			enableConfirmationButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
-			volumeSlider.style.display = "block";
-			rateSlider.style.display = "block";
-			pitchSlider.style.display = "block";
-			volumeSpan.style.display = "block";
-			rateSpan.style.display = "block";
-			pitchSpan.style.display = "block";
+
+			if (enableTextToSpeechButton.value == "enabled") {
+				volumeSlider.style.display = "block";
+				rateSlider.style.display = "block";
+				pitchSlider.style.display = "block";
+				volumeSpan.style.display = "block";
+				rateSpan.style.display = "block";
+				pitchSpan.style.display = "block";
+				voiceSelect.style.display = "block";
+			}
 		}
 	} else if (event.target.id == "recalibrateButtonID") {
 		chrome.tabs.getSelected(null, function(tab){
@@ -271,6 +285,7 @@ document.addEventListener("click", function(event) {
 			volumeSpan.style.display = "block";
 			rateSpan.style.display = "block";
 			pitchSpan.style.display = "block";
+			voiceSelect.style.display = "block";
 		} else {
 			chrome.storage.local.set({
 				textToSpeechIsEnabled: false
@@ -284,9 +299,21 @@ document.addEventListener("click", function(event) {
 			volumeSpan.style.display = "none";
 			rateSpan.style.display = "none";
 			pitchSpan.style.display = "none";
+			voiceSelect.style.display = "none";
 		}
 	}
 });
+
+//loads voices
+window.speechSynthesis.onvoiceschanged = function(e) {
+	var voices = speechSynthesis.getVoices();
+
+	voices.forEach(function(voice, i) {
+		var option = document.createElement('option');
+		option.innerHTML = voice.name;
+		voiceSelect.appendChild(option);
+	});
+};
 
 volumeSlider.addEventListener("input", function() {
 	chrome.storage.local.set({
@@ -307,4 +334,10 @@ pitchSlider.addEventListener("input", function() {
 		pitchValue: pitchSlider.value
 	});
 	pitchSpan.innerHTML = pitchSlider.value;
+});
+
+voiceSelect.addEventListener("input", function() {
+	chrome.storage.local.set({
+		voiceValue: voiceSelect.selectedIndex
+	});
 });

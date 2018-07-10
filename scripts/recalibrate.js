@@ -28,11 +28,16 @@ var commands = ["N", "B", "R", "Q", "K",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
 var isChrome;
+var isLichess;
 var addonIsEnabled;
 var blindfoldIsEnabled;
 var confirmationIsEnabled;
 var textToSpeechIsEnabled;
 var previousCommand;
+
+if (window.location.href.indexOf("lichess.org") != -1) {
+	isLichess = true;
+}
 
 var recognition = new webkitSpeechRecognition();
 recognition.lang = 'en-US';
@@ -52,6 +57,8 @@ chrome.storage.local.get(null, function(item) {
 
 	if (item.volumeValue != null) {
 		msg.volume = item.volumeValue;
+	} else {
+		msg.volume = "0.5";
 	}
 
 	if (item.rateValue != null) {
@@ -62,8 +69,14 @@ chrome.storage.local.get(null, function(item) {
 		msg.pitch = item.pitchValue;
 	}
 
+	if (item.voiceValue != null) {
+		msg.voice = speechSynthesis.getVoices()[item.voiceValue];
+	} else {
+		msg.voice = speechSynthesis.getVoices()[0];
+	}
+
 	if (isChrome) {
-		if (addonIsEnabled) {
+		if (addonIsEnabled && isLichess) {
 			recognition.start();
 		}
 
@@ -238,7 +251,7 @@ recognition.onerror = function(event) {
 }
 
 window.addEventListener('focus', function() {
-	if (addonIsEnabled) {
+	if (addonIsEnabled && isLichess) {
 		console.log("FOCUS");
 		end = false;
 		recognition.start();
@@ -261,6 +274,8 @@ chrome.storage.onChanged.addListener(function() {
 		
 		if (item.volumeValue != null) {
 			msg.volume = item.volumeValue;
+		} else {
+			msg.volume = "0.5";
 		}
 
 		if (item.rateValue != null) {
@@ -269,6 +284,12 @@ chrome.storage.onChanged.addListener(function() {
 
 		if (item.pitchValue != null) {
 			msg.pitch = item.pitchValue;
+		}
+
+		if (item.voiceValue != null) {
+			msg.voice = speechSynthesis.getVoices()[item.voiceValue];
+		} else {
+			msg.voice = speechSynthesis.getVoices()[0];
 		}
 
 		if (blindfoldIsEnabled) {
