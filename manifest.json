@@ -12,13 +12,11 @@
 		"default_title": "Oral Chess",
 		"default_popup": "menu/menu.html"
 	},
-	"background": {
-		"scripts": ["scripts/background.js"]
-	},
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["scripts/recalibrate.js"]
+			"css": [ "src/index.css" ],
+			"js": ["src/index.js"]
 		}
 	]
 }

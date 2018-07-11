@@ -78,7 +78,7 @@ chrome.storage.local.get(null, function(item) {
 		}
 
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled) {
-			setTimeout(function() {
+			setTimeout(function () {
 				enableBlindfold();
 			}, 500);
 		}
@@ -455,8 +455,22 @@ var observer = new MutationObserver(function(mutations) {
 	}
 });
 
-setTimeout(function() {
+setTimeout(function () {
 	if (document.querySelector(".moves") != null) {
 		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
 	}
 }, 500);
+
+function notification(content) {
+	var notification = document.createElement("div");
+	notification.id = "snackbar";
+	notification.className = "show";
+	notification.innerHTML = content;
+	document.body.appendChild(notification);
+
+	setTimeout(function () {
+		notification.className = notification.className.replace("show", "");
+	}, 3000);
+}
+
+notification("HELLO WORLD");
