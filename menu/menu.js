@@ -5,6 +5,7 @@ var enableAddonButton = document.createElement("BUTTON");
 var recalibrateButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
 var enableConfirmationButton = document.createElement("BUTTON");
+var enableNotificationButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 var volumeSlider = document.createElement("INPUT");
 var rateSlider = document.createElement("INPUT");
@@ -32,20 +33,23 @@ rateSlider.step = "0.1";
 pitchSlider.step = "0.1";
 
 recalibrateButton.innerHTML = "Recalibrate";
-enableBlindfoldButton.innerHTML = "Blindfold Mode";
-enableConfirmationButton.innerHTML = "Confirmation Mode";
+enableBlindfoldButton.innerHTML = "Blindfold";
+enableConfirmationButton.innerHTML = "Confirmation";
+enableNotificationButton.innerHTML = "Notifications";
 enableTextToSpeechButton.innerHTML = "Text To Speech";
 
 enableAddonButton.id = "enableAddonButtonID";
 recalibrateButton.id = "recalibrateButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
 enableConfirmationButton.id = "enableConfirmationButtonID";
+enableNotificationButton.id = "enableNotificationButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
 enableAddonButton.classList.add("button");
 recalibrateButton.classList.add("button");
 enableBlindfoldButton.classList.add("button");
 enableConfirmationButton.classList.add("button");
+enableNotificationButton.classList.add("button");
 enableTextToSpeechButton.classList.add("button");
 volumeSlider.classList.add("slider");
 rateSlider.classList.add("slider");
@@ -59,6 +63,7 @@ document.body.appendChild(enableAddonButton);
 document.body.appendChild(recalibrateButton);
 document.body.appendChild(enableBlindfoldButton);
 document.body.appendChild(enableConfirmationButton);
+document.body.appendChild(enableNotificationButton);
 document.body.appendChild(enableTextToSpeechButton);
 document.body.appendChild(volumeSlider);
 document.body.appendChild(volumeSpan);
@@ -107,6 +112,7 @@ chrome.storage.local.get(null, function(item) {
 		recalibrateButton.style.display = "none";
 		enableBlindfoldButton.style.display = "none";
 		enableConfirmationButton.style.display = "none";
+		enableNotificationButton.style.display = "none";
 		enableTextToSpeechButton.style.display = "none";
 		volumeSlider.style.display = "none";
 		rateSlider.style.display = "none";
@@ -135,6 +141,16 @@ chrome.storage.local.get(null, function(item) {
 		enableConfirmationButton.value = "enabled";
 		enableConfirmationButton.classList.remove("disabled");
 		enableConfirmationButton.classList.add("enabled");
+	}
+
+	if (item != null && item.notificationIsEnabled != null && !item.notificationIsEnabled) {
+		enableNotificationButton.value = "disabled";
+		enableNotificationButton.classList.remove("enabled");
+		enableNotificationButton.classList.add("disabled");
+	} else {
+		enableNotificationButton.value = "enabled";
+		enableNotificationButton.classList.remove("disabled");
+		enableNotificationButton.classList.add("enabled");
 	}
 
 	if (item != null && item.textToSpeechIsEnabled != null && !item.textToSpeechIsEnabled) {
@@ -200,6 +216,7 @@ document.addEventListener("click", function(event) {
 			recalibrateButton.style.display = "none";
 			enableBlindfoldButton.style.display = "none";
 			enableConfirmationButton.style.display = "none";
+			enableNotificationButton.style.display = "none";
 			enableTextToSpeechButton.style.display = "none";
 			volumeSlider.style.display = "none";
 			rateSlider.style.display = "none";
@@ -219,6 +236,7 @@ document.addEventListener("click", function(event) {
 			recalibrateButton.style.display = "block";
 			enableBlindfoldButton.style.display = "block";
 			enableConfirmationButton.style.display = "block";
+			enableNotificationButton.style.display = "block";
 			enableTextToSpeechButton.style.display = "block";
 
 			if (enableTextToSpeechButton.value == "enabled") {
@@ -270,6 +288,22 @@ document.addEventListener("click", function(event) {
 			enableConfirmationButton.value = "disabled";
 			enableConfirmationButton.classList.remove("enabled");
 			enableConfirmationButton.classList.add("disabled");
+		}
+	} else if (event.target.id == "enableNotificationButtonID") {
+		if (enableNotificationButton.value == "disabled") {
+			chrome.storage.local.set({
+				notificationIsEnabled: true
+			});
+			enableNotificationButton.value = "enabled";
+			enableNotificationButton.classList.remove("disabled");
+			enableNotificationButton.classList.add("enabled");
+		} else {
+			chrome.storage.local.set({
+				notificationIsEnabled: false
+			});
+			enableNotificationButton.value = "disabled";
+			enableNotificationButton.classList.remove("enabled");
+			enableNotificationButton.classList.add("disabled");
 		}
 	} else if (event.target.id == "enableTextToSpeechButtonID") {
 		if (enableTextToSpeechButton.value == "disabled") {

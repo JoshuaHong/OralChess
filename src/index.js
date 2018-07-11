@@ -29,6 +29,7 @@ var isLichess;
 var addonIsEnabled;
 var blindfoldIsEnabled;
 var confirmationIsEnabled;
+var notificationIsEnabled;
 var textToSpeechIsEnabled;
 var previousCommand;
 
@@ -50,6 +51,7 @@ chrome.storage.local.get(null, function(item) {
 	addonIsEnabled = item.addonIsEnabled;
 	blindfoldIsEnabled = item.blindfoldIsEnabled;
 	confirmationIsEnabled = item.confirmationIsEnabled;
+	notificationIsEnabled = item.notificationIsEnabled;
 	textToSpeechIsEnabled = item.textToSpeechIsEnabled;
 
 	if (item.volumeValue != null) {
@@ -157,6 +159,18 @@ recognition.onresult = function(event) {
 						confirmationIsEnabled: true
 					});
 					confirmationIsEnabled = true;
+				}
+			} else if (command == "notification") {
+				if (notificationIsEnabled) {
+					chrome.storage.local.set({
+						notificationIsEnabled: false
+					});
+					notificationIsEnabled = false;
+				} else {
+					chrome.storage.local.set({
+						notificationIsEnabled: true
+					});
+					notificationIsEnabled = true;
 				}
 			} else if (command == "text to speech") {
 				if (textToSpeechIsEnabled) {
@@ -267,6 +281,7 @@ chrome.storage.onChanged.addListener(function() {
 		addonIsEnabled = item.addonIsEnabled;
 		blindfoldIsEnabled = item.blindfoldIsEnabled;
 		confirmationIsEnabled = item.confirmationIsEnabled;
+		notificationIsEnabled = item.notificationIsEnabled;
 		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
 		
 		if (item.volumeValue != null) {
@@ -307,6 +322,8 @@ function getCommand(command) {
 		return "blindfold";
 	} else if (command.includes("confirmation")) {
 		return "confirmation";
+	} else if (command.includes("notification")) {
+		return "notification";
 	} else if (command.includes("text to speech")) {
 		return "text to speech";
 	} else if (command.includes("take back")) {
@@ -473,4 +490,8 @@ function notification(content) {
 	}, 3000);
 }
 
-notification("HELLO WORLD");
+setTimeout(function () {
+		if (notificationIsEnabled) {
+			notification("HELLO WORLD");
+		}
+}, 0);
