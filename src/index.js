@@ -79,7 +79,7 @@ chrome.storage.local.get(null, function(item) {
 			recognition.start();
 		}
 
-		if (document.querySelector("#lichess") != null && blindfoldIsEnabled) {
+		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			setTimeout(function () {
 				enableBlindfold();
 			}, 500);
@@ -304,9 +304,9 @@ chrome.storage.onChanged.addListener(function() {
 			msg.voice = speechSynthesis.getVoices()[0];
 		}
 
-		if (blindfoldIsEnabled) {
+		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			enableBlindfold();
-		} else {
+		} else if (document.querySelector("#lichess") != null) {
 			disableBlindfold();
 		}
 	});

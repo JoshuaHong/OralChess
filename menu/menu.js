@@ -94,14 +94,6 @@ chrome.tabs.getSelected(null, function(tab){
 	}
 });
 
-/*chrome.browserAction.setIcon({
-	path : {
-		"16": "icons/iconEnabled16.png",
-		"24": "icons/iconEnabled24.png",
-		"32": "icons/iconEnabled32.png"
-	}
-});*/
-
 /*
 	Edits popup menu components based on previously stored data
 */

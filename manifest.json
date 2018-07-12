@@ -5,15 +5,11 @@
 	"description": "Play Chess Orally!",
 	"permissions": ["storage", "activeTab"],
 	"icons": {
-		"16": "icons/icon16.png",
-		"48": "icons/icon48.png",
-		"128": "icons/icon128.png"
+		"128": "icons/iconEnabled.png"
 	},
 	"browser_action": {
 		"default_icon": {
-			"16": "icons/iconDisabled16.png",
-			"24": "icons/iconDisabled24.png",
-			"32": "icons/iconDisabled32.png"
+			"128": "icons/iconDisabled.png"
 		},
 		"default_title": "Oral Chess",
 		"default_popup": "menu/menu.html"
@@ -24,5 +20,8 @@
 			"css": [ "src/index.css" ],
 			"js": ["src/index.js"]
 		}
-	]
+	],
+	"background": {
+		"scripts": ["src/background.js"]
+	}
 }
