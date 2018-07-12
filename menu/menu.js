@@ -94,6 +94,7 @@ chrome.tabs.getSelected(null, function(tab){
 	}
 });
 
+
 /*
 	Edits popup menu components based on previously stored data
 */

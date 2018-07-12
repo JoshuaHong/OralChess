@@ -24,6 +24,13 @@ var commands = ["N", "B", "R", "Q", "K",
 				"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
+var theme = {
+	DEFAULT: "default",
+	SUCCESS: "success",
+	WARNING: "warning",
+	ERROR: "error"
+};
+
 var isChrome;
 var isLichess;
 var addonIsEnabled;
@@ -242,7 +249,10 @@ recognition.onresult = function(event) {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				return;  ///@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 			}
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TEST ME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			document.querySelector(".ready").value = "";
 		}
 	}
 }
@@ -478,11 +488,21 @@ setTimeout(function () {
 	}
 }, 500);
 
-function notification(content) {
+function notification(content, theme) {
 	var notification = document.createElement("div");
 	notification.id = "snackbar";
-	notification.className = "show";
+	notification.className = "show ";
+	notification.className += theme;
 	notification.innerHTML = content;
+
+	var close = document.createElement("span");
+	close.innerHTML = "x";
+	close.id = "close";
+	close.addEventListener("click", function() {
+		notification.style.display = "none";
+	});
+
+	notification.appendChild(close);
 	document.body.appendChild(notification);
 
 	setTimeout(function () {
@@ -491,7 +511,7 @@ function notification(content) {
 }
 
 setTimeout(function () {
-		if (notificationIsEnabled) {
-			notification("HELLO WORLD");
+		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+			notification("Nf6+", theme.DEFAULT);
 		}
-}, 0);
+}, 1);
