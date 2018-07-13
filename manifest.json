@@ -23,5 +23,8 @@
 	],
 	"background": {
 		"scripts": ["src/background.js"]
-	}
+	},
+	"web_accessible_resources": [
+		"icons/*.png"
+	]
 }

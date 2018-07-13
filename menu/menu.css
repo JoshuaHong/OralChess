@@ -1,6 +1,25 @@
-html, body {
-	width: 300px;
+body {
+	width: 275px;
 	display: inline-block;
+	background-size: 300px 370px;
+}
+
+.title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 25px;
+	text-align: center;
+	padding-right: 5px;
+}
+
+.logo {
+	vertical-align: text-bottom;
+	width: 30px;
+	height: 30px;
+	padding-right: 5px;
+}
+
+.enableButton {
+
 }
 
 .button {
@@ -17,4 +36,64 @@ html, body {
 	color: red;
 }
 
-/* https://codepen.io/seanstopnik/pen/CeLqA */
+.div {
+	display: flex;
+}
+
+.span {
+	display: inline-block;
+	width: 35px;
+	height: 10px;
+	border-radius: 10px;
+	padding: 8px;
+}
+
+.slider {
+	flex: 1;
+	display: inline-block;
+	-webkit-appearance: none;
+	height: 10px;
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+	margin: 10px;
+}
+
+.slider:hover {
+	opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 50px;
+	background: blue;
+	cursor: pointer;
+}
+
+.valueSpan {
+	display: inline-block;
+	text-align: center;
+	background-color: lightblue;
+	width: 20px;
+	height: 10px;
+	border-radius: 10px;
+	padding: 8px;
+}
+
+.select {
+	display: inline-block;
+	outline: none;
+	background-color: lightblue;
+}
+
+.notice {
+	display: block;
+	text-align: center;
+	margin: 10px;
+	font-size: 15px;
+}

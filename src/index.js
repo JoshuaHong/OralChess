@@ -63,8 +63,6 @@ chrome.storage.local.get(null, function(item) {
 
 	if (item.volumeValue != null) {
 		msg.volume = item.volumeValue;
-	} else {
-		msg.volume = "0.5";
 	}
 
 	if (item.rateValue != null) {
@@ -296,8 +294,6 @@ chrome.storage.onChanged.addListener(function() {
 		
 		if (item.volumeValue != null) {
 			msg.volume = item.volumeValue;
-		} else {
-			msg.volume = "0.5";
 		}
 
 		if (item.rateValue != null) {
@@ -502,7 +498,21 @@ function notification(content, theme) {
 		notification.style.display = "none";
 	});
 
+	var image = document.createElement("IMG");
+	image.id = "image";
+
+	if (theme == "default") {
+		image.src = chrome.extension.getURL("icons/default.png");
+	} else if (theme == "success") {
+		image.src = chrome.extension.getURL("icons/success.png");
+	} else if (theme == "warning") {
+		image.src = chrome.extension.getURL("icons/warning.png");
+	} else if (theme == "error") {
+		image.src = chrome.extension.getURL("icons/error.png");
+	}
+
 	notification.appendChild(close);
+	notification.appendChild(image);
 	document.body.appendChild(notification);
 
 	setTimeout(function () {
@@ -512,6 +522,6 @@ function notification(content, theme) {
 
 setTimeout(function () {
 		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-			notification("Nf6+", theme.DEFAULT);
+			notification("Nf6+", theme.SUCCESS);
 		}
 }, 1);

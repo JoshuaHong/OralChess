@@ -29,7 +29,7 @@
 }
 
 #snackbar.warning {
-	background-color: yellow;
+	background-color: orange;
 }
 
 #snackbar.error {
@@ -48,6 +48,12 @@
 	color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+#image {
+	width: 20px;
+	height: 20px;
+	float: left;
 }
 
 @keyframes fadein {
