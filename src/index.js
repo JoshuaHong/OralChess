@@ -44,6 +44,8 @@ if (window.location.href.indexOf("lichess.org") != -1) {
 	isLichess = true;
 }
 
+getStatus();
+
 var recognition = new webkitSpeechRecognition();
 recognition.lang = 'en-US';
 var end = false;
@@ -80,7 +82,7 @@ chrome.storage.local.get(null, function(item) {
 	}
 
 	if (isChrome) {
-		if (addonIsEnabled && isLichess) {
+		if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
 			recognition.start();
 		}
 
@@ -247,9 +249,9 @@ recognition.onresult = function(event) {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
-				return;  ///@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				return;
 			}
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TEST ME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 			document.querySelector(".ready").value = "";
 		}
 	}
@@ -270,11 +272,13 @@ recognition.onerror = function(event) {
 }
 
 window.addEventListener('focus', function() {
-	if (addonIsEnabled && isLichess) {
+	if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
 		console.log("FOCUS");
 		end = false;
 		recognition.start();
 	}
+
+	getStatus();
 });
 
 window.addEventListener('blur', function() {
@@ -465,6 +469,9 @@ function disableBlindfold() {
 var observer = new MutationObserver(function(mutations) {
 	if (document.querySelector(".result_wrap") != null) {
 		msg.text = "Game Over";
+		chrome.storage.local.set({
+			isPlaying: false
+		});
 	} else {
 		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
 			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
@@ -518,6 +525,32 @@ function notification(content, theme) {
 	setTimeout(function () {
 		notification.className = notification.className.replace("show", "");
 	}, 3000);
+}
+
+function getStatus() {
+	if (isLichess) {
+		setTimeout(function() {
+			if (document.querySelector(".ready") != null) {
+				chrome.storage.local.set({
+					isReady: true
+				});
+			} else {
+				chrome.storage.local.set({
+					isReady: false
+				});
+			}
+		}, 2000);
+
+		if (document.querySelector(".playing") != null) {
+			chrome.storage.local.set({
+				isPlaying: true
+			});
+		} else {
+			chrome.storage.local.set({
+				isPlaying: false
+			});
+		}
+	}
 }
 
 setTimeout(function () {

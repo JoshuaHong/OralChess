@@ -127,10 +127,23 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 /*
 	Checks for Lichess URL
 */
-chrome.tabs.getSelected(null, function(tab){
+chrome.tabs.getSelected(null, function(tab) {
 	if (tab.url.indexOf("lichess.org") == -1) {
 		notice.innerHTML = "<br><hr> Please use Lichess";
 		document.body.appendChild(notice);
+	} else {
+		chrome.storage.local.get(null, function(item) {
+			if (item != null && item.isReady && item.isPlaying) {
+				notice.innerHTML = "<br><hr> Joshua Hong";
+				document.body.appendChild(notice);
+			} else if (item != null && item.isPlaying && !item.isReady) {
+				notice.innerHTML = "<br><hr> Please enable keyboard input";
+				document.body.appendChild(notice);
+			} else {
+				notice.innerHTML = "<br><hr> Please join a game";
+				document.body.appendChild(notice);
+			}
+		});
 	}
 });
 

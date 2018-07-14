@@ -78,7 +78,7 @@ body {
 .valueSpan {
 	display: inline-block;
 	text-align: center;
-	background-color: lightblue;
+	background-color: lightskyblue;
 	width: 20px;
 	height: 10px;
 	border-radius: 10px;
@@ -88,7 +88,7 @@ body {
 .select {
 	display: inline-block;
 	outline: none;
-	background-color: lightblue;
+	background-color: lightskyblue;
 }
 
 .notice {
@@ -96,4 +96,11 @@ body {
 	text-align: center;
 	margin: 10px;
 	font-size: 15px;
+}
+
+.help {
+	display: inline-block;
+	float: left;
+	width: 20px;
+	height: 20px;
 }
