@@ -7,6 +7,9 @@ var enableConfirmationButton = document.createElement("BUTTON");
 var enableNotificationButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 
+var addonDiv = document.createElement("DIV");
+var textToSpeechDiv = document.createElement("DIV");
+var arrow = document.createElement("DIV");
 var volumeDiv = document.createElement("DIV");
 var rateDiv = document.createElement("DIV");
 var pitchDiv = document.createElement("DIV");
@@ -26,6 +29,7 @@ var volumeValueSpan = document.createElement("SPAN");
 var rateValueSpan = document.createElement("SPAN");
 var pitchValueSpan = document.createElement("SPAN");
 
+var help = document.createElement("DIV");
 var notice = document.createElement("SPAN");
 
 volumeSlider.type = "range";
@@ -52,6 +56,7 @@ volumeSpan.innerHTML = "Volume";
 rateSpan.innerHTML = "Rate";
 pitchSpan.innerHTML = "Pitch";
 voiceSpan.innerHTML = "Voice";
+help.innerHTML = "?";
 
 enableAddonButton.id = "enableAddonButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
@@ -59,7 +64,10 @@ enableConfirmationButton.id = "enableConfirmationButtonID";
 enableNotificationButton.id = "enableNotificationButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
-enableAddonButton.classList.add("enableButton");
+enableAddonButton.classList.add("button");
+addonDiv.classList.add("addonDiv");
+textToSpeechDiv.classList.add("textToSpeechDiv");
+arrow.classList.add("arrow");
 enableBlindfoldButton.classList.add("button");
 enableConfirmationButton.classList.add("button");
 enableNotificationButton.classList.add("button");
@@ -68,6 +76,7 @@ volumeDiv.classList.add("div");
 rateDiv.classList.add("div");
 pitchDiv.classList.add("div");
 voiceDiv.classList.add("div");
+voiceDiv.classList.add("voiceDiv");
 volumeSpan.classList.add("span");
 rateSpan.classList.add("span");
 pitchSpan.classList.add("span");
@@ -79,13 +88,15 @@ voiceSelect.classList.add("select");
 volumeValueSpan.classList.add("valueSpan");
 rateValueSpan.classList.add("valueSpan");
 pitchValueSpan.classList.add("valueSpan");
+help.classList.add("help");
 notice.classList.add("notice");
 
 document.body.appendChild(enableAddonButton);
-document.body.appendChild(enableBlindfoldButton);
-document.body.appendChild(enableConfirmationButton);
-document.body.appendChild(enableNotificationButton);
-document.body.appendChild(enableTextToSpeechButton);
+addonDiv.appendChild(arrow);
+addonDiv.appendChild(enableBlindfoldButton);
+addonDiv.appendChild(enableConfirmationButton);
+addonDiv.appendChild(enableNotificationButton);
+addonDiv.appendChild(enableTextToSpeechButton);
 volumeDiv.appendChild(volumeSpan);
 volumeDiv.appendChild(volumeSlider);
 volumeDiv.appendChild(volumeValueSpan);
@@ -97,10 +108,13 @@ pitchDiv.appendChild(pitchSlider);
 pitchDiv.appendChild(pitchValueSpan);
 voiceDiv.appendChild(voiceSpan);
 voiceDiv.appendChild(voiceSelect);
-document.body.appendChild(volumeDiv);
-document.body.appendChild(rateDiv);
-document.body.appendChild(pitchDiv);
-document.body.appendChild(voiceDiv);
+textToSpeechDiv.appendChild(arrow.cloneNode());
+textToSpeechDiv.appendChild(volumeDiv);
+textToSpeechDiv.appendChild(rateDiv);
+textToSpeechDiv.appendChild(pitchDiv);
+textToSpeechDiv.appendChild(voiceDiv);
+addonDiv.appendChild(textToSpeechDiv);
+document.body.appendChild(addonDiv);
 
 /*
 	Checks for Chrome browser
@@ -111,41 +125,17 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 	});
 } else {
 	enableAddonButton.style.display = "none";
-	enableBlindfoldButton.style.display = "none";
-	enableConfirmationButton.style.display = "none";
-	enableNotificationButton.style.display = "none";
-	enableTextToSpeechButton.style.display = "none";
-	volumeDiv.style.display = "none";
-	rateDiv.style.display = "none";
-	pitchDiv.style.display = "none";
-	voiceDiv.style.display = "none";
+	addonDiv.style.display = "none";
 	notice.innerHTML = "<br> Please use Chrome";
 	document.body.appendChild(notice);
 }
 
-
 /*
 	Checks for Lichess URL
 */
-chrome.tabs.getSelected(null, function(tab) {
-	if (tab.url.indexOf("lichess.org") == -1) {
-		notice.innerHTML = "<br><hr> Please use Lichess";
-		document.body.appendChild(notice);
-	} else {
-		chrome.storage.local.get(null, function(item) {
-			if (item != null && item.isReady && item.isPlaying) {
-				notice.innerHTML = "<br><hr> Joshua Hong";
-				document.body.appendChild(notice);
-			} else if (item != null && item.isPlaying && !item.isReady) {
-				notice.innerHTML = "<br><hr> Please enable keyboard input";
-				document.body.appendChild(notice);
-			} else {
-				notice.innerHTML = "<br><hr> Please join a game";
-				document.body.appendChild(notice);
-			}
-		});
-	}
-});
+
+getStatus();
+
 
 
 /*
@@ -162,14 +152,8 @@ chrome.storage.local.get(null, function(item) {
 		enableAddonButton.value = "disabled";
 		enableAddonButton.classList.remove("enabled");
 		enableAddonButton.classList.add("disabled");
-		enableBlindfoldButton.style.display = "none";
-		enableConfirmationButton.style.display = "none";
-		enableNotificationButton.style.display = "none";
-		enableTextToSpeechButton.style.display = "none";
-		volumeDiv.style.display = "none";
-		rateDiv.style.display = "none";
-		pitchDiv.style.display = "none";
-		voiceDiv.style.display = "none";
+		addonDiv.style.display = "none";
+		getStatus();
 	}
 
 	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
@@ -206,10 +190,7 @@ chrome.storage.local.get(null, function(item) {
 		enableTextToSpeechButton.value = "disabled";
 		enableTextToSpeechButton.classList.remove("enabled");
 		enableTextToSpeechButton.classList.add("disabled");
-		volumeDiv.style.display = "none";
-		rateDiv.style.display = "none";
-		pitchDiv.style.display = "none";
-		voiceDiv.style.display = "none";
+		textToSpeechDiv.style.display = "none";
 	} else {
 		enableTextToSpeechButton.value = "enabled";
 		enableTextToSpeechButton.classList.remove("disabled");
@@ -259,14 +240,9 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.innerHTML = "Disabled";
 			enableAddonButton.classList.remove("enabled");
 			enableAddonButton.classList.add("disabled");
-			enableBlindfoldButton.style.display = "none";
-			enableConfirmationButton.style.display = "none";
-			enableNotificationButton.style.display = "none";
-			enableTextToSpeechButton.style.display = "none";
-			volumeDiv.style.display = "none";
-			rateDiv.style.display = "none";
-			pitchDiv.style.display = "none";
-			voiceDiv.style.display = "none";
+			addonDiv.style.display = "none";
+
+			getStatus();
 		} else {
 			chrome.storage.local.set({
 				addonIsEnabled: true
@@ -275,17 +251,13 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.innerHTML = "Enabled";
 			enableAddonButton.classList.remove("disabled");
 			enableAddonButton.classList.add("enabled");
-			enableBlindfoldButton.style.display = "block";
-			enableConfirmationButton.style.display = "block";
-			enableNotificationButton.style.display = "block";
-			enableTextToSpeechButton.style.display = "block";
+			addonDiv.style.display = "block";
 
 			if (enableTextToSpeechButton.value == "enabled") {
-				volumeDiv.style.display = "flex";
-				rateDiv.style.display = "flex";
-				pitchDiv.style.display = "flex";
-				voiceDiv.style.display = "flex";
+				textToSpeechDiv.style.display = "block";
 			}
+
+			getStatus();
 		}
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
@@ -343,10 +315,7 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.value = "enabled";
 			enableTextToSpeechButton.classList.remove("disabled");
 			enableTextToSpeechButton.classList.add("enabled");
-			volumeDiv.style.display = "flex";
-			rateDiv.style.display = "flex";
-			pitchDiv.style.display = "flex";
-			voiceDiv.style.display = "flex";
+			textToSpeechDiv.style.display = "block";
 		} else {
 			chrome.storage.local.set({
 				textToSpeechIsEnabled: false
@@ -354,10 +323,7 @@ document.addEventListener("click", function(event) {
 			enableTextToSpeechButton.value = "disabled";
 			enableTextToSpeechButton.classList.remove("enabled");
 			enableTextToSpeechButton.classList.add("disabled");
-			volumeDiv.style.display = "none";
-			rateDiv.style.display = "none";
-			pitchDiv.style.display = "none";
-			voiceDiv.style.display = "none";
+			textToSpeechDiv.style.display = "none";
 		}
 	}
 });
@@ -399,3 +365,33 @@ voiceSelect.addEventListener("input", function() {
 		voiceValue: voiceSelect.selectedIndex
 	});
 });
+
+help.addEventListener("click", function() {
+	window.open("../help/help.html");
+});
+
+function getStatus() {
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.storage.local.get(null, function(item) {
+			if (item != null && !item.addonIsEnabled) {
+				notice.innerHTML = "<br><hr> Joshua Hong";
+				document.body.appendChild(notice);
+			} else if (tab.url.indexOf("lichess.org") == -1) {
+				notice.innerHTML = "<br><hr> Please use Lichess";
+				document.body.appendChild(notice);
+			} else {
+				if (item != null && item.isReady && item.isPlaying) {
+					notice.innerHTML = "<br><hr> Joshua Hong";
+					document.body.appendChild(notice);
+				} else if (item != null && item.isPlaying && !item.isReady) {
+					notice.innerHTML = "<br><hr> Please enable keyboard input";
+					document.body.appendChild(notice);
+				} else {
+					notice.innerHTML = "<br><hr> Please join a game";
+					document.body.appendChild(notice);
+				}
+			}
+			notice.appendChild(help);
+		});
+	});
+}

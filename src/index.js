@@ -87,7 +87,7 @@ chrome.storage.local.get(null, function(item) {
 		}
 
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
-			setTimeout(function () {
+			setTimeout(function() {
 				enableBlindfold();
 			}, 500);
 		}
@@ -121,12 +121,16 @@ recognition.onresult = function(event) {
 
 			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
-			} else if (command == "draw" && (document.querySelector(".draw-yes") != null || document.querySelector(".yes") != null)) {
+			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
 				document.querySelector(".draw-yes").click();
-				document.querySelector(".yes").click();
-			} else if (command == "resign" && document.querySelector(".resign-confirm") != null || document.querySelector(".yes") != null) {
+				if (document.querySelector(".yes") != null) {
+					document.querySelector(".yes").click();
+				}
+			} else if (command == "resign" && document.querySelector(".resign-confirm") != null) {
 				document.querySelector(".resign-confirm").click();
-				document.querySelector(".yes").click();
+				if (document.querySelector(".yes") != null) {
+					document.querySelector(".yes").click();
+				}
 			} else if (command == "abort" && document.querySelector(".abort") != null) {
 				document.querySelector(".abort").click();
 			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
@@ -272,7 +276,7 @@ recognition.onerror = function(event) {
 }
 
 window.addEventListener('focus', function() {
-	if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
+	if (addonIsEnabled && isLichess && document.querySelector(".lichess_game") != null) {
 		console.log("FOCUS");
 		end = false;
 		recognition.start();
@@ -485,7 +489,7 @@ var observer = new MutationObserver(function(mutations) {
 	}
 });
 
-setTimeout(function () {
+setTimeout(function() {
 	if (document.querySelector(".moves") != null) {
 		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
 	}
@@ -522,7 +526,7 @@ function notification(content, theme) {
 	notification.appendChild(image);
 	document.body.appendChild(notification);
 
-	setTimeout(function () {
+	setTimeout(function() {
 		notification.className = notification.className.replace("show", "");
 	}, 3000);
 }
@@ -553,7 +557,7 @@ function getStatus() {
 	}
 }
 
-setTimeout(function () {
+setTimeout(function() {
 		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 			notification("Nf6+", theme.SUCCESS);
 		}
