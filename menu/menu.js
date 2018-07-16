@@ -65,6 +65,7 @@ enableNotificationButton.id = "enableNotificationButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
 enableAddonButton.classList.add("button");
+enableAddonButton.classList.add("addonButton");
 addonDiv.classList.add("addonDiv");
 textToSpeechDiv.classList.add("textToSpeechDiv");
 arrow.classList.add("arrow");
