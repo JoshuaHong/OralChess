@@ -151,7 +151,7 @@ recognition.onresult = function(event) {
 					//Speaks command request if text to speech enabled
 					if (textToSpeechIsEnabled || textToSpeechIsEnabled == null) {
 						msg.text = command;
-						speechSynthesis.speak(msg);
+						speak(msg);
 					}
 
 					return;
@@ -400,6 +400,48 @@ chrome.storage.onChanged.addListener(function() {
 
 
 /*
+	On peice move
+*/
+var observer = new MutationObserver(function(mutations) {
+
+	//Game over
+	if (document.querySelector(".result_wrap") != null) {
+		msg.text = "Game Over";
+		chrome.storage.local.set({
+			isPlaying: false
+		});
+
+	//Peice moved
+	} else {
+
+		//White moves
+		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
+			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
+
+		//Black moves
+		} else {
+			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
+		}
+	}
+
+	//Speaks move if text to speech enabled
+	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+		speak(msg);
+	}
+});
+
+
+/*
+	Observes moves
+*/
+setTimeout(function() {
+	if (document.querySelector(".moves") != null) {
+		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
+	}
+}, 500);
+
+
+/*
 	Parses command
 */
 function getCommand(command) {
@@ -596,45 +638,38 @@ function disableBlindfold() {
 
 
 /*
-	On peice move
+	Parses and executes text to speech
 */
-var observer = new MutationObserver(function(mutations) {
+function speak(msg) {
+	var command = msg.text;
 
-	//Game over
-	if (document.querySelector(".result_wrap") != null) {
-		msg.text = "Game Over";
-		chrome.storage.local.set({
-			isPlaying: false
-		});
-
-	//Peice moved
-	} else {
-
-		//White moves
-		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
-			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
-
-		//Black moves
-		} else {
-			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
-		}
+	//Replaces letters with peices
+	if (command.includes("N")) {
+		command = command.replace(new RegExp("N", "g"), "Knight ");
+	} else if (command.includes("B")) {
+		command = command.replace(new RegExp("B", "g"), "Bishop ");
+	} else if (command.includes("R")) {
+		command = command.replace(new RegExp("R", "g"), "Rook ");
+	} else if (command.includes("Q")) {
+		command = command.replace(new RegExp("Q", "g"), "Queen ");
+	} else if (command.includes("K")) {
+		command = command.replace(new RegExp("K", "g"), "King ");
 	}
 
-	//Speaks move if text to speech enabled
-	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
-		speechSynthesis.speak(msg);
+	//Replaces х with takes
+	if (command.includes("х")) {
+		command = command.replace(new RegExp("х", "g"), " takes ");
 	}
-});
 
-
-/*
-	Observes moves
-*/
-setTimeout(function() {
-	if (document.querySelector(".moves") != null) {
-		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
+	//Replaces + with check
+	if (command.includes("+")) {
+		command = command.slice(0, -1);
+		command += " check"
 	}
-}, 500);
+
+	msg.text = command;
+	speechSynthesis.speak(msg);
+}
 
 
 /*
