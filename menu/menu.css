@@ -20,14 +20,14 @@ body {
 
 .addonDiv {
 	background-color: rgba(0, 0, 0, 0);
-	box-shadow: 0px 8px 16px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 8px 16px 1px rgba(0, 0, 0, 0.4);
 	padding: 12px 16px;
 	border-radius: 10px;
 }
 
 .textToSpeechDiv {
 	background-color: rgba(0, 0, 0, 0);
-	box-shadow: 0px 8px 16px 1px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 8px 16px 1px rgba(0, 0, 0, 0.4);
 	padding: 12px 16px;
 	border-radius: 5px;
 }
