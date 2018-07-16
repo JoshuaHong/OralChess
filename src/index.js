@@ -1,3 +1,8 @@
+/*
+	Initiates variables
+*/
+
+//Speech interpretations
 var grammars = ["knight", "N",
 				 "bishop", "B",
 				 "rook", "R",
@@ -13,6 +18,7 @@ var grammars = ["knight", "N",
 				"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
+//Speech commands
 var commands = ["N", "B", "R", "Q", "K",
 				"a", "b", "c", "d", "e", "f", "g", "h",
 				"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
@@ -24,6 +30,7 @@ var commands = ["N", "B", "R", "Q", "K",
 				"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
+//Notification themes
 var theme = {
 	DEFAULT: "default",
 	SUCCESS: "success",
@@ -31,6 +38,7 @@ var theme = {
 	ERROR: "error"
 };
 
+//Button status
 var isChrome;
 var isLichess;
 var addonIsEnabled;
@@ -38,23 +46,38 @@ var blindfoldIsEnabled;
 var confirmationIsEnabled;
 var notificationIsEnabled;
 var textToSpeechIsEnabled;
+
+//Confirmation command
 var previousCommand;
 
+//Speech recognition
+var recognition = new webkitSpeechRecognition();
+
+//Text to speech
+var msg = new SpeechSynthesisUtterance();
+var voices = speechSynthesis.getVoices();
+
+//Speech recognition reset flag
+var end = false;
+
+
+/*
+	Checks for Lichess
+*/
 if (window.location.href.indexOf("lichess.org") != -1) {
 	isLichess = true;
 }
 
+
+/*
+	Sets notification text
+*/
 getStatus();
 
-var recognition = new webkitSpeechRecognition();
-recognition.lang = 'en-US';
-var end = false;
 
-var msg = new SpeechSynthesisUtterance();
-var voices = speechSynthesis.getVoices();
-msg.voiceURI = 'native';
-msg.lang = 'en-US';
-
+/*
+	Gets button status
+*/
 chrome.storage.local.get(null, function(item) {
 	isChrome = item.isChrome;
 	addonIsEnabled = item.addonIsEnabled;
@@ -77,15 +100,18 @@ chrome.storage.local.get(null, function(item) {
 
 	if (item.voiceValue != null) {
 		msg.voice = speechSynthesis.getVoices()[item.voiceValue];
+
 	} else {
 		msg.voice = speechSynthesis.getVoices()[0];
 	}
 
 	if (isChrome) {
+		//Starts speech recognition if in game
 		if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
 			recognition.start();
 		}
 
+		//Starts blindfold if blindfold enabled
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			setTimeout(function() {
 				enableBlindfold();
@@ -94,22 +120,35 @@ chrome.storage.local.get(null, function(item) {
 	}
 });
 
+
+/*
+	Executes command on speech result
+*/
 recognition.onresult = function(event) {
+
+	//Result exists
 	if (event.results.length > 0) {
 		var end = false;
 		var command = event.results[0][0].transcript;
 		console.log(command);
 
+		//Keyboard input enabled
 		if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
 			command = getCommand(command);
 
+			//Confirmation enabled
 			if (addonIsEnabled && (confirmationIsEnabled || confirmationIsEnabled == null)) {
+
+				//Confirmation confirmed
 				if (command == "yes") {
 					command = previousCommand;
+
+				//Command confirmation
 				} else {
 					previousCommand = command;
 					alert(command);
 
+					//Speaks command request if text to speech enabled
 					if (textToSpeechIsEnabled || textToSpeechIsEnabled == null) {
 						msg.text = command;
 						speechSynthesis.speak(msg);
@@ -119,6 +158,7 @@ recognition.onresult = function(event) {
 				}
 			}
 
+			//Executes commands
 			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
 			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
@@ -196,12 +236,16 @@ recognition.onresult = function(event) {
 					textToSpeechIsEnabled = true;
 				}
 			} else if (command == "0-0") {
+
+				//Black castles king side
 				if (document.querySelector(".orientation-black") != null && canCastle()) {
 					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 					document.querySelector(".ready").value = "e8";
 					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 					document.querySelector(".ready").value = "g8";
 					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+
+				//White castles king side
 				} else if (canCastle()) {
 					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 					document.querySelector(".ready").value = "e1";
@@ -214,10 +258,13 @@ recognition.onresult = function(event) {
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 			} else if (command == "0") {
+
+				//Castle king side first
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = "0-0";
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 
+				//Castle queen side if still not castled
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = "0-0-0";
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
@@ -256,11 +303,16 @@ recognition.onresult = function(event) {
 				return;
 			}
 
+			//Clears keyboard input if no premove
 			document.querySelector(".ready").value = "";
 		}
 	}
 }
 
+
+/*
+	Restarts or ends speech recognition
+*/
 recognition.onend = function() {
 	if (end) {
 		console.log("ACTUAL END");
@@ -271,10 +323,18 @@ recognition.onend = function() {
 	}
 }
 
+
+/*
+	Throws error
+*/
 recognition.onerror = function(event) {
 	console.log("Error occurred in recognition: " + event.error);
 }
 
+
+/*
+	Restarts speech recognition on focus
+*/
 window.addEventListener('focus', function() {
 	if (addonIsEnabled && isLichess && document.querySelector(".lichess_game") != null) {
 		console.log("FOCUS");
@@ -282,15 +342,24 @@ window.addEventListener('focus', function() {
 		recognition.start();
 	}
 
+	//Sets notice text
 	getStatus();
 });
 
+
+/*
+	Stops speech recognition on blur
+*/
 window.addEventListener('blur', function() {
 	console.log("BLUR");
 	end = true;
 	recognition.stop();
 });
 
+
+/*
+	Updates button status on change
+*/
 chrome.storage.onChanged.addListener(function() {
 	chrome.storage.local.get(null, function(item) {
 		isChrome = item.isChrome;
@@ -318,18 +387,26 @@ chrome.storage.onChanged.addListener(function() {
 			msg.voice = speechSynthesis.getVoices()[0];
 		}
 
+		//Starts speech recognition if in game
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			enableBlindfold();
+
+		//Starts blindfold if blindfold enabled
 		} else if (document.querySelector("#lichess") != null) {
 			disableBlindfold();
 		}
 	});
 });
 
+
+/*
+	Parses command
+*/
 function getCommand(command) {
 	var command = command;
 	command = command.toLowerCase();
 
+	//Returns other commands
 	if (command.includes("yes")) {
 		return "yes";
 	} else if (command.includes("blindfold")) {
@@ -382,6 +459,7 @@ function getCommand(command) {
 
 	var index = -1;
 
+	//Replaces interpretations with commands
 	for (var i = 0; i < commands.length; i++) {
 		while (grammars[index] != commands[i]) {
 			index++;
@@ -391,6 +469,7 @@ function getCommand(command) {
 
 	command = command.split(" ");
 
+	//Removes non valid commands
 	for (var i = 0; i < command.length; i++) {
 		if (!isCommand(command[i])) {
 			command.splice(i, 1);
@@ -398,12 +477,17 @@ function getCommand(command) {
 		}
 	}
 
+	//Gets last two commands
 	command = command.slice(command.length - 2, command.length);
 	command = command.join("");
 
 	return command;
 }
 
+
+/*
+	Checks if command is valid
+*/
 function isCommand(command) {
 	for (var i = 0; i < commands.length; i++) {
 		if (command == commands[i]) {
@@ -414,13 +498,21 @@ function isCommand(command) {
 	return false;
 }
 
+
+/*
+	Checks if castling is valid
+*/
 function canCastle() {
+
+	//Playing black
 	if (document.querySelector(".orientation-black") != null) {
 		if (document.querySelector(".king").style.transform == "translate(192px, 448px)") {
 			return true;
 		} else {
 			return false;
 		}
+
+	//Playing white
 	} else {
 		if (document.querySelectorAll(".king")[1].style.transform == "translate(256px, 448px)") {
 			return true;
@@ -430,78 +522,134 @@ function canCastle() {
 	}
 }
 
+
+/*
+	Executes Blindfold
+*/
 function enableBlindfold() {
+
+	//Hides pawns
 	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
 		document.querySelectorAll(".pawn")[i].style.display = "none";
 	}
+
+	//Hides knights
 	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
 		document.querySelectorAll(".knight")[i].style.display = "none";
 	}
+
+	//Hides bishops
 	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
 		document.querySelectorAll(".bishop")[i].style.display = "none";
 	}
+
+	//Hides rooks
 	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
 		document.querySelectorAll(".rook")[i].style.display = "none";
 	}
+
+	//Hides queens
 	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
 		document.querySelectorAll(".queen")[i].style.display = "none";
 	}
+
+	//Hides kings
 	document.querySelectorAll(".king")[0].style.display = "none";
 	document.querySelectorAll(".king")[1].style.display = "none";
 }
 
+
+/*
+	Removes blindfold
+*/
 function disableBlindfold() {
+
+	//Hides pawns
 	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
 		document.querySelectorAll(".pawn")[i].style.display = "block";
 	}
+
+	//Hides knights
 	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
 		document.querySelectorAll(".knight")[i].style.display = "block";
 	}
+
+	//Hides bishops
 	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
 		document.querySelectorAll(".bishop")[i].style.display = "block";
 	}
+
+	//Hides rooks
 	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
 		document.querySelectorAll(".rook")[i].style.display = "block";
 	}
+
+	//Hides queens
 	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
 		document.querySelectorAll(".queen")[i].style.display = "block";
 	}
+
+	//Hides kings
 	document.querySelectorAll(".king")[0].style.display = "block";
 	document.querySelectorAll(".king")[1].style.display = "block";
 }
 
+
+/*
+	On peice move
+*/
 var observer = new MutationObserver(function(mutations) {
+
+	//Game over
 	if (document.querySelector(".result_wrap") != null) {
 		msg.text = "Game Over";
 		chrome.storage.local.set({
 			isPlaying: false
 		});
+
+	//Peice moved
 	} else {
+
+		//White moves
 		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
 			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
+
+		//Black moves
 		} else {
 			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
 		}
 	}
 
+	//Speaks move if text to speech enabled
 	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
 		speechSynthesis.speak(msg);
 	}
 });
 
+
+/*
+	Observes moves
+*/
 setTimeout(function() {
 	if (document.querySelector(".moves") != null) {
 		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
 	}
 }, 500);
 
+
+/*
+	Executes notification
+*/
 function notification(content, theme) {
+
+	//Notification modal
 	var notification = document.createElement("div");
 	notification.id = "snackbar";
 	notification.className = "show ";
 	notification.className += theme;
 	notification.innerHTML = content;
 
+	//Close button
 	var close = document.createElement("span");
 	close.innerHTML = "x";
 	close.id = "close";
@@ -509,9 +657,11 @@ function notification(content, theme) {
 		notification.style.display = "none";
 	});
 
+	//Notification icon
 	var image = document.createElement("IMG");
 	image.id = "image";
 
+	//Sets theme
 	if (theme == "default") {
 		image.src = chrome.extension.getURL("icons/default.png");
 	} else if (theme == "success") {
@@ -522,17 +672,25 @@ function notification(content, theme) {
 		image.src = chrome.extension.getURL("icons/error.png");
 	}
 
+	//Appends elements
 	notification.appendChild(close);
 	notification.appendChild(image);
 	document.body.appendChild(notification);
 
+	//Hides notification
 	setTimeout(function() {
 		notification.className = notification.className.replace("show", "");
 	}, 3000);
 }
 
+
+/*
+	Gets notice status
+*/
 function getStatus() {
 	if (isLichess) {
+
+		//Keyboard input enabled
 		setTimeout(function() {
 			if (document.querySelector(".ready") != null) {
 				chrome.storage.local.set({
@@ -545,6 +703,7 @@ function getStatus() {
 			}
 		}, 2000);
 
+		//In game
 		if (document.querySelector(".playing") != null) {
 			chrome.storage.local.set({
 				isPlaying: true
@@ -557,6 +716,10 @@ function getStatus() {
 	}
 }
 
+
+/*
+	@@@@@@@@@@@@@@@@ TEST >>> DELET ME @@@@@@@@@@@@@@@@@@@@@@@@
+*/
 setTimeout(function() {
 		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 			notification("Nf6+", theme.SUCCESS);

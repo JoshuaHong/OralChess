@@ -1,53 +1,65 @@
 /*
-	Creates the popup menu components on opening
+	Creates the popup menu components
 */
+
+//Creates buttons
 var enableAddonButton = document.createElement("BUTTON");
 var enableBlindfoldButton = document.createElement("BUTTON");
 var enableConfirmationButton = document.createElement("BUTTON");
 var enableNotificationButton = document.createElement("BUTTON");
 var enableTextToSpeechButton = document.createElement("BUTTON");
 
-var addonDiv = document.createElement("DIV");
-var textToSpeechDiv = document.createElement("DIV");
-var arrow = document.createElement("DIV");
-var volumeDiv = document.createElement("DIV");
-var rateDiv = document.createElement("DIV");
-var pitchDiv = document.createElement("DIV");
-var voiceDiv = document.createElement("DIV");
+//Creates divs
+var addonDiv = document.createElement("DIV");			//Contains all elements below addon button except notice
+var textToSpeechDiv = document.createElement("DIV");	//Contains all elements below text to speech button except notice
+var volumeDiv = document.createElement("DIV");			//Contains volume elements
+var rateDiv = document.createElement("DIV");			//Contains rate elements
+var pitchDiv = document.createElement("DIV");			//Contains pitch elements
+var voiceDiv = document.createElement("DIV");			//Contains voice elements
+var arrow = document.createElement("DIV");				//Creates up arrow
 
+//Creates text to speech names
 var volumeSpan = document.createElement("SPAN");
 var rateSpan = document.createElement("SPAN");
 var pitchSpan = document.createElement("SPAN");
 var voiceSpan = document.createElement("SPAN");
 
+//Creates sliders
 var volumeSlider = document.createElement("INPUT");
 var rateSlider = document.createElement("INPUT");
 var pitchSlider = document.createElement("INPUT");
 var voiceSelect = document.createElement("SELECT");
 
+//Creates text to speech values
 var volumeValueSpan = document.createElement("SPAN");
 var rateValueSpan = document.createElement("SPAN");
 var pitchValueSpan = document.createElement("SPAN");
 
+//Creates notice and help icon
 var help = document.createElement("DIV");
 var notice = document.createElement("SPAN");
 
+//Sets slider type
 volumeSlider.type = "range";
 rateSlider.type = "range";
 pitchSlider.type = "range";
 
+//Sets minimum slider value
 volumeSlider.min = "0.1";
 rateSlider.min = "0.1";
 pitchSlider.min = "0.1";
 
+//Sets maximum slider value
 volumeSlider.max = "1";
 rateSlider.max = "2";
 pitchSlider.max = "2";
 
+//Sets slider increment
 volumeSlider.step = "0.1";
 rateSlider.step = "0.1";
 pitchSlider.step = "0.1";
 
+//Sets button and text to speech names
 enableBlindfoldButton.innerHTML = "Blindfold";
 enableConfirmationButton.innerHTML = "Confirmation";
 enableNotificationButton.innerHTML = "Notifications";
@@ -58,12 +70,14 @@ pitchSpan.innerHTML = "Pitch";
 voiceSpan.innerHTML = "Voice";
 help.innerHTML = "?";
 
+//Sets button id
 enableAddonButton.id = "enableAddonButtonID";
 enableBlindfoldButton.id = "enableBlindfoldButtonID";
 enableConfirmationButton.id = "enableConfirmationButtonID";
 enableNotificationButton.id = "enableNotificationButtonID";
 enableTextToSpeechButton.id = "enableTextToSpeechButtonID";
 
+//Adds classes
 enableAddonButton.classList.add("button");
 enableAddonButton.classList.add("addonButton");
 addonDiv.classList.add("addonDiv");
@@ -92,6 +106,7 @@ pitchValueSpan.classList.add("valueSpan");
 help.classList.add("help");
 notice.classList.add("notice");
 
+//Appends elements
 document.body.appendChild(enableAddonButton);
 addonDiv.appendChild(arrow);
 addonDiv.appendChild(enableBlindfoldButton);
@@ -117,6 +132,7 @@ textToSpeechDiv.appendChild(voiceDiv);
 addonDiv.appendChild(textToSpeechDiv);
 document.body.appendChild(addonDiv);
 
+
 /*
 	Checks for Chrome browser
 */
@@ -131,18 +147,19 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 	document.body.appendChild(notice);
 }
 
-/*
-	Checks for Lichess URL
-*/
 
+/*
+	Gets notice text
+*/
 getStatus();
 
 
-
 /*
-	Edits popup menu components based on previously stored data
+	Sets popup menu components based on previously stored data
 */
 chrome.storage.local.get(null, function(item) {
+
+	//Sets addon enabled status
 	if (item != null && item.addonIsEnabled != null && item.addonIsEnabled) {
 		enableAddonButton.innerHTML = "Enabled";
 		enableAddonButton.value = "enabled";
@@ -157,6 +174,7 @@ chrome.storage.local.get(null, function(item) {
 		getStatus();
 	}
 
+	//Sets blindfold status
 	if (item != null && item.blindfoldIsEnabled != null && item.blindfoldIsEnabled) {
 		enableBlindfoldButton.value = "enabled";
 		enableBlindfoldButton.classList.remove("disabled");
@@ -167,6 +185,7 @@ chrome.storage.local.get(null, function(item) {
 		enableBlindfoldButton.classList.add("disabled");
 	}
 
+	//Sets confirmation status
 	if (item != null && item.confirmationIsEnabled != null && !item.confirmationIsEnabled) {
 		enableConfirmationButton.value = "disabled";
 		enableConfirmationButton.classList.remove("enabled");
@@ -177,6 +196,7 @@ chrome.storage.local.get(null, function(item) {
 		enableConfirmationButton.classList.add("enabled");
 	}
 
+	//Sets notification status
 	if (item != null && item.notificationIsEnabled != null && !item.notificationIsEnabled) {
 		enableNotificationButton.value = "disabled";
 		enableNotificationButton.classList.remove("enabled");
@@ -187,6 +207,7 @@ chrome.storage.local.get(null, function(item) {
 		enableNotificationButton.classList.add("enabled");
 	}
 
+	//Sets text to speech status
 	if (item != null && item.textToSpeechIsEnabled != null && !item.textToSpeechIsEnabled) {
 		enableTextToSpeechButton.value = "disabled";
 		enableTextToSpeechButton.classList.remove("enabled");
@@ -198,6 +219,7 @@ chrome.storage.local.get(null, function(item) {
 		enableTextToSpeechButton.classList.add("enabled");
 	}
 
+	//Sets volume
 	if (item != null && item.volumeValue != null) {
 		volumeSlider.value = item.volumeValue;
 		volumeValueSpan.innerHTML = item.volumeValue;
@@ -206,6 +228,7 @@ chrome.storage.local.get(null, function(item) {
 		volumeValueSpan.innerHTML = "1";
 	}
 
+	//Sets rate
 	if (item != null && item.rateValue != null) {
 		rateSlider.value = item.rateValue;
 		rateValueSpan.innerHTML = item.rateValue;
@@ -214,6 +237,7 @@ chrome.storage.local.get(null, function(item) {
 		rateValueSpan.innerHTML = "1";
 	}
 
+	//Sets pitch
 	if (item != null && item.pitchValue != null) {
 		pitchSlider.value = item.pitchValue;
 		pitchValueSpan.innerHTML = item.pitchValue;
@@ -222,6 +246,7 @@ chrome.storage.local.get(null, function(item) {
 		pitchValueSpan.innerHTML = "1";
 	}
 
+	//Sets default voice
 	if (item != null && item.voiceValue != null) {
 		voiceSelect.selectedIndex = item.voiceValue;
 	}
@@ -229,9 +254,11 @@ chrome.storage.local.get(null, function(item) {
 
 
 /*
-	Performs actions based on chosen menu item
+	Performs actions based on clicked menu item
 */
 document.addEventListener("click", function(event) {
+
+	//Clicked addon button
 	if (event.target.id == "enableAddonButtonID") {
 		if (enableAddonButton.value == "enabled") {
 			chrome.storage.local.set({
@@ -254,12 +281,15 @@ document.addEventListener("click", function(event) {
 			enableAddonButton.classList.add("enabled");
 			addonDiv.style.display = "block";
 
+			//Shows text to speech elements if text to speech enabled
 			if (enableTextToSpeechButton.value == "enabled") {
 				textToSpeechDiv.style.display = "block";
 			}
 
 			getStatus();
 		}
+
+	//Clicked blindfold button
 	} else if (event.target.id == "enableBlindfoldButtonID") {
 		if (enableBlindfoldButton.value == "enabled") {
 			chrome.storage.local.set({
@@ -276,6 +306,8 @@ document.addEventListener("click", function(event) {
 			enableBlindfoldButton.classList.remove("disabled");
 			enableBlindfoldButton.classList.add("enabled");
 		}
+
+	//Clicked confirmation button
 	} else if (event.target.id == "enableConfirmationButtonID") {
 		if (enableConfirmationButton.value == "disabled") {
 			chrome.storage.local.set({
@@ -292,6 +324,8 @@ document.addEventListener("click", function(event) {
 			enableConfirmationButton.classList.remove("enabled");
 			enableConfirmationButton.classList.add("disabled");
 		}
+
+	//Clicked notification button
 	} else if (event.target.id == "enableNotificationButtonID") {
 		if (enableNotificationButton.value == "disabled") {
 			chrome.storage.local.set({
@@ -308,6 +342,8 @@ document.addEventListener("click", function(event) {
 			enableNotificationButton.classList.remove("enabled");
 			enableNotificationButton.classList.add("disabled");
 		}
+
+	//Clicked text to speech button
 	} else if (event.target.id == "enableTextToSpeechButtonID") {
 		if (enableTextToSpeechButton.value == "disabled") {
 			chrome.storage.local.set({
@@ -329,7 +365,10 @@ document.addEventListener("click", function(event) {
 	}
 });
 
-//loads voices
+
+/*
+	Loads voices
+*/
 window.speechSynthesis.onvoiceschanged = function(e) {
 	var voices = speechSynthesis.getVoices();
 
@@ -340,6 +379,10 @@ window.speechSynthesis.onvoiceschanged = function(e) {
 	});
 };
 
+
+/*
+	Updates volume
+*/
 volumeSlider.addEventListener("input", function() {
 	chrome.storage.local.set({
 		volumeValue: volumeSlider.value
@@ -347,6 +390,10 @@ volumeSlider.addEventListener("input", function() {
 	volumeValueSpan.innerHTML = volumeSlider.value;
 });
 
+
+/*
+	Updates rate
+*/
 rateSlider.addEventListener("input", function() {
 	chrome.storage.local.set({
 		rateValue: rateSlider.value
@@ -354,6 +401,10 @@ rateSlider.addEventListener("input", function() {
 	rateValueSpan.innerHTML = rateSlider.value;
 });
 
+
+/*
+	Updates pitch
+*/
 pitchSlider.addEventListener("input", function() {
 	chrome.storage.local.set({
 		pitchValue: pitchSlider.value
@@ -361,37 +412,58 @@ pitchSlider.addEventListener("input", function() {
 	pitchValueSpan.innerHTML = pitchSlider.value;
 });
 
+
+/*
+	Updates voice
+*/
 voiceSelect.addEventListener("input", function() {
 	chrome.storage.local.set({
 		voiceValue: voiceSelect.selectedIndex
 	});
 });
 
+
+/*
+	Launches help.html
+*/
 help.addEventListener("click", function() {
 	window.open("../help/help.html");
 });
 
+
+/*
+	Sets notice text
+*/
 function getStatus() {
 	chrome.tabs.getSelected(null, function(tab) {
 		chrome.storage.local.get(null, function(item) {
+
+			//Addon disabled
 			if (item != null && !item.addonIsEnabled) {
 				notice.innerHTML = "<br><hr> Joshua Hong";
 				document.body.appendChild(notice);
+
+			//Not on Lichess
 			} else if (tab.url.indexOf("lichess.org") == -1) {
 				notice.innerHTML = "<br><hr> Please use Lichess";
 				document.body.appendChild(notice);
+
+			//In game and keyboard input enabled
+			} else if (item != null && item.isReady && item.isPlaying) {
+				notice.innerHTML = "<br><hr> Joshua Hong";
+				document.body.appendChild(notice);
+
+			//Keyboard input disabled
+			} else if (item != null && item.isPlaying && !item.isReady) {
+				notice.innerHTML = "<br><hr> Please enable keyboard input";
+				document.body.appendChild(notice);
+
+			//Not in game
 			} else {
-				if (item != null && item.isReady && item.isPlaying) {
-					notice.innerHTML = "<br><hr> Joshua Hong";
-					document.body.appendChild(notice);
-				} else if (item != null && item.isPlaying && !item.isReady) {
-					notice.innerHTML = "<br><hr> Please enable keyboard input";
-					document.body.appendChild(notice);
-				} else {
-					notice.innerHTML = "<br><hr> Please join a game";
-					document.body.appendChild(notice);
-				}
+				notice.innerHTML = "<br><hr> Please join a game";
+				document.body.appendChild(notice);
 			}
+
 			notice.appendChild(help);
 		});
 	});
