@@ -70,7 +70,7 @@ if (window.location.href.indexOf("lichess.org") != -1) {
 
 
 /*
-	Sets notification text
+	Sets notice text
 */
 getStatus();
 

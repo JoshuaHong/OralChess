@@ -65,13 +65,13 @@ body {
 
 .button:active {
 	background-color: green;
-	box-shadow: inset 6px 6px 10px #666;
+	box-shadow: inset 6px 6px 10px #444444;
 	transform: translateY(1px);
 }
 
 .enabled {
 	background-color: green;
-	box-shadow: inset 3px 3px 10px 1px #666;
+	box-shadow: inset 3px 3px 10px 1px #444444;
 	transform: translateY(1px);
 }
 
