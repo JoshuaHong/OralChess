@@ -106,12 +106,12 @@ chrome.storage.local.get(null, function(item) {
 	}
 
 	if (isChrome) {
-		//Starts speech recognition if in game
+		//Executes speech recognition if in game
 		if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
 			recognition.start();
 		}
 
-		//Starts blindfold if blindfold enabled
+		//Executes blindfold if blindfold enabled
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			setTimeout(function() {
 				enableBlindfold();
@@ -387,11 +387,11 @@ chrome.storage.onChanged.addListener(function() {
 			msg.voice = speechSynthesis.getVoices()[0];
 		}
 
-		//Starts speech recognition if in game
+		//Executes speech recognition if in game
 		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 			enableBlindfold();
 
-		//Starts blindfold if blindfold enabled
+		//Executes blindfold if blindfold enabled
 		} else if (document.querySelector("#lichess") != null) {
 			disableBlindfold();
 		}
