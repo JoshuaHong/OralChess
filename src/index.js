@@ -406,10 +406,13 @@ var observer = new MutationObserver(function(mutations) {
 
 	//Game over
 	if (document.querySelector(".result_wrap") != null) {
-		msg.text = "Game Over";
 		chrome.storage.local.set({
 			isPlaying: false
 		});
+
+		if (document.querySelector(".status") != null) {
+			msg.text = document.querySelector(".status").innerHTML;
+		}
 
 	//Peice moved
 	} else {
@@ -490,9 +493,9 @@ function getCommand(command) {
 	} else if (command.includes("give")) {
 		return "give";
 	} else if (command.includes("castle")) {
-		if (command.includes("king side")) {
+		if (command.includes("king side") || command.includes("short")) {
 			return "0-0";
-		} else if (command.includes("queen side")) {
+		} else if (command.includes("queen side") || command.includes("long")) {
 			return "0-0-0";
 		} else {
 			return "0";
@@ -643,6 +646,26 @@ function disableBlindfold() {
 function speak(msg) {
 	var command = msg.text;
 
+	//Game over
+	if (command.includes("<div>")) {
+		command = command.replace(new RegExp("<div>", "g"), "");
+		command = command.replace(new RegExp("</div>", "g"), ".");
+		msg.text = command;
+		speechSynthesis.speak(msg);
+		return;
+	}
+
+	//Adds a pause between adjacent letters
+	var letters = command.split("");
+
+	for (var i = 0; i < letters.length - 1; i++) {
+		if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1].charCodeAt(0) >= 97 && letters[i + 1].charCodeAt(0) <= 122) {
+			letters.splice(i + 1, 0, ",");
+		}
+	}
+
+	command = letters.join("");
+
 	//Replaces letters with peices
 	if (command.includes("N")) {
 		command = command.replace(new RegExp("N", "g"), "Knight ");
@@ -665,6 +688,12 @@ function speak(msg) {
 	if (command.includes("+")) {
 		command = command.slice(0, -1);
 		command += " check"
+	}
+
+	if (command == "O-O") {
+		command = "Castles kingside";
+	} else if (command == "O-O-O") {
+		command = "Castles queenside";
 	}
 
 	msg.text = command;

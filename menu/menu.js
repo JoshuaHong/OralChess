@@ -144,7 +144,12 @@ if (navigator.userAgent.indexOf("Chrome") != -1) {
 	enableAddonButton.style.display = "none";
 	addonDiv.style.display = "none";
 	notice.innerHTML = "<br> Please use Chrome";
+	notice.appendChild(help);
 	document.body.appendChild(notice);
+
+	help.addEventListener("click", function() {
+		window.open("../help/help.html");
+	});
 }
 
 
