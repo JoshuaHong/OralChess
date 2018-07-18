@@ -146,12 +146,16 @@ recognition.onresult = function(event) {
 				//Command confirmation
 				} else {
 					previousCommand = command;
-					alert(command);
+
+					//Notification
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification(command + "?", theme.WARNING);
+					}
 
 					//Speaks command request if text to speech enabled
 					if (textToSpeechIsEnabled || textToSpeechIsEnabled == null) {
 						msg.text = command;
-						speak(msg);
+						speak(msg, false);
 					}
 
 					return;
@@ -161,30 +165,70 @@ recognition.onresult = function(event) {
 			//Executes commands
 			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
 				document.querySelector(".draw-yes").click();
 				if (document.querySelector(".yes") != null) {
 					document.querySelector(".yes").click();
+				}
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
 				}
 			} else if (command == "resign" && document.querySelector(".resign-confirm") != null) {
 				document.querySelector(".resign-confirm").click();
 				if (document.querySelector(".yes") != null) {
 					document.querySelector(".yes").click();
 				}
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "abort" && document.querySelector(".abort") != null) {
 				document.querySelector(".abort").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
 				document.querySelector(".rematch").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "button" && document.querySelector(".button") != null) {
 				document.querySelector(".button").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "analysis" && document.querySelector(".analysis") != null) {
 				document.querySelector(".analysis").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "zen" && document.querySelector(".fbt") != null) {
 				document.querySelector(".fbt").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
 				document.querySelectorAll(".button")[1].click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "give" && document.querySelector(".moretime") != null) {
 				document.querySelector(".moretime").click();
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification(command, theme.DEFAULT);
+				}
 			} else if (command == "blindfold") {
 				if (blindfoldIsEnabled) {
 					disableBlindfold();
@@ -192,12 +236,20 @@ recognition.onresult = function(event) {
 						blindfoldIsEnabled: false
 					});
 					blindfoldIsEnabled = false;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Blindfold Disabled", theme.DEFAULT);
+					}
 				} else {
 					enableBlindfold();
 					chrome.storage.local.set({
 						blindfoldIsEnabled: true
 					});
 					blindfoldIsEnabled = true;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Blindfold Enabled", theme.DEFAULT);
+					}
 				}
 			} else if (command == "confirmation") {
 				if (confirmationIsEnabled) {
@@ -205,11 +257,19 @@ recognition.onresult = function(event) {
 						confirmationIsEnabled: false
 					});
 					confirmationIsEnabled = false;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Confirmation Disabled", theme.DEFAULT);
+					}
 				} else {
 					chrome.storage.local.set({
 						confirmationIsEnabled: true
 					});
 					confirmationIsEnabled = true;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Confirmation Enabled", theme.DEFAULT);
+					}
 				}
 			} else if (command == "notification") {
 				if (notificationIsEnabled) {
@@ -217,11 +277,19 @@ recognition.onresult = function(event) {
 						notificationIsEnabled: false
 					});
 					notificationIsEnabled = false;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Notification Disabled", theme.DEFAULT);
+					}
 				} else {
 					chrome.storage.local.set({
 						notificationIsEnabled: true
 					});
 					notificationIsEnabled = true;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Notification Enabled", theme.DEFAULT);
+					}
 				}
 			} else if (command == "text to speech") {
 				if (textToSpeechIsEnabled) {
@@ -229,11 +297,19 @@ recognition.onresult = function(event) {
 						textToSpeechIsEnabled: false
 					});
 					textToSpeechIsEnabled = false;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Text To Speech Disabled", theme.DEFAULT);
+					}
 				} else {
 					chrome.storage.local.set({
 						textToSpeechIsEnabled: true
 					});
 					textToSpeechIsEnabled = true;
+
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Text To Speech Enabled", theme.DEFAULT);
+					}
 				}
 			} else if (command == "0-0") {
 
@@ -271,15 +347,31 @@ recognition.onresult = function(event) {
 			} else if (command == "beginning") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':38,'which':38}));
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("First Move", theme.DEFAULT);
+				}
 			} else if (command == "backward") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':37,'which':37}));
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("Previous Move", theme.DEFAULT);
+				}
 			} else if (command == "forward") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':39,'which':39}));
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("Next Move", theme.DEFAULT);
+				}
 			} else if (command == "end") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':40,'which':40}));
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("Latest Move", theme.DEFAULT);
+				}
 			} else if (command == "Q") {
 				for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
 					document.querySelectorAll(".queen")[i].click();
@@ -410,8 +502,14 @@ var observer = new MutationObserver(function(mutations) {
 			isPlaying: false
 		});
 
+		//Gets game over status
 		if (document.querySelector(".status") != null) {
 			msg.text = document.querySelector(".status").innerHTML;
+		}
+
+		//Notification
+		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+			notification("Game Over", theme.DEFAULT);
 		}
 
 	//Peice moved
@@ -425,11 +523,18 @@ var observer = new MutationObserver(function(mutations) {
 		} else {
 			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
 		}
+
+		//Notification
+		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+			notification(msg.text, theme.SUCCESS);
+		}
 	}
+
+
 
 	//Speaks move if text to speech enabled
 	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
-		speak(msg);
+		speak(msg, true);
 	}
 });
 
@@ -478,7 +583,7 @@ function getCommand(command) {
 		return "confirm";
 	} else if (command.includes("analysis")) {
 		return "analysis";
-	} else if (command.includes("zen")) {
+	} else if (command.includes("zen")) {//@@@@@@@@@@@@@@@ WHEN UPDATING COMMANDS, UPDATE ALSO THE NOTIFICATION IN THE MAIN METHOD ^^^^^^^^^ AS WELL AS HELP.HTML
 		return "zen";
 	} else if (command.includes("beginning")) {
 		return "beginning";
@@ -643,7 +748,7 @@ function disableBlindfold() {
 /*
 	Parses and executes text to speech
 */
-function speak(msg) {
+function speak(msg, isMove) {
 	var command = msg.text;
 
 	//Game over
@@ -656,15 +761,17 @@ function speak(msg) {
 	}
 
 	//Adds a pause between adjacent letters
-	var letters = command.split("");
+	if (isMove) {
+		var letters = command.split("");
 
-	for (var i = 0; i < letters.length - 1; i++) {
-		if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1].charCodeAt(0) >= 97 && letters[i + 1].charCodeAt(0) <= 122) {
-			letters.splice(i + 1, 0, ",");
+		for (var i = 0; i < letters.length - 1; i++) {
+			if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1].charCodeAt(0) >= 97 && letters[i + 1].charCodeAt(0) <= 122) {
+				letters.splice(i + 1, 0, ",");
+			}
 		}
-	}
 
-	command = letters.join("");
+		command = letters.join("");
+	}
 
 	//Replaces letters with peices
 	if (command.includes("N")) {
@@ -690,6 +797,7 @@ function speak(msg) {
 		command += " check"
 	}
 
+	//Castling
 	if (command == "O-O") {
 		command = "Castles kingside";
 	} else if (command == "O-O-O") {
@@ -779,13 +887,3 @@ function getStatus() {
 		}
 	}
 }
-
-
-/*
-	@@@@@@@@@@@@@@@@ TEST >>> DELET ME @@@@@@@@@@@@@@@@@@@@@@@@
-*/
-setTimeout(function() {
-		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-			notification("Nf6+", theme.SUCCESS);
-		}
-}, 1);
