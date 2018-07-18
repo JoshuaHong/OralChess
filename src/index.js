@@ -38,6 +38,11 @@ var theme = {
 	ERROR: "error"
 };
 
+//Notification Container
+var container = document.createElement("DIV");
+container.id = "container";
+document.body.appendChild(container);
+
 //Button status
 var isChrome;
 var isLichess;
@@ -851,11 +856,12 @@ function notification(content, theme) {
 	//Appends elements
 	notification.appendChild(close);
 	notification.appendChild(image);
-	document.body.appendChild(notification);
+	container.insertAdjacentElement('afterbegin', notification);
 
 	//Hides notification
 	setTimeout(function() {
 		notification.className = notification.className.replace("show", "");
+		notification.remove();
 	}, 3000);
 }
 

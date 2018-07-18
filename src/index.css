@@ -1,3 +1,11 @@
+#container {
+	display: flex;
+	position: absolute;
+	display: block;
+	top: 20px;
+	right: 20px;
+}
+
 #snackbar {
 	visibility: hidden;
 	min-width: 250px;
@@ -8,16 +16,15 @@
 	border-radius: 2px;
 	box-shadow: 5px 10px 15px #888888;
 	padding: 15px;
-	position: fixed;
+	margin-bottom: 15px;
+	position: relative;
 	z-index: 1;
-	top: 12px;
-	right: 12px;
 	opacity: 0.85;
 }
 
 #snackbar.show {
 	visibility: visible;
-	animation: fadein 0.5s, fadeout 0.5s 2.5s;
+	animation: fadein 1s, fadeout 1s 2.5s;
 }
 
 #snackbar.default {
@@ -58,24 +65,24 @@
 
 @keyframes fadein {
 	from {
-		top: 0;
+		top: -30px;
 		opacity: 0;
 	}
 	
 	to {
-		top: 12px;
+		top: 0px;
 		opacity: 0.85;
 	}
 }
 
 @keyframes fadeout {
 	from {
-		top: 12px;
+		top: 0px;
 		opacity: 0.85;
 	}
 
 	to {
-		top: 0;
+		top: -30px;
 		opacity: 0;
 	}
 }
