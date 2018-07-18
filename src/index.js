@@ -107,7 +107,7 @@ chrome.storage.local.get(null, function(item) {
 
 	if (isChrome) {
 		//Executes speech recognition if in game
-		if (addonIsEnabled && isLichess && document.querySelector(".playing") != null) {
+		if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
 			recognition.start();
 		}
 
@@ -428,7 +428,7 @@ recognition.onerror = function(event) {
 	Restarts speech recognition on focus
 */
 window.addEventListener('focus', function() {
-	if (addonIsEnabled && isLichess && document.querySelector(".lichess_game") != null) {
+	if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
 		console.log("FOCUS");
 		end = false;
 		recognition.start();
@@ -677,35 +677,37 @@ function canCastle() {
 	Executes Blindfold
 */
 function enableBlindfold() {
+	if (document.querySelector(".lichess_game") != null) {
 
-	//Hides pawns
-	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
-		document.querySelectorAll(".pawn")[i].style.display = "none";
+		//Hides pawns
+		for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
+			document.querySelectorAll(".pawn")[i].style.display = "none";
+		}
+
+		//Hides knights
+		for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
+			document.querySelectorAll(".knight")[i].style.display = "none";
+		}
+
+		//Hides bishops
+		for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
+			document.querySelectorAll(".bishop")[i].style.display = "none";
+		}
+
+		//Hides rooks
+		for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
+			document.querySelectorAll(".rook")[i].style.display = "none";
+		}
+
+		//Hides queens
+		for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
+			document.querySelectorAll(".queen")[i].style.display = "none";
+		}
+
+		//Hides kings
+		document.querySelectorAll(".king")[0].style.display = "none";
+		document.querySelectorAll(".king")[1].style.display = "none";
 	}
-
-	//Hides knights
-	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
-		document.querySelectorAll(".knight")[i].style.display = "none";
-	}
-
-	//Hides bishops
-	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
-		document.querySelectorAll(".bishop")[i].style.display = "none";
-	}
-
-	//Hides rooks
-	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
-		document.querySelectorAll(".rook")[i].style.display = "none";
-	}
-
-	//Hides queens
-	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
-		document.querySelectorAll(".queen")[i].style.display = "none";
-	}
-
-	//Hides kings
-	document.querySelectorAll(".king")[0].style.display = "none";
-	document.querySelectorAll(".king")[1].style.display = "none";
 }
 
 
@@ -713,35 +715,37 @@ function enableBlindfold() {
 	Removes blindfold
 */
 function disableBlindfold() {
+	if (document.querySelector(".lichess_game") != null) {
 
-	//Hides pawns
-	for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
-		document.querySelectorAll(".pawn")[i].style.display = "block";
+		//Hides pawns
+		for (var i = 0; i < document.querySelectorAll(".pawn").length; i++) {
+			document.querySelectorAll(".pawn")[i].style.display = "inline-block";
+		}
+
+		//Hides knights
+		for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
+			document.querySelectorAll(".knight")[i].style.display = "inline-block";
+		}
+
+		//Hides bishops
+		for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
+			document.querySelectorAll(".bishop")[i].style.display = "inline-block";
+		}
+
+		//Hides rooks
+		for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
+			document.querySelectorAll(".rook")[i].style.display = "inline-block";
+		}
+
+		//Hides queens
+		for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
+			document.querySelectorAll(".queen")[i].style.display = "inline-block";
+		}
+
+		//Hides kings
+		document.querySelectorAll(".king")[0].style.display = "inline-block";
+		document.querySelectorAll(".king")[1].style.display = "inline-block";
 	}
-
-	//Hides knights
-	for (var i = 0; i < document.querySelectorAll(".knight").length; i++) {
-		document.querySelectorAll(".knight")[i].style.display = "block";
-	}
-
-	//Hides bishops
-	for (var i = 0; i < document.querySelectorAll(".bishop").length; i++) {
-		document.querySelectorAll(".bishop")[i].style.display = "block";
-	}
-
-	//Hides rooks
-	for (var i = 0; i < document.querySelectorAll(".rook").length; i++) {
-		document.querySelectorAll(".rook")[i].style.display = "block";
-	}
-
-	//Hides queens
-	for (var i = 0; i < document.querySelectorAll(".queen").length; i++) {
-		document.querySelectorAll(".queen")[i].style.display = "block";
-	}
-
-	//Hides kings
-	document.querySelectorAll(".king")[0].style.display = "block";
-	document.querySelectorAll(".king")[1].style.display = "block";
 }
 
 
