@@ -1,4 +1,4 @@
-#container {
+#oralChess-container {
 	display: flex;
 	position: absolute;
 	display: block;
@@ -6,7 +6,7 @@
 	right: 20px;
 }
 
-#snackbar {
+#oralChess-snackbar {
 	visibility: hidden;
 	min-width: 250px;
 	color: #ffffff;
@@ -22,28 +22,28 @@
 	opacity: 0.85;
 }
 
-#snackbar.show {
+#oralChess-snackbar.show {
 	visibility: visible;
 	animation: fadein 1s, fadeout 1s 2.5s;
 }
 
-#snackbar.default {
+#oralChess-snackbar.default {
 	background-color: blue;
 }
 
-#snackbar.success {
+#oralChess-snackbar.success {
 	background-color: green;
 }
 
-#snackbar.warning {
+#oralChess-snackbar.warning {
 	background-color: orange;
 }
 
-#snackbar.error {
+#oralChess-snackbar.error {
 	background-color: red;
 }
 
-#close {
+#oralChess-close {
 	color: #aaa;
 	margin-top: -5px;
     float: right;
@@ -51,13 +51,13 @@
     font-weight: bold;
 }
 
-#close:hover {
+#oralChess-close:hover {
 	color: black;
     text-decoration: none;
     cursor: pointer;
 }
 
-#image {
+#oralChess-image {
 	width: 20px;
 	height: 20px;
 	float: left;

@@ -1,3 +1,8 @@
+//TO DO:
+//Finishing commands
+//Help menu commands
+//Text to speech repetition bug
+//Filling in grammars
 /*
 	Initiates variables
 */
@@ -40,7 +45,7 @@ var theme = {
 
 //Notification Container
 var container = document.createElement("DIV");
-container.id = "container";
+container.id = "oralChess-container";
 document.body.appendChild(container);
 
 //Button status
@@ -588,7 +593,7 @@ function getCommand(command) {
 		return "confirm";
 	} else if (command.includes("analysis")) {
 		return "analysis";
-	} else if (command.includes("zen")) {//@@@@@@@@@@@@@@@ WHEN UPDATING COMMANDS, UPDATE ALSO THE NOTIFICATION IN THE MAIN METHOD ^^^^^^^^^ AS WELL AS HELP.HTML
+	} else if (command.includes("zen")) {
 		return "zen";
 	} else if (command.includes("beginning")) {
 		return "beginning";
@@ -769,13 +774,18 @@ function speak(msg, isMove) {
 		return;
 	}
 
-	//Adds a pause between adjacent letters
+	//Adds a pause between adjacent lowercase letters
 	if (isMove) {
 		var letters = command.split("");
 
 		for (var i = 0; i < letters.length - 1; i++) {
-			if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1].charCodeAt(0) >= 97 && letters[i + 1].charCodeAt(0) <= 122) {
-				letters.splice(i + 1, 0, ",");
+			if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && (letters[i + 1].charCodeAt(0) >= 97 && letters[i + 1].charCodeAt(0) <= 122)) {
+				letters.splice(i + 1, 0, ", ");
+
+			//Changes short a sound to long a sound
+			} else if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1] == "х" && letters[i] == "a") {
+				letters.splice(i, 1, "e");
+				letters.splice(i + 1, 0, "h");
 			}
 		}
 
@@ -812,7 +822,7 @@ function speak(msg, isMove) {
 	} else if (command == "O-O-O") {
 		command = "Castles queenside";
 	}
-
+alert(command);
 	msg.text = command;
 	speechSynthesis.speak(msg);
 }
@@ -825,7 +835,7 @@ function notification(content, theme) {
 
 	//Notification modal
 	var notification = document.createElement("div");
-	notification.id = "snackbar";
+	notification.id = "oralChess-snackbar";
 	notification.className = "show ";
 	notification.className += theme;
 	notification.innerHTML = content;
@@ -833,14 +843,14 @@ function notification(content, theme) {
 	//Close button
 	var close = document.createElement("span");
 	close.innerHTML = "x";
-	close.id = "close";
+	close.id = "oralChess-close";
 	close.addEventListener("click", function() {
 		notification.style.display = "none";
 	});
 
 	//Notification icon
 	var image = document.createElement("IMG");
-	image.id = "image";
+	image.id = "oralChess-image";
 
 	//Sets theme
 	if (theme == "default") {
