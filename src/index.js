@@ -143,7 +143,7 @@ recognition.onresult = function(event) {
 		console.log(command);
 
 		//Keyboard input enabled
-		if (document.querySelector("#lichess") != null && document.querySelector(".ready") != null) {
+		if (document.querySelector(".ready") != null) {
 			command = getCommand(command);
 
 			//Confirmation enabled
@@ -164,8 +164,7 @@ recognition.onresult = function(event) {
 
 					//Speaks command request if text to speech enabled
 					if (textToSpeechIsEnabled || textToSpeechIsEnabled == null) {
-						msg.text = command;
-						speak(msg, false);
+						speak(command, false);
 					}
 
 					return;
@@ -407,6 +406,12 @@ recognition.onresult = function(event) {
 
 			//Clears keyboard input if no premove
 			document.querySelector(".ready").value = "";
+
+		//Keyboard input disabled
+		} else {
+			if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+				notification("Keyboard input disabled", theme.ERROR);
+			}
 		}
 	}
 }
@@ -505,6 +510,7 @@ chrome.storage.onChanged.addListener(function() {
 	On peice move
 */
 var observer = new MutationObserver(function(mutations) {
+	var command;
 
 	//Game over
 	if (document.querySelector(".result_wrap") != null) {
@@ -514,7 +520,7 @@ var observer = new MutationObserver(function(mutations) {
 
 		//Gets game over status
 		if (document.querySelector(".status") != null) {
-			msg.text = document.querySelector(".status").innerHTML;
+			command = document.querySelector(".status").innerHTML;
 		}
 
 		//Notification
@@ -527,16 +533,16 @@ var observer = new MutationObserver(function(mutations) {
 
 		//White moves
 		if (document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML == "") {
-			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
+			command = document.querySelectorAll("move")[document.querySelectorAll("move").length - 2].innerHTML;
 
 		//Black moves
 		} else {
-			msg.text = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
+			command = document.querySelectorAll("move")[document.querySelectorAll("move").length - 1].innerHTML;
 		}
 
 		//Notification
 		if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-			notification(msg.text, theme.SUCCESS);
+			notification(command, theme.SUCCESS);
 		}
 	}
 
@@ -544,7 +550,7 @@ var observer = new MutationObserver(function(mutations) {
 
 	//Speaks move if text to speech enabled
 	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
-		speak(msg, true);
+		speak(command, true);
 	}
 });
 
@@ -762,8 +768,8 @@ function disableBlindfold() {
 /*
 	Parses and executes text to speech
 */
-function speak(msg, isMove) {
-	var command = msg.text;
+function speak(command, isMove) {
+	var command = command;
 
 	//Game over
 	if (command.includes("<div>")) {
