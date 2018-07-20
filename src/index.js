@@ -784,8 +784,7 @@ function speak(msg, isMove) {
 
 			//Changes short a sound to long a sound
 			} else if (letters[i].charCodeAt(0) >= 97 && letters[i].charCodeAt(0) <= 122 && letters[i + 1] == "х" && letters[i] == "a") {
-				letters.splice(i, 1, "e");
-				letters.splice(i + 1, 0, "h");
+				letters.splice(i, 1, "eh");
 			}
 		}
 
@@ -822,7 +821,7 @@ function speak(msg, isMove) {
 	} else if (command == "O-O-O") {
 		command = "Castles queenside";
 	}
-alert(command);
+
 	msg.text = command;
 	speechSynthesis.speak(msg);
 }
