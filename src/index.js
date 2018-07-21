@@ -4,10 +4,18 @@
 
 //Speech interpretations
 var grammars = ["knight", "N",
-				 "bishop", "B",
-				 "rook", "R",
-				 "queen", "Q",
-				 "king", "K",
+				"bishop", "B",
+				"rook", "R",
+				"queen", "Q",
+				"king", "K",
+				"one", "1",
+				"two", "2",
+				"three", "3",
+				"four", "for", "4",
+				"five", "5",
+				"six", "6",
+				"seven", "7",
+				"eight", "8",
 				"a", "b", "c", "d", "e", "f", "g", "h",
 				"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
 				"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8",
@@ -18,8 +26,12 @@ var grammars = ["knight", "N",
 				"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
 				"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"];
 
+var moreGrammars = ["quincy", "Q c",
+					"queenie", "Q e"];
+
 //Speech commands
 var commands = ["N", "B", "R", "Q", "K",
+				"1", "2", "3", "4", "5", "6", "7", "8",
 				"a", "b", "c", "d", "e", "f", "g", "h",
 				"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
 				"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8",
@@ -630,6 +642,19 @@ function getCommand(command) {
 		}
 	}
 
+	var newCommand = command;
+	var changed = false;
+
+	//Replaces other interpretations with commands
+	for (var i = 0; i < moreGrammars.length; i++) {
+		newCommand = newCommand.replace(new RegExp(moreGrammars[i], "g"), moreGrammars[++i]);
+	}
+
+	if (newCommand != command) {
+		changed = true;
+		command = newCommand;
+	}
+
 	var index = -1;
 
 	//Replaces interpretations with commands
@@ -650,10 +675,16 @@ function getCommand(command) {
 		}
 	}
 
-	//Gets last two commands
-	command = command.slice(command.length - 2, command.length);
-	command = command.join("");
+	//Gets last three commands
+	if (containsThreeCommands(command) || changed) {
+		command = command.slice(command.length - 3, command.length);
 
+	//Gets last two commands
+	} else {
+		command = command.slice(command.length - 2, command.length);
+	}
+
+	command = command.join("");
 	return command;
 }
 
@@ -665,6 +696,22 @@ function isCommand(command) {
 	for (var i = 0; i < commands.length; i++) {
 		if (command == commands[i]) {
 			return true;
+		}
+	}
+
+	return false;
+}
+
+
+/*
+	Checks if contains three commands
+*/
+function containsThreeCommands(command) {
+	for (var i = 0; i < command.length; i++) {
+		for (var j = commands.indexOf("1"); j < commands.indexOf("h"); j++) {
+			if (command[i] == commands[j]) {
+				return true;
+			}
 		}
 	}
 
