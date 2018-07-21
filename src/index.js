@@ -406,12 +406,6 @@ recognition.onresult = function(event) {
 
 			//Clears keyboard input if no premove
 			document.querySelector(".ready").value = "";
-
-		//Keyboard input disabled
-		} else {
-			if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-				notification("Keyboard input disabled", theme.ERROR);
-			}
 		}
 	}
 }
@@ -443,7 +437,7 @@ recognition.onerror = function(event) {
 	Restarts speech recognition on focus
 */
 window.addEventListener('focus', function() {
-	if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
+	if (addonIsEnabled && isLichess && document.querySelector(".ready") != null) {
 		console.log("FOCUS");
 		end = false;
 		recognition.start();
@@ -563,6 +557,21 @@ setTimeout(function() {
 		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
 	}
 }, 500);
+
+
+/*
+	Stop speech recognition if keyboard input disabled
+*/
+setTimeout(function() {
+	if (document.querySelector(".ready") == null) {
+		end = true;
+		recognition.stop();
+
+		if (addonIsEnabled && isLichess && (notificationIsEnabled || notificationIsEnabled == null) && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
+			notification("Enable Keyboard Input", theme.ERROR);
+		}
+	}
+}, 3000);
 
 
 /*
