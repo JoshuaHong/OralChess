@@ -1,8 +1,3 @@
-//TO DO:
-//Finishing commands
-//Help menu commands
-//Text to speech repetition bug
-//Filling in grammars
 /*
 	Initiates variables
 */
@@ -129,6 +124,68 @@ chrome.storage.local.get(null, function(item) {
 		}
 	}
 });
+
+
+/*
+	Updates button status on change
+*/
+chrome.storage.onChanged.addListener(function() {
+	chrome.storage.local.get(null, function(item) {
+		isChrome = item.isChrome;
+		addonIsEnabled = item.addonIsEnabled;
+		blindfoldIsEnabled = item.blindfoldIsEnabled;
+		confirmationIsEnabled = item.confirmationIsEnabled;
+		notificationIsEnabled = item.notificationIsEnabled;
+		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+		
+		if (item.volumeValue != null) {
+			msg.volume = item.volumeValue;
+		}
+
+		if (item.rateValue != null) {
+			msg.rate = item.rateValue;
+		}
+
+		if (item.pitchValue != null) {
+			msg.pitch = item.pitchValue;
+		}
+
+		if (item.voiceValue != null) {
+			msg.voice = speechSynthesis.getVoices()[item.voiceValue];
+		} else {
+			msg.voice = speechSynthesis.getVoices()[0];
+		}
+
+		//Executes blindfold if blindfold enabled
+		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
+			enableBlindfold();
+
+		//Disables blindfold if blindfold disabled
+		} else if (document.querySelector("#lichess") != null) {
+			disableBlindfold();
+		}
+
+		//Stops speech synthesis
+		if (!addonIsEnabled || !textToSpeechIsEnabled) {
+			speechSynthesis.cancel();
+		}
+	});
+});
+
+
+/*
+	Stop speech recognition if keyboard input disabled
+*/
+setTimeout(function() {
+	if (document.querySelector(".ready") == null) {
+		end = true;
+		recognition.stop();
+
+		if (addonIsEnabled && isLichess && (notificationIsEnabled || notificationIsEnabled == null) && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
+			notification("Enable Keyboard Input", theme.ERROR);
+		}
+	}
+}, 3000);
 
 
 /*
@@ -459,44 +516,12 @@ window.addEventListener('blur', function() {
 
 
 /*
-	Updates button status on change
+	Observes moves
 */
-chrome.storage.onChanged.addListener(function() {
-	chrome.storage.local.get(null, function(item) {
-		isChrome = item.isChrome;
-		addonIsEnabled = item.addonIsEnabled;
-		blindfoldIsEnabled = item.blindfoldIsEnabled;
-		confirmationIsEnabled = item.confirmationIsEnabled;
-		notificationIsEnabled = item.notificationIsEnabled;
-		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
-		
-		if (item.volumeValue != null) {
-			msg.volume = item.volumeValue;
-		}
-
-		if (item.rateValue != null) {
-			msg.rate = item.rateValue;
-		}
-
-		if (item.pitchValue != null) {
-			msg.pitch = item.pitchValue;
-		}
-
-		if (item.voiceValue != null) {
-			msg.voice = speechSynthesis.getVoices()[item.voiceValue];
-		} else {
-			msg.voice = speechSynthesis.getVoices()[0];
-		}
-
-		//Executes speech recognition if in game
-		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
-			enableBlindfold();
-
-		//Executes blindfold if blindfold enabled
-		} else if (document.querySelector("#lichess") != null) {
-			disableBlindfold();
-		}
-	});
+window.addEventListener("load", function() {
+	if (document.querySelector(".moves") != null) {
+		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
+	}
 });
 
 
@@ -540,38 +565,11 @@ var observer = new MutationObserver(function(mutations) {
 		}
 	}
 
-
-
 	//Speaks move if text to speech enabled
 	if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
 		speak(command, true);
 	}
 });
-
-
-/*
-	Observes moves
-*/
-setTimeout(function() {
-	if (document.querySelector(".moves") != null) {
-		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
-	}
-}, 500);
-
-
-/*
-	Stop speech recognition if keyboard input disabled
-*/
-setTimeout(function() {
-	if (document.querySelector(".ready") == null) {
-		end = true;
-		recognition.stop();
-
-		if (addonIsEnabled && isLichess && (notificationIsEnabled || notificationIsEnabled == null) && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
-			notification("Enable Keyboard Input", theme.ERROR);
-		}
-	}
-}, 3000);
 
 
 /*
@@ -669,7 +667,7 @@ function isCommand(command) {
 			return true;
 		}
 	}
-    
+
 	return false;
 }
 
@@ -784,6 +782,10 @@ function speak(command, isMove) {
 	if (command.includes("<div>")) {
 		command = command.replace(new RegExp("<div>", "g"), "");
 		command = command.replace(new RegExp("</div>", "g"), ".");
+
+		//Stops speech repetition bug by resetting queue
+		speechSynthesis.cancel();
+
 		msg.text = command;
 		speechSynthesis.speak(msg);
 		return;
@@ -907,7 +909,7 @@ function getStatus() {
 					isReady: false
 				});
 			}
-		}, 2000);
+		}, 3000);
 
 		//In game
 		if (document.querySelector(".playing") != null) {

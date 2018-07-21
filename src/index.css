@@ -45,15 +45,15 @@
 #oralChess-close {
 	color: #aaa;
 	margin-top: -5px;
-    float: right;
-    font-size: 18px;
-    font-weight: bold;
+	float: right;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 #oralChess-close:hover {
 	color: black;
-    text-decoration: none;
-    cursor: pointer;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 #oralChess-image {
