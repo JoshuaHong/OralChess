@@ -776,8 +776,9 @@ function enableBlindfold() {
 		}
 
 		//Hides kings
-		document.querySelectorAll(".king")[0].style.display = "none";
-		document.querySelectorAll(".king")[1].style.display = "none";
+		for (var i = 0; i < document.querySelectorAll(".king").length; i++) {
+			document.querySelectorAll(".king")[i].style.display = "none";
+		}
 	}
 }
 
@@ -814,8 +815,9 @@ function disableBlindfold() {
 		}
 
 		//Hides kings
-		document.querySelectorAll(".king")[0].style.display = "inline-block";
-		document.querySelectorAll(".king")[1].style.display = "inline-block";
+		for (var i = 0; i < document.querySelectorAll(".king").length; i++) {
+			document.querySelectorAll(".king")[i].style.display = "inline-block";
+		}
 	}
 }
 
