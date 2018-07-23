@@ -591,101 +591,99 @@ var observer = new MutationObserver(function(mutations) {
 function getCommand(command) {
 	var command = command;
 	command = command.toLowerCase();
-
-	//Returns other commands
-	if (command.includes("yes")) {
-		return "yes";
-	} else if (command.includes("blindfold")) {
-		return "blindfold";
-	} else if (command.includes("confirmation")) {
-		return "confirmation";
-	} else if (command.includes("notification")) {
-		return "notification";
-	} else if (command.includes("text to speech")) {
-		return "text to speech";
-	} else if (command.includes("take back")) {
-		return "takeback";
-	} else if (command.includes("claim") || command.includes("cancel")) {
-		return "button";
-	} else if (command.includes("draw")) {
-		return "draw";
-	} else if (command.includes("resign")) {
-		return "resign";
-	} else if (command.includes("abort")) {
-		return "abort";
-	} else if (command.includes("rematch")) {
-		return "rematch";
-	} else if (command.includes("confirm")) {
-		return "confirm";
-	} else if (command.includes("analysis")) {
-		return "analysis";
-	} else if (command.includes("zen")) {
-		return "zen";
-	} else if (command.includes("beginning")) {
-		return "beginning";
-	} else if (command.includes("backward")) {
-		return "backward";
-	} else if (command.includes("forward")) {
-		return "forward";
-	} else if (command.includes("end")) {
-		return "end";
-	} else if (command.includes("new")) {
-		return "new";
-	} else if (command.includes("give")) {
-		return "give";
-	} else if (command.includes("castle")) {
-		if (command.includes("king side") || command.includes("short")) {
-			return "0-0";
-		} else if (command.includes("queen side") || command.includes("long")) {
-			return "0-0-0";
-		} else {
-			return "0";
-		}
-	}
-
-	var newCommand = command;
-	var changed = false;
-
-	//Replaces other interpretations with commands
-	for (var i = 0; i < moreGrammars.length; i++) {
-		newCommand = newCommand.replace(new RegExp(moreGrammars[i], "g"), moreGrammars[++i]);
-	}
-
-	if (newCommand != command) {
-		changed = true;
-		command = newCommand;
-	}
-
-	var index = -1;
-
-	//Replaces interpretations with commands
-	for (var i = 0; i < commands.length; i++) {
-		while (grammars[index] != commands[i]) {
-			index++;
-			command = command.replace(new RegExp(grammars[index], "g"), commands[i]);
-		}
-	}
-
 	command = command.split(" ");
 
-	//Removes non valid commands
+	//Commands
 	for (var i = 0; i < command.length; i++) {
-		if (!isCommand(command[i])) {
-			command.splice(i, 1);
-			i--;
+		if (command[i] == "yes") {
+			return "yes";
+		} else if (command[i] == "blindfold") {
+			return "blindfold";
+		} else if (command[i] == "confirmation") {
+			return "confirmation";
+		} else if (command[i] == "notification") {
+			return "notification";
+		} else if (command[i] == "text" && command[i + 1] == "to" && command[i + 2] == "speech") {
+			return "text to speech";
+		} else if (command[i] == "take" && command[i + 1] == "back") {
+			return "takeback";
+		} else if (command[i] == "claim" || command[i] == "cancel") {
+			return "button";
+		} else if (command[i] == "draw") {
+			return "draw";
+		} else if (command[i] == "resign") {
+			return "resign";
+		} else if (command[i] == "abort") {
+			return "abort";
+		} else if (command[i] == "rematch") {
+			return "rematch";
+		} else if (command[i] == "confirm") {
+			return "confirm";
+		} else if (command[i] == "analysis") {
+			return "analysis";
+		} else if (command[i] == "zen") {
+			return "zen";
+		} else if (command[i] == "beginning") {
+			return "beginning";
+		} else if (command[i] == "backward") {
+			return "backward";
+		} else if (command[i] == "forward") {
+			return "forward";
+		} else if (command[i] == "end") {
+			return "end";
+		} else if (command[i] == "new") {
+			return "new";
+		} else if (command[i] == "give") {
+			return "give";
+		} else if (command[i] == "castle") {
+			if ((command.includes("king") && command.includes("side")) || command.includes("kingside") || command.includes("short")) {
+				return "0-0";
+			} else if ((command.includes("queen") && command.includes("side")) || command.includes("queenside") || command.includes("long")) {
+				return "0-0-0";
+			} else {
+				return "0";
+			}
 		}
 	}
 
-	//Gets last three commands
-	if (containsThreeCommands(command) || changed) {
-		command = command.slice(command.length - 3, command.length);
+	//Moves
+	for (var i = 0; i < command.length; i++) {
 
-	//Gets last two commands
-	} else {
-		command = command.slice(command.length - 2, command.length);
+		var index = -1;
+
+		//Replaces interpretations with commands
+		for (var j = 0; j < commands.length; j++) {
+			while (grammars[index] != commands[j]) {
+				index++;
+
+				if (command[i] == grammars[index]) {
+					command[i] = commands[j];
+				}
+			}
+		}
+
+		//Replaces more grammars with commands
+		for (var j = 0; j < moreGrammars.length; j++) {
+			if (command[i] == moreGrammars[j]) {
+				command[i] = moreGrammars[++j];
+			}
+		}
+
+		var letters = command[i].split("");
+
+		//Removes non valid commands
+		for (var j = 0; j < letters.length; j++) {
+			if (!isCommand(letters[j])) {
+				command.splice(i, 1);
+				i--;
+				break;
+			}
+		}
 	}
 
+	//Gets last four characters
 	command = command.join("");
+	command = command.slice(-4);
 	return command;
 }
 
