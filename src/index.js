@@ -16,14 +16,14 @@ var grammars = ["knight", "N",
 				"six", "6",
 				"seven", "7",
 				"eight", "8",
-				"a",
-				"b",
-				"c",
-				"d",
-				"e",
-				"f",
-				"g",
-				"h"]
+				"alpha", "a",
+				"beta", "b",
+				"charlie", "c",
+				"delta", "d",
+				"echo", "e",
+				"foxtrot", "f",
+				"golf", "g",
+				"hotel", "h"]
 
 var moreGrammars = ["quincy", "Qc",
 					"queenie", "Qe",
@@ -238,7 +238,12 @@ recognition.onresult = function(event) {
 				document.querySelector(".takeback-yes").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Takeback", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("Takeback", false);
 				}
 			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
 				document.querySelector(".draw-yes").click();
@@ -877,6 +882,8 @@ function speak(command, isMove) {
 		command = "Castles kingside";
 	} else if (command == "O-O-O") {
 		command = "Castles queenside";
+	} else if (command == "O") {
+		command = "Castles";
 	}
 
 	msg.text = command;
