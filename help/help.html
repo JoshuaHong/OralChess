@@ -5,18 +5,20 @@
 		<title>Oral Chess</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="help.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script type="text/javascript" src="help.js"></script>
 	</head>
 
 	<body>
-		<div class="title">
-			<img src="../icons/iconEnabled.png" class="logo"></img>
-			<span class="title">Oral Chess</span>
+		<div id="title">
+			<img src="../icons/iconEnabled.png" id="logo"></img>
+			<span>Oral Chess</span>
 			<hr>
 		</div>
 
-		<div class="content">
+		<div id="content">
 			<h2>About</h2>
-			<p class="about">
+			<p id="about">
 				Oral Chess is a speech recognition extension which provides users with verbal control over peices and commands on Lichess.org.
 				Users have the option to play blindfolded, hear audible responses, receive confirmation and real-time notifications.
 				To contribute suggestions, report issues or for more information, feel free to reach us at OralChess@gmail.com.
@@ -67,5 +69,31 @@
 			<h2>Credits</h2>
 			<p>&copy; Joshua Hong 2018</p>
 		</div>
+
+		<i class="fa fa-lock" id="lock"></i>
+
+		<div id="modal">
+			<div id="modal-content">
+				<div id="input">
+					<span id="input-code"></span>
+					<i class="fa fa-lock" id="input-lock"></i>
+				</div>
+				<div id="buttons">
+					<div class="button">1</div>
+					<div class="button">2</div>
+					<div class="button">3</div>
+					<div class="button">4</div>
+					<div class="button">5</div>
+					<div class="button">6</div>
+					<div class="button">7</div>
+					<div class="button">8</div>
+					<div class="button">9</div>
+					<div class="button" id="backspace">&larr;</div>
+					<div class="button">0</div>
+					<div class="button" id="enter">&rarr;</div>
+				</div>
+			</div>
+		</div>
+
 	</body>
 </html>

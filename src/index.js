@@ -75,6 +75,7 @@ var end = false;
 */
 if (window.location.href.indexOf("lichess.org") != -1) {
 	isLichess = true;
+	console.log("%c Welcome to Oral Chess ", "background: blue; color: black; font-size: 20px;");
 }
 
 
@@ -201,11 +202,12 @@ recognition.onresult = function(event) {
 	if (event.results.length > 0) {
 		var end = false;
 		var command = event.results[0][0].transcript;
-		console.log(command);
+		var logs = command;
 
 		//Keyboard input enabled
 		if (document.querySelector(".ready") != null) {
 			command = getCommand(command);
+			console.log(logs + " => " + command);
 
 			//Confirmation enabled
 			if (addonIsEnabled && (confirmationIsEnabled || confirmationIsEnabled == null)) {
@@ -483,10 +485,8 @@ recognition.onresult = function(event) {
 */
 recognition.onend = function() {
 	if (end) {
-		console.log("ACTUAL END");
 		recognition.stop();
 	} else {
-		console.log("RESTARTING");
 		recognition.start();
 	}
 }
@@ -505,7 +505,6 @@ recognition.onerror = function(event) {
 */
 window.addEventListener('focus', function() {
 	if (addonIsEnabled && isLichess && document.querySelector(".ready") != null) {
-		console.log("FOCUS");
 		end = false;
 		recognition.start();
 	}
@@ -519,7 +518,6 @@ window.addEventListener('focus', function() {
 	Stops speech recognition on blur
 */
 window.addEventListener('blur', function() {
-	console.log("BLUR");
 	end = true;
 	recognition.stop();
 });

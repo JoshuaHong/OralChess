@@ -28,25 +28,132 @@ p {
 	padding-left: 24px;
 }
 
-.title {
+#title {
 	text-align: center;
 	font-size: 25px;
 	padding-top: 10px;
 }
 
-.logo {
+#logo {
 	vertical-align: text-bottom;
 	width: 30px;
 	height: 30px;
 	padding-right: 5px;
 }
 
-.content {
+#content {
 	display: table;
 	margin: auto;
 	width: 1000px;
 }
 
-.about {
+#about {
 	text-align: center;
+}
+
+#lock {
+	font-size: 20px;
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	opacity: 0;
+}
+
+#lock:hover {
+	opacity: 0.2;
+	cursor: pointer;
+}
+
+#modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.8);
+}
+
+#modal-content {
+	background-color: black;
+	margin: auto;
+	padding: 20px;
+	width: 350px;
+	border: 1px solid;
+	border-color: red;
+}
+
+#input {
+	position: relative;
+	text-align: center;
+	width: 85%;
+	height: 60px;
+	line-height: 60px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	background-color: red;
+	vertical-align: center;
+	font-size: 26px;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+#input-lock {
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	vertical-align: middle;
+	font-size: 20px;
+	color: white;
+}
+
+#buttons {
+	display: flex;
+	font-family: Helvetica;
+	font-weight: 400;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin: 0 auto;
+	width: 320px;
+}
+
+.button {
+	border: 3px solid #006494;
+	border-radius: 50px;
+	color: #006494;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 26px;
+	height: 80px;
+	line-height: 80px;
+	margin: 10px;
+	text-align: center;
+	width: 80px;
+	transition: all 0.3s;
+}
+
+.button:hover {
+	background-color: #006494;
+	color: #FFFFFF;
+}
+
+.shake {
+	animation: shake 0.5s; 
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
