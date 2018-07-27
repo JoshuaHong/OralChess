@@ -179,8 +179,3 @@ body {
 	cursor: pointer;
 	opacity: 1;
 }
-
-.help:active {
-	border-color: blue;
-	color: blue;
-}
