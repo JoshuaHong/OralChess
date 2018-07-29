@@ -240,12 +240,12 @@ recognition.onresult = function(event) {
 				document.querySelector(".takeback-yes").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification("Takeback", theme.DEFAULT);
+					notification("Takeback Proposed", theme.DEFAULT);
 				}
 
 				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
 					speechSynthesis.cancel();
-					speak("Takeback", false);
+					speak("takeback proposed", false);
 				}
 			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
 				document.querySelector(".draw-yes").click();
@@ -254,111 +254,192 @@ recognition.onresult = function(event) {
 				}
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Draw Offered", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("draw offered", false);
 				}
 			} else if (command == "resign" && document.querySelector(".resign-confirm") != null) {
 				document.querySelector(".resign-confirm").click();
 				if (document.querySelector(".yes") != null) {
 					document.querySelector(".yes").click();
 				}
-
-				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
-				}
 			} else if (command == "abort" && document.querySelector(".abort") != null) {
 				document.querySelector(".abort").click();
-
-				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
-				}
 			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
 				document.querySelector(".rematch").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Rematch Offered", theme.DEFAULT);
 				}
-			} else if (command == "button" && document.querySelector(".button") != null) {
-				document.querySelector(".button").click();
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("rematch offered", false);
+				}
+			} else if (command == "accept" && document.querySelector(".accept") != null) {
+				document.querySelector(".accept").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Accepted", theme.DEFAULT);
+				}
+			} else if (command == "decline") {
+				if (document.querySelector(".decline") != null) {
+					document.querySelector(".decline").click();
+				} else if (document.querySelector(".rematch-decline") != null) {
+					document.querySelector(".rematch-decline").click();
+				}
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("Declined", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("declined", false);
+				}
+			} else if (command == "claim" && document.querySelector(".button") != null) {
+				document.querySelector(".button").click();
+			} else if (command == "cancel" && document.querySelector(".button") != null) {
+				if (document.querySelector(".rematch-decline") != null) {
+					document.querySelector(".rematch-decline").click();
+				} else {
+					document.querySelector(".button").click();
+				}
+
+				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					notification("Cancelled", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("cancelled", false);
 				}
 			} else if (command == "analysis" && document.querySelector(".analysis") != null) {
 				document.querySelector(".analysis").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Analysis Mode", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("analysis mode", false);
 				}
 			} else if (command == "zen" && document.querySelector(".fbt") != null) {
 				document.querySelector(".fbt").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Zen Mode", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("zen mode", false);
 				}
 			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
 				document.querySelectorAll(".button")[1].click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("New Game", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("new game", false);
 				}
 			} else if (command == "give" && document.querySelector(".moretime") != null) {
 				document.querySelector(".moretime").click();
 
 				if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-					notification(command, theme.DEFAULT);
+					notification("Gave 15 Seconds", theme.DEFAULT);
+				}
+
+				if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					speechSynthesis.cancel();
+					speak("gave 15 seconds", false);
 				}
 			} else if (command == "blindfold") {
 				if (blindfoldIsEnabled) {
 					disableBlindfold();
-					chrome.storage.local.set({
-						blindfoldIsEnabled: false
-					});
-					blindfoldIsEnabled = false;
 
 					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 						notification("Blindfold Disabled", theme.DEFAULT);
 					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("blindfold disabled", false);
+					}
+
+					chrome.storage.local.set({
+						blindfoldIsEnabled: false
+					});
+					blindfoldIsEnabled = false;
 				} else {
 					enableBlindfold();
-					chrome.storage.local.set({
-						blindfoldIsEnabled: true
-					});
-					blindfoldIsEnabled = true;
 
 					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 						notification("Blindfold Enabled", theme.DEFAULT);
 					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("blindfold enabled", false);
+					}
+
+					chrome.storage.local.set({
+						blindfoldIsEnabled: true
+					});
+					blindfoldIsEnabled = true;
 				}
 			} else if (command == "confirmation") {
 				if (confirmationIsEnabled) {
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Confirmation Disabled", theme.DEFAULT);
+					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("confirmation disabled", false);
+					}
+
 					chrome.storage.local.set({
 						confirmationIsEnabled: false
 					});
 					confirmationIsEnabled = false;
-
-					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-						notification("Confirmation Disabled", theme.DEFAULT);
-					}
 				} else {
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Confirmation Enabled", theme.DEFAULT);
+					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("confirmation enabled", false);
+					}
+
 					chrome.storage.local.set({
 						confirmationIsEnabled: true
 					});
 					confirmationIsEnabled = true;
-
-					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-						notification("Confirmation Enabled", theme.DEFAULT);
-					}
 				}
 			} else if (command == "notification") {
 				if (notificationIsEnabled) {
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Notification Disabled", theme.DEFAULT);
+					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("notification disabled", false);
+					}
+
 					chrome.storage.local.set({
 						notificationIsEnabled: false
 					});
 					notificationIsEnabled = false;
-
-					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-						notification("Notification Disabled", theme.DEFAULT);
-					}
 				} else {
 					chrome.storage.local.set({
 						notificationIsEnabled: true
@@ -368,17 +449,27 @@ recognition.onresult = function(event) {
 					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 						notification("Notification Enabled", theme.DEFAULT);
 					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("notification enabled", false);
+					}
 				}
 			} else if (command == "text to speech") {
 				if (textToSpeechIsEnabled) {
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+						notification("Text To Speech Disabled", theme.DEFAULT);
+					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("text to speech disabled", false);
+					}
+
 					chrome.storage.local.set({
 						textToSpeechIsEnabled: false
 					});
 					textToSpeechIsEnabled = false;
-
-					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
-						notification("Text To Speech Disabled", theme.DEFAULT);
-					}
 				} else {
 					chrome.storage.local.set({
 						textToSpeechIsEnabled: true
@@ -387,6 +478,11 @@ recognition.onresult = function(event) {
 
 					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 						notification("Text To Speech Enabled", theme.DEFAULT);
+					}
+
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
+						speak("text to speech enabled", false);
 					}
 				}
 			} else if (command == "0-0") {
@@ -590,46 +686,50 @@ function getCommand(command) {
 
 	//Commands
 	for (var i = 0; i < command.length; i++) {
-		if (command[i] == "yes") {
-			return "yes";
+		if (command[i] == "yes" || command[i] == "confirm") {
+			return "yes";																												//Confirms command
 		} else if (command[i] == "blindfold") {
-			return "blindfold";
+			return "blindfold";																											//Toggles blindfold
 		} else if (command[i] == "confirmation") {
-			return "confirmation";
+			return "confirmation";																										//Toggles confirmation
 		} else if (command[i] == "notification") {
-			return "notification";
+			return "notification";																										//Toggles notification
 		} else if (command[i] == "text" && command[i + 1] == "to" && command[i + 2] == "speech") {
-			return "text to speech";
-		} else if (command[i] == "take" && command[i + 1] == "back") {
-			return "takeback";
-		} else if (command[i] == "claim" || command[i] == "cancel") {
-			return "button";
+			return "text to speech";																									//Toggles text to speech
+		} else if ((command[i] == "take" && command[i + 1] == "back") || command[i] == "takeback") {
+			return "takeback";																											//Proposes takeback
+		} else if (command[i] == "claim") {
+			return "claim";																												//Claims draw
+		} else if (command[i] == "cancel") {
+			return "cancel";																											//Cancels takeback
 		} else if (command[i] == "draw") {
-			return "draw";
+			return "draw";																												//Offers draw
 		} else if (command[i] == "resign") {
-			return "resign";
+			return "resign";																											//Resigns game
 		} else if (command[i] == "abort") {
-			return "abort";
+			return "abort";																												//Aborts game
 		} else if (command[i] == "rematch") {
-			return "rematch";
-		} else if (command[i] == "confirm") {
-			return "confirm";
+			return "rematch";																											//Offers rematch
+		} else if (command[i] == "accept") {
+			return "accept";																											//Accepts offer
+		} else if (command[i] == "decline") {
+			return "decline";																											//Declines offer
 		} else if (command[i] == "analysis") {
-			return "analysis";
+			return "analysis";																											//Analysis mode
 		} else if (command[i] == "zen") {
-			return "zen";
-		} else if (command[i] == "beginning") {
-			return "beginning";
-		} else if (command[i] == "backward") {
-			return "backward";
-		} else if (command[i] == "forward") {
-			return "forward";
-		} else if (command[i] == "end") {
-			return "end";
+			return "zen";																												//Zen mode
+		} else if (command[i] == "beginning" || command[i] == "first") {
+			return "beginning";																											//First move
+		} else if (command[i] == "backward" || command[i] == "backwards" || command[i] == "back" || command[i] == "previous") {
+			return "backward";																											//Previous move
+		} else if (command[i] == "forward" || command[i] == "forwards" || command[i] == "next") {
+			return "forward";																											//Next move
+		} else if (command[i] == "end" || command[i] == "last") {
+			return "end";																												//Last move
 		} else if (command[i] == "new") {
-			return "new";
+			return "new";																												//New game
 		} else if (command[i] == "give") {
-			return "give";
+			return "give";																												//Gives 15 seconds
 		} else if (command[i] == "castle") {
 			if ((command.includes("king") && command.includes("side")) || command.includes("kingside") || command.includes("short")) {
 				return "0-0";
