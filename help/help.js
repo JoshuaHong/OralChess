@@ -8,7 +8,7 @@ var buttons;
 var input;
 var inputCode;
 var inputLock;
-var key = 1; //Math.floor(Math.random() * 1000000000000000);
+var key = 815147;
 
 
 /*

@@ -461,7 +461,7 @@ recognition.onresult = function(event) {
 						notification("Text To Speech Disabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
 						speechSynthesis.cancel();
 						speak("text to speech disabled", false);
 					}
@@ -481,7 +481,6 @@ recognition.onresult = function(event) {
 					}
 
 					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
-						speechSynthesis.cancel();
 						speak("text to speech enabled", false);
 					}
 				}
@@ -692,7 +691,7 @@ function getCommand(command) {
 			return "blindfold";																											//Toggles blindfold
 		} else if (command[i] == "confirmation") {
 			return "confirmation";																										//Toggles confirmation
-		} else if (command[i] == "notification") {
+		} else if (command[i] == "notification" || command[i] == "notifications") {
 			return "notification";																										//Toggles notification
 		} else if (command[i] == "text" && command[i + 1] == "to" && command[i + 2] == "speech") {
 			return "text to speech";																									//Toggles text to speech
