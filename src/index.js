@@ -461,7 +461,7 @@ recognition.onresult = function(event) {
 						notification("Text To Speech Disabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && (notificationIsEnabled || notificationIsEnabled == null)) {
+					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
 						speechSynthesis.cancel();
 						speak("text to speech disabled", false);
 					}
@@ -481,6 +481,7 @@ recognition.onresult = function(event) {
 					}
 
 					if (addonIsEnabled && (textToSpeechIsEnabled || textToSpeechIsEnabled == null)) {
+						speechSynthesis.cancel();
 						speak("text to speech enabled", false);
 					}
 				}
