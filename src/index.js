@@ -317,130 +317,168 @@ recognition.onresult = function(event) {
 			}
 
 			//Executes commands
-			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
-				document.querySelector(".takeback-yes").click();
+			if (command == "takeback") {
+				if (document.querySelector(".takeback-yes") != null) {
+					document.querySelector(".takeback-yes").click();
 
-				if (notificationIsEnabled) {
-					notification("Takeback Proposed", theme.DEFAULT);
-				}
+					if (notificationIsEnabled) {
+						notification("Takeback Proposed", theme.DEFAULT);
+					}
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("takeback proposed", false);
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("takeback proposed", false);
+					}
 				}
-			} else if (command == "draw" && document.querySelector(".draw-yes") != null) {
-				document.querySelector(".draw-yes").click();
-				if (document.querySelector(".yes") != null) {
-					document.querySelector(".yes").click();
-				}
+			} else if (command == "draw") {
+				if (document.querySelector(".draw-yes") != null) {
+					document.querySelector(".draw-yes").click();
 
-				if (notificationIsEnabled) {
-					notification("Draw Offered", theme.DEFAULT);
-				}
+					if (document.querySelector(".yes") != null) {
+						document.querySelector(".yes").click();
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("draw offered", false);
-				}
-			} else if (command == "resign" && document.querySelector(".resign-confirm") != null) {
-				document.querySelector(".resign-confirm").click();
-				if (document.querySelector(".yes") != null) {
-					document.querySelector(".yes").click();
-				}
-			} else if (command == "abort" && document.querySelector(".abort") != null) {
-				document.querySelector(".abort").click();
-			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
-				document.querySelector(".rematch").click();
+						if (notificationIsEnabled) {
+							notification("Draw Offered", theme.DEFAULT);
+						}
 
-				if (notificationIsEnabled) {
-					notification("Rematch Offered", theme.DEFAULT);
+						if (textToSpeechIsEnabled) {
+							speechSynthesis.cancel();
+							speak("draw offered", false);
+						}
+					}
 				}
+			} else if (command == "resign") {
+				if (document.querySelector(".resign-confirm") != null) {
+					document.querySelector(".resign-confirm").click();
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("rematch offered", false);
+					if (document.querySelector(".yes") != null) {
+						document.querySelector(".yes").click();
+					}
 				}
-			} else if (command == "accept" && document.querySelector(".accept") != null) {
-				document.querySelector(".accept").click();
+			} else if (command == "abort") {
+				if (document.querySelector(".abort") != null) {
+					document.querySelector(".abort").click();
+				}
+			} else if (command == "rematch") {
+				if (document.querySelector(".rematch") != null) {
+					document.querySelector(".rematch").click();
 
-				if (notificationIsEnabled) {
-					notification("Accepted", theme.DEFAULT);
+					if (notificationIsEnabled) {
+						notification("Rematch Offered", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("rematch offered", false);
+					}
+				}
+			} else if (command == "accept") {
+				if (document.querySelector(".accept") != null) {
+					document.querySelector(".accept").click();
+
+					if (notificationIsEnabled) {
+						notification("Accepted", theme.DEFAULT);
+					}
 				}
 			} else if (command == "decline") {
 				if (document.querySelector(".decline") != null) {
 					document.querySelector(".decline").click();
+
+					if (notificationIsEnabled) {
+						notification("Declined", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("declined", false);
+					}
 				} else if (document.querySelector(".rematch-decline") != null) {
 					document.querySelector(".rematch-decline").click();
-				}
 
-				if (notificationIsEnabled) {
-					notification("Declined", theme.DEFAULT);
-				}
+					if (notificationIsEnabled) {
+						notification("Declined", theme.DEFAULT);
+					}
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("declined", false);
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("declined", false);
+					}
 				}
-			} else if (command == "claim" && document.querySelector(".button") != null) {
-				document.querySelector(".button").click();
-			} else if (command == "cancel" && document.querySelector(".button") != null) {
+			} else if (command == "cancel") {
 				if (document.querySelector(".rematch-decline") != null) {
 					document.querySelector(".rematch-decline").click();
-				} else {
+
+					if (notificationIsEnabled) {
+						notification("Declined", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("declined", false);
+					}
+				} else if (document.querySelector(".button") != null && document.querySelector(".button").innerHTML == "Cancel") {
 					document.querySelector(".button").click();
-				}
 
-				if (notificationIsEnabled) {
-					notification("Cancelled", theme.DEFAULT);
-				}
+					if (notificationIsEnabled) {
+						notification("Cancelled", theme.DEFAULT);
+					}
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("cancelled", false);
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("cancelled", false);
+					}
 				}
-			} else if (command == "analysis" && document.querySelector(".analysis") != null) {
-				document.querySelector(".analysis").click();
+			} else if (command == "analysis") {
+				if (document.querySelector(".analysis") != null) {
+					document.querySelector(".analysis").click();
 
-				if (notificationIsEnabled) {
-					notification("Analysis Mode", theme.DEFAULT);
+					if (notificationIsEnabled) {
+						notification("Analysis Mode", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("analysis mode", false);
+					}
 				}
+			} else if (command == "zen") {
+				if (document.querySelector(".fbt") != null) {
+					document.querySelector(".fbt").click();
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("analysis mode", false);
+					if (notificationIsEnabled) {
+						notification("Zen Mode", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("zen mode", false);
+					}
 				}
-			} else if (command == "zen" && document.querySelector(".fbt") != null) {
-				document.querySelector(".fbt").click();
+			} else if (command == "new") {
+				if (document.querySelectorAll(".button")[1] != null && document.querySelectorAll(".button")[1].innerHTML == "New opponent") {
+					document.querySelectorAll(".button")[1].click();
 
-				if (notificationIsEnabled) {
-					notification("Zen Mode", theme.DEFAULT);
+					if (notificationIsEnabled) {
+						notification("New Game", theme.DEFAULT);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("new game", false);
+					}
 				}
+			} else if (command == "give") {
+				if (document.querySelector(".moretime") != null) {
+					document.querySelector(".moretime").click();
 
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("zen mode", false);
-				}
-			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
-				document.querySelectorAll(".button")[1].click();
+					if (notificationIsEnabled) {
+						notification("Gave 15 Seconds", theme.DEFAULT);
+					}
 
-				if (notificationIsEnabled) {
-					notification("New Game", theme.DEFAULT);
-				}
-
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("new game", false);
-				}
-			} else if (command == "give" && document.querySelector(".moretime") != null) {
-				document.querySelector(".moretime").click();
-
-				if (notificationIsEnabled) {
-					notification("Gave 15 Seconds", theme.DEFAULT);
-				}
-
-				if (textToSpeechIsEnabled) {
-					speechSynthesis.cancel();
-					speak("gave 15 seconds", false);
+					if (textToSpeechIsEnabled) {
+						speechSynthesis.cancel();
+						speak("gave 15 seconds", false);
+					}
 				}
 			} else if (command == "blindfold") {
 				if (blindfoldIsEnabled) {
@@ -779,10 +817,8 @@ function getCommand(command) {
 			return "text to speech";																									//Toggles text to speech
 		} else if ((command[i] == "take" && command[i + 1] == "back") || command[i] == "takeback") {
 			return "takeback";																											//Proposes takeback
-		} else if (command[i] == "claim") {
-			return "claim";																												//Claims draw
 		} else if (command[i] == "cancel") {
-			return "cancel";																											//Cancels takeback
+			return "cancel";																											//Cancels takeback or rematch offer
 		} else if (command[i] == "draw") {
 			return "draw";																												//Offers draw
 		} else if (command[i] == "resign") {
