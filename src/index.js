@@ -192,7 +192,7 @@ chrome.storage.onChanged.addListener(function() {
 			addonIsEnabled = false;
 		}
 
-		//Blindfold Status
+		//Blindfold status
 		if (item.blindfoldIsEnabled != null) {
 			blindfoldIsEnabled = item.blindfoldIsEnabled;
 		} else {
