@@ -91,60 +91,71 @@ getStatus();
 	Gets button status
 */
 chrome.storage.local.get(null, function(item) {
+
+	//Chrome status
 	if (item.isChrome != null) {
 		isChrome = item.isChrome;
 	} else {
 		isChrome = false;
 	}
 
+	//Addon status
 	if (item.addonIsEnabled != null) {
 		addonIsEnabled = item.addonIsEnabled;
 	} else {
 		addonIsEnabled = false;
 	}
 
+	//Blindfold status
 	if (item.blindfoldIsEnabled != null) {
 		blindfoldIsEnabled = item.blindfoldIsEnabled;
 	} else {
 		blindfoldIsEnabled = false;
 	}
 
+	//Confirmation status
 	if (item.confirmationIsEnabled != null) {
 		confirmationIsEnabled = item.confirmationIsEnabled;
 	} else {
 		confirmationIsEnabled = true;
 	}
 
+	//Notification status
 	if (item.notificationIsEnabled != null) {
 		notificationIsEnabled = item.notificationIsEnabled;
 	} else {
 		notificationIsEnabled = true;
 	}
 
+	//Text to speech status
 	if (item.textToSpeechIsEnabled != null) {
 		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
 	} else {
 		textToSpeechIsEnabled = true;
 	}
 
+	//Volume status
 	if (item.volumeValue != null) {
 		msg.volume = item.volumeValue;
 	} else {
 		msg.volume = 1;
 	}
 
+	//Rate status
 	if (item.rateValue != null) {
 		msg.rate = item.rateValue;
 	} else {
 		msg.rate = 1;
 	}
 
+	//Pitch status
 	if (item.pitchValue != null) {
 		msg.pitch = item.pitchValue;
 	} else {
 		msg.pitch = 1;
 	}
 
+	//Voice status
 	if (item.voiceValue != null) {
 		msg.voice = speechSynthesis.getVoices()[item.voiceValue];
 
@@ -173,48 +184,58 @@ chrome.storage.local.get(null, function(item) {
 */
 chrome.storage.onChanged.addListener(function() {
 	chrome.storage.local.get(null, function(item) {
+
+		//Addon status
 		if (item.addonIsEnabled != null) {
 			addonIsEnabled = item.addonIsEnabled;
 		} else {
 			addonIsEnabled = false;
 		}
 
+		//Blindfold Status
 		if (item.blindfoldIsEnabled != null) {
 			blindfoldIsEnabled = item.blindfoldIsEnabled;
 		} else {
 			blindfoldIsEnabled = false;
 		}
 
+		//Confirmation status
 		if (item.confirmationIsEnabled != null) {
 			confirmationIsEnabled = item.confirmationIsEnabled;
 		} else {
 			confirmationIsEnabled = true;
 		}
 
+		//Notification status
 		if (item.notificationIsEnabled != null) {
 			notificationIsEnabled = item.notificationIsEnabled;
 		} else {
 			notificationIsEnabled = true;
 		}
 
+		//Text to speech status
 		if (item.textToSpeechIsEnabled != null) {
 			textToSpeechIsEnabled = item.textToSpeechIsEnabled;
 		} else {
 			textToSpeechIsEnabled = true;
 		}
 
+		//Volume status
 		if (item.volumeValue != null) {
 			msg.volume = item.volumeValue;
 		}
 
+		//Rate status
 		if (item.rateValue != null) {
 			msg.rate = item.rateValue;
 		}
 
+		//Pitch status
 		if (item.pitchValue != null) {
 			msg.pitch = item.pitchValue;
 		}
 
+		//Voice status
 		if (item.voiceValue != null) {
 			msg.voice = speechSynthesis.getVoices()[item.voiceValue];
 		} else {
@@ -270,7 +291,7 @@ recognition.onresult = function(event) {
 			console.log(logs + " => " + command);
 
 			//Confirmation enabled
-			if (addonIsEnabled && confirmationIsEnabled) {
+			if (confirmationIsEnabled) {
 
 				//Confirmation confirmed
 				if (command == "yes") {
@@ -281,7 +302,7 @@ recognition.onresult = function(event) {
 					previousCommand = command;
 
 					//Notification
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification(command + "?", theme.WARNING);
 					}
 
@@ -299,11 +320,11 @@ recognition.onresult = function(event) {
 			if (command == "takeback" && document.querySelector(".takeback-yes") != null) {
 				document.querySelector(".takeback-yes").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Takeback Proposed", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("takeback proposed", false);
 				}
@@ -313,11 +334,11 @@ recognition.onresult = function(event) {
 					document.querySelector(".yes").click();
 				}
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Draw Offered", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("draw offered", false);
 				}
@@ -331,18 +352,18 @@ recognition.onresult = function(event) {
 			} else if (command == "rematch" && document.querySelector(".rematch") != null) {
 				document.querySelector(".rematch").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Rematch Offered", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("rematch offered", false);
 				}
 			} else if (command == "accept" && document.querySelector(".accept") != null) {
 				document.querySelector(".accept").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Accepted", theme.DEFAULT);
 				}
 			} else if (command == "decline") {
@@ -352,11 +373,11 @@ recognition.onresult = function(event) {
 					document.querySelector(".rematch-decline").click();
 				}
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Declined", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("declined", false);
 				}
@@ -369,55 +390,55 @@ recognition.onresult = function(event) {
 					document.querySelector(".button").click();
 				}
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Cancelled", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("cancelled", false);
 				}
 			} else if (command == "analysis" && document.querySelector(".analysis") != null) {
 				document.querySelector(".analysis").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Analysis Mode", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("analysis mode", false);
 				}
 			} else if (command == "zen" && document.querySelector(".fbt") != null) {
 				document.querySelector(".fbt").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Zen Mode", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("zen mode", false);
 				}
 			} else if (command == "new" && document.querySelectorAll(".button")[1] != null) {
 				document.querySelectorAll(".button")[1].click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("New Game", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("new game", false);
 				}
 			} else if (command == "give" && document.querySelector(".moretime") != null) {
 				document.querySelector(".moretime").click();
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Gave 15 Seconds", theme.DEFAULT);
 				}
 
-				if (addonIsEnabled && textToSpeechIsEnabled) {
+				if (textToSpeechIsEnabled) {
 					speechSynthesis.cancel();
 					speak("gave 15 seconds", false);
 				}
@@ -425,11 +446,11 @@ recognition.onresult = function(event) {
 				if (blindfoldIsEnabled) {
 					disableBlindfold();
 
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Blindfold Disabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("blindfold disabled", false);
 					}
@@ -441,11 +462,11 @@ recognition.onresult = function(event) {
 				} else {
 					enableBlindfold();
 
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Blindfold Enabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("blindfold enabled", false);
 					}
@@ -457,11 +478,11 @@ recognition.onresult = function(event) {
 				}
 			} else if (command == "confirmation") {
 				if (confirmationIsEnabled) {
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Confirmation Disabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("confirmation disabled", false);
 					}
@@ -471,11 +492,11 @@ recognition.onresult = function(event) {
 					});
 					confirmationIsEnabled = false;
 				} else {
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Confirmation Enabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("confirmation enabled", false);
 					}
@@ -487,11 +508,9 @@ recognition.onresult = function(event) {
 				}
 			} else if (command == "notification") {
 				if (notificationIsEnabled) {
-					if (addonIsEnabled && notificationIsEnabled) {
-						notification("Notification Disabled", theme.DEFAULT);
-					}
+					notification("Notification Disabled", theme.DEFAULT);
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("notification disabled", false);
 					}
@@ -506,21 +525,20 @@ recognition.onresult = function(event) {
 					});
 					notificationIsEnabled = true;
 
-					if (addonIsEnabled && notificationIsEnabled) {
-						notification("Notification Enabled", theme.DEFAULT);
-					}
+					notification("Notification Enabled", theme.DEFAULT);
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
+					if (textToSpeechIsEnabled) {
 						speechSynthesis.cancel();
 						speak("notification enabled", false);
 					}
 				}
 			} else if (command == "text to speech") {
 				if (textToSpeechIsEnabled) {
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Text To Speech Disabled", theme.DEFAULT);
 					}
 
+					//Overrides disabled text to speech to speak
 					speechSynthesis.cancel();
 					var utterance = new SpeechSynthesisUtterance("text to speech disabled");
 					utterance.volume = msg.volume;
@@ -541,14 +559,12 @@ recognition.onresult = function(event) {
 					});
 					textToSpeechIsEnabled = true;
 
-					if (addonIsEnabled && notificationIsEnabled) {
+					if (notificationIsEnabled) {
 						notification("Text To Speech Enabled", theme.DEFAULT);
 					}
 
-					if (addonIsEnabled && textToSpeechIsEnabled) {
-						speechSynthesis.cancel();
-						speak("text to speech enabled", false);
-					}
+					speechSynthesis.cancel();
+					speak("text to speech enabled", false);
 				}
 			} else if (command == "0-0") {
 
@@ -587,28 +603,28 @@ recognition.onresult = function(event) {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':38,'which':38}));
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("First Move", theme.DEFAULT);
 				}
 			} else if (command == "backward") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':37,'which':37}));
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Previous Move", theme.DEFAULT);
 				}
 			} else if (command == "forward") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':39,'which':39}));
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Next Move", theme.DEFAULT);
 				}
 			} else if (command == "end") {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':40,'which':40}));
 
-				if (addonIsEnabled && notificationIsEnabled) {
+				if (notificationIsEnabled) {
 					notification("Latest Move", theme.DEFAULT);
 				}
 			} else if (command == "Q") {
