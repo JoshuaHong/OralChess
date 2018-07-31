@@ -202,7 +202,7 @@ chrome.storage.onChanged.addListener(function() {
 		} else {
 			textToSpeechIsEnabled = true;
 		}
-		
+
 		if (item.volumeValue != null) {
 			msg.volume = item.volumeValue;
 		}
