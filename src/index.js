@@ -164,9 +164,21 @@ chrome.storage.local.get(null, function(item) {
 	}
 
 	if (isChrome) {
+
 		//Executes speech recognition if in game
 		if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
 			recognition.start();
+
+			//Alerts new game
+			if (document.querySelector(".moves") != null && !document.querySelector(".moves").hasChildNodes()) {
+				if (notificationIsEnabled) {
+					notification("Start", theme.SUCCESS);
+				}
+
+				if (textToSpeechIsEnabled) {
+					speak("start", false);
+				}
+			}
 		}
 
 		//Executes blindfold if blindfold enabled
