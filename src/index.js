@@ -27,7 +27,9 @@ var grammars = ["knight", "N",
 
 var moreGrammars = ["quincy", "Qc",
 					"queenie", "Qe",
-					"88", "ad8"];
+					"88", "ad8",
+					"pre-move", "premove",
+					"remove", "premove"];
 
 //Speech commands
 var commands = ["N", "B", "R", "Q", "K",
@@ -694,12 +696,25 @@ recognition.onresult = function(event) {
 					document.querySelectorAll(".bishop")[i].click();
 				}
 			} else if (command != "") {
+
+				//Premoves
+				if (command.includes("premove")) {
+					command = command.split(" ");
+					command = command.pop();
+
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.querySelector(".ready").value = command;
+					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+
+					return;
+				}
+
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 			}
 
-			//Clears keyboard input
+			//Clears keyboard input if no premove
 			document.querySelector(".ready").value = "";
 			document.querySelector(".ready").classList.remove('wrong');
 		}
@@ -811,8 +826,14 @@ var observer = new MutationObserver(function(mutations) {
 	Parses command
 */
 function getCommand(command) {
+	var premove = false;
 	var command = command;
 	command = command.toLowerCase();
+
+	//Replaces multi-word grammars
+	command = command.replace(new RegExp("pre move", 'g'), "premove");
+
+	//Splits by spaces
 	command = command.split(" ");
 
 	//Commands
@@ -887,10 +908,19 @@ function getCommand(command) {
 		}
 
 		//Replaces more grammars with commands
-		for (var j = 0; j < moreGrammars.length; j++) {
+		for (var j = 0; j < moreGrammars.length; j += 2) {
 			if (command[i] == moreGrammars[j]) {
-				command[i] = moreGrammars[++j];
+				command[i] = moreGrammars[j + 1];
 			}
+		}
+
+
+		//Parses premoves
+		if (command[i] == "premove") {
+			premove = true;
+			command.splice(i, 1);
+			i--;
+			break;
 		}
 
 		var letters = command[i].split("");
@@ -908,6 +938,12 @@ function getCommand(command) {
 	//Gets last four characters
 	command = command.join("");
 	command = command.slice(-4);
+
+	//Adds premoves
+	if (premove) {
+		command = "premove " + command;
+	}
+
 	return command;
 }
 
