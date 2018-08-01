@@ -697,11 +697,11 @@ recognition.onresult = function(event) {
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
-				return;
 			}
 
-			//Clears keyboard input if no premove
+			//Clears keyboard input
 			document.querySelector(".ready").value = "";
+			document.querySelector(".ready").classList.remove('wrong');
 		}
 	}
 }
