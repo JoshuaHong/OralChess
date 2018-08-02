@@ -31,6 +31,8 @@ var moreGrammars = ["quincy", "Qc",
 					"pre-move", "premove",
 					"remove", "premove"];
 
+var multiWordGrammars = ["pre move", "premove"];
+
 //Speech commands
 var commands = ["N", "B", "R", "Q", "K",
 				"1", "2", "3", "4", "5", "6", "7", "8",
@@ -73,122 +75,135 @@ var end = false;
 
 
 /*
-	Checks for Lichess
+	On load
 */
-if (window.location.href.indexOf("lichess.org") != -1) {
-	isLichess = true;
-	console.log("%c Welcome to Oral Chess ", "background: blue; color: black; font-size: 20px;");
-} else {
-	isLichess = false;
-}
+window.addEventListener("load", function() {
 
-
-/*
-	Sets notice text
-*/
-getStatus();
-
-
-/*
-	Gets button status
-*/
-chrome.storage.local.get(null, function(item) {
-
-	//Chrome status
-	if (item.isChrome != null) {
-		isChrome = item.isChrome;
+	//Checks for Lichess
+	if (window.location.href.indexOf("lichess.org") != -1) {
+		isLichess = true;
+		console.log("%c Welcome to Oral Chess ", "background: blue; color: black; font-size: 20px;");
 	} else {
-		isChrome = false;
+		isLichess = false;
 	}
 
-	//Addon status
-	if (item.addonIsEnabled != null) {
-		addonIsEnabled = item.addonIsEnabled;
-	} else {
-		addonIsEnabled = false;
-	}
+	//Sets notice text
+	getStatus();
 
-	//Blindfold status
-	if (item.blindfoldIsEnabled != null) {
-		blindfoldIsEnabled = item.blindfoldIsEnabled;
-	} else {
-		blindfoldIsEnabled = false;
-	}
+	//Gets button status
+	chrome.storage.local.get(null, function(item) {
 
-	//Confirmation status
-	if (item.confirmationIsEnabled != null) {
-		confirmationIsEnabled = item.confirmationIsEnabled;
-	} else {
-		confirmationIsEnabled = true;
-	}
+		//Chrome status
+		if (item.isChrome != null) {
+			isChrome = item.isChrome;
+		} else {
+			isChrome = false;
+		}
 
-	//Notification status
-	if (item.notificationIsEnabled != null) {
-		notificationIsEnabled = item.notificationIsEnabled;
-	} else {
-		notificationIsEnabled = true;
-	}
+		//Addon status
+		if (item.addonIsEnabled != null) {
+			addonIsEnabled = item.addonIsEnabled;
+		} else {
+			addonIsEnabled = false;
+		}
 
-	//Text to speech status
-	if (item.textToSpeechIsEnabled != null) {
-		textToSpeechIsEnabled = item.textToSpeechIsEnabled;
-	} else {
-		textToSpeechIsEnabled = true;
-	}
+		//Blindfold status
+		if (item.blindfoldIsEnabled != null) {
+			blindfoldIsEnabled = item.blindfoldIsEnabled;
+		} else {
+			blindfoldIsEnabled = false;
+		}
 
-	//Volume status
-	if (item.volumeValue != null) {
-		msg.volume = item.volumeValue;
-	} else {
-		msg.volume = 1;
-	}
+		//Confirmation status
+		if (item.confirmationIsEnabled != null) {
+			confirmationIsEnabled = item.confirmationIsEnabled;
+		} else {
+			confirmationIsEnabled = true;
+		}
 
-	//Rate status
-	if (item.rateValue != null) {
-		msg.rate = item.rateValue;
-	} else {
-		msg.rate = 1;
-	}
+		//Notification status
+		if (item.notificationIsEnabled != null) {
+			notificationIsEnabled = item.notificationIsEnabled;
+		} else {
+			notificationIsEnabled = true;
+		}
 
-	//Pitch status
-	if (item.pitchValue != null) {
-		msg.pitch = item.pitchValue;
-	} else {
-		msg.pitch = 1;
-	}
+		//Text to speech status
+		if (item.textToSpeechIsEnabled != null) {
+			textToSpeechIsEnabled = item.textToSpeechIsEnabled;
+		} else {
+			textToSpeechIsEnabled = true;
+		}
 
-	//Voice status
-	if (item.voiceValue != null) {
-		msg.voice = speechSynthesis.getVoices()[item.voiceValue];
+		//Volume status
+		if (item.volumeValue != null) {
+			msg.volume = item.volumeValue;
+		} else {
+			msg.volume = 1;
+		}
 
-	} else {
-		msg.voice = speechSynthesis.getVoices()[0];
-	}
+		//Rate status
+		if (item.rateValue != null) {
+			msg.rate = item.rateValue;
+		} else {
+			msg.rate = 1;
+		}
 
-	if (isChrome) {
+		//Pitch status
+		if (item.pitchValue != null) {
+			msg.pitch = item.pitchValue;
+		} else {
+			msg.pitch = 1;
+		}
 
-		//Executes speech recognition if in game
-		if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
-			recognition.start();
+		//Voice status
+		if (item.voiceValue != null) {
+			msg.voice = speechSynthesis.getVoices()[item.voiceValue];
 
-			//Alerts new game
-			if (document.querySelector(".moves") != null && !document.querySelector(".moves").hasChildNodes()) {
-				if (notificationIsEnabled) {
-					notification("Start", theme.SUCCESS);
-				}
+		} else {
+			msg.voice = speechSynthesis.getVoices()[0];
+		}
 
-				if (textToSpeechIsEnabled) {
-					speak("start", false);
+		if (isChrome) {
+
+			//Executes speech recognition if in game
+			if (addonIsEnabled && isLichess && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
+				recognition.start();
+
+				//Alerts new game
+				if (document.querySelector(".moves") != null && !document.querySelector(".moves").hasChildNodes()) {
+					if (notificationIsEnabled) {
+						notification("Start", theme.SUCCESS);
+					}
+
+					if (textToSpeechIsEnabled) {
+						speak("start", false);
+					}
 				}
 			}
-		}
 
-		//Executes blindfold if blindfold enabled
-		if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
-			setTimeout(function() {
+			//Executes blindfold if blindfold enabled
+			if (document.querySelector("#lichess") != null && blindfoldIsEnabled && addonIsEnabled) {
 				enableBlindfold();
-			}, 500);
+			}
 		}
+	});
+
+	//Stops speech recognition if keyboard input disabled
+	setTimeout(function() {
+		if (document.querySelector(".ready") == null) {
+			end = true;
+			recognition.stop();
+
+			if (addonIsEnabled && isLichess && notificationIsEnabled && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
+				notification("Enable Keyboard Input", theme.ERROR);
+			}
+		}
+	}, 3000);
+
+	//Observes moves
+	if (document.querySelector(".moves") != null) {
+		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
 	}
 });
 
@@ -274,24 +289,9 @@ chrome.storage.onChanged.addListener(function() {
 
 
 /*
-	Stop speech recognition if keyboard input disabled
-*/
-setTimeout(function() {
-	if (document.querySelector(".ready") == null) {
-		end = true;
-		recognition.stop();
-
-		if (addonIsEnabled && isLichess && notificationIsEnabled && ((document.querySelector(".playing") != null && document.querySelector(".tv_history") == null) || document.querySelector(".rematch") != null)) {
-			notification("Enable Keyboard Input", theme.ERROR);
-		}
-	}
-}, 3000);
-
-
-/*
 	Executes command on speech result
 */
-recognition.onresult = function(event) {
+recognition.addEventListener("result", function(event) {
 
 	//Result exists
 	if (event.results.length > 0) {
@@ -599,12 +599,12 @@ recognition.onresult = function(event) {
 					utterance.voice = msg.voice;
 					speechSynthesis.speak(utterance);
 
-					utterance.onend = function() {
+					utterance.addEventListener("end", function() {
 						chrome.storage.local.set({
 							textToSpeechIsEnabled: false
 						});
 						textToSpeechIsEnabled = false;
-					}
+					});
 				} else {
 					chrome.storage.local.set({
 						textToSpeechIsEnabled: true
@@ -622,59 +622,59 @@ recognition.onresult = function(event) {
 
 				//Black castles king side
 				if (document.querySelector(".orientation-black") != null && canCastle()) {
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 					document.querySelector(".ready").value = "e8";
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 					document.querySelector(".ready").value = "g8";
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 
 				//White castles king side
 				} else if (canCastle()) {
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 					document.querySelector(".ready").value = "e1";
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 					document.querySelector(".ready").value = "g1";
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				}
 			} else if (command == "0-0-0") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				document.querySelector(".ready").value = command;
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 			} else if (command == "0") {
 
 				//Castle king side first
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				document.querySelector(".ready").value = "0-0";
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 
 				//Castle queen side if still not castled
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				document.querySelector(".ready").value = "0-0-0";
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 			} else if (command == "beginning") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':38,'which':38}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":9,"which":9}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":38,"which":38}));
 
 				if (notificationIsEnabled) {
 					notification("First Move", theme.DEFAULT);
 				}
 			} else if (command == "backward") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':37,'which':37}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":9,"which":9}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":37,"which":37}));
 
 				if (notificationIsEnabled) {
 					notification("Previous Move", theme.DEFAULT);
 				}
 			} else if (command == "forward") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':39,'which':39}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":9,"which":9}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":39,"which":39}));
 
 				if (notificationIsEnabled) {
 					notification("Next Move", theme.DEFAULT);
 				}
 			} else if (command == "end") {
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':9,'which':9}));
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':40,'which':40}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":9,"which":9}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":40,"which":40}));
 
 				if (notificationIsEnabled) {
 					notification("Latest Move", theme.DEFAULT);
@@ -702,50 +702,50 @@ recognition.onresult = function(event) {
 					command = command.split(" ");
 					command = command.pop();
 
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 					document.querySelector(".ready").value = command;
-					document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+					document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 
 					return;
 				}
 
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				document.querySelector(".ready").value = command;
-				document.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13,'which':13}));
+				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 			}
 
 			//Clears keyboard input if no premove
 			document.querySelector(".ready").value = "";
-			document.querySelector(".ready").classList.remove('wrong');
+			document.querySelector(".ready").classList.remove("wrong");
 		}
 	}
-}
+});
 
 
 /*
 	Restarts or ends speech recognition
 */
-recognition.onend = function() {
+recognition.addEventListener("end", function() {
 	if (end) {
 		recognition.stop();
 	} else {
 		recognition.start();
 	}
-}
+});
 
 
 /*
 	Throws error
 */
-recognition.onerror = function(event) {
+recognition.addEventListener("error", function(event) {
 	console.log("Error occurred in recognition: " + event.error);
-}
+});
 
 
 /*
 	Restarts speech recognition on focus
 */
-window.addEventListener('focus', function() {
+window.addEventListener("focus", function() {
 	if (addonIsEnabled && isLichess && document.querySelector(".ready") != null) {
 		end = false;
 		recognition.start();
@@ -759,19 +759,9 @@ window.addEventListener('focus', function() {
 /*
 	Stops speech recognition on blur
 */
-window.addEventListener('blur', function() {
+window.addEventListener("blur", function() {
 	end = true;
 	recognition.stop();
-});
-
-
-/*
-	Observes moves
-*/
-window.addEventListener("load", function() {
-	if (document.querySelector(".moves") != null) {
-		observer.observe(document.querySelector(".moves"), {attributes: true, childList: true, characterData: true});
-	}
 });
 
 
@@ -831,7 +821,9 @@ function getCommand(command) {
 	command = command.toLowerCase();
 
 	//Replaces multi-word grammars
-	command = command.replace(new RegExp("pre move", 'g'), "premove");
+	for (var i = 0; i < multiWordGrammars.length; i += 2) {
+		command = command.replace(new RegExp(multiWordGrammars[i], "g"), multiWordGrammars[i + 1]);
+	}
 
 	//Splits by spaces
 	command = command.split(" ");
@@ -1003,7 +995,7 @@ function canCastle() {
 
 
 /*
-	Executes Blindfold
+	Executes blindfold
 */
 function enableBlindfold() {
 	if (document.querySelector(".lichess_game") != null) {
@@ -1192,7 +1184,7 @@ function notification(content, theme) {
 	//Appends elements
 	notification.appendChild(close);
 	notification.appendChild(image);
-	container.insertAdjacentElement('afterbegin', notification);
+	container.insertAdjacentElement("afterbegin", notification);
 
 	//Hides notification
 	setTimeout(function() {
