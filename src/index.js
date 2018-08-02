@@ -3,40 +3,48 @@
 */
 
 //Speech interpretations
-var grammars = ["knight", "N",
-				"bishop", "B",
-				"rook", "brooke", "R",
-				"queen", "Q",
-				"king", "K",
-				"one", "1",
-				"two", "2",
-				"three", "3",
-				"four", "for", "4",
-				"five", "5",
-				"six", "6",
-				"seven", "7",
-				"eight", "8",
-				"alpha", "a",
-				"beta", "b",
-				"charlie", "c",
-				"delta", "d",
-				"echo", "e",
-				"foxtrot", "f",
-				"golf", "g",
-				"hotel", "h"]
+var grammars = [
+	"knight", "N",
+	"bishop", "B",
+	"rook", "brooke", "R",
+	"queen", "Q",
+	"king", "K",
+	"one", "1",
+	"two", "2",
+	"three", "3",
+	"four", "for", "4",
+	"five", "5",
+	"six", "6",
+	"seven", "7",
+	"eight", "8",
+	"alpha", "a",
+	"beta", "b",
+	"charlie", "c",
+	"delta", "d",
+	"echo", "e",
+	"foxtrot", "f",
+	"golf", "g",
+	"hotel", "h"
+];
 
-var moreGrammars = ["quincy", "Qc",
-					"queenie", "Qe",
-					"88", "ad8",
-					"pre-move", "premove",
-					"remove", "premove"];
+var moreGrammars = [
+	"quincy", "Qc",
+	"queenie", "Qe",
+	"88", "ad8",
+	"pre-move", "premove",
+	"remove", "premove"
+];
 
-var multiWordGrammars = ["pre move", "premove"];
+var multiWordGrammars = [
+	"pre move", "premove"
+];
 
 //Speech commands
-var commands = ["N", "B", "R", "Q", "K",
-				"1", "2", "3", "4", "5", "6", "7", "8",
-				"a", "b", "c", "d", "e", "f", "g", "h"]
+var commands = [
+	"N", "B", "R", "Q", "K",
+	"1", "2", "3", "4", "5", "6", "7", "8",
+	"a", "b", "c", "d", "e", "f", "g", "h"
+];
 
 //Notification themes
 var theme = {
