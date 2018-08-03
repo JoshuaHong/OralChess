@@ -374,15 +374,15 @@ document.addEventListener("click", function(event) {
 /*
 	Loads voices
 */
-window.speechSynthesis.onvoiceschanged = function(e) {
+window.speechSynthesis.addEventListener("voiceschanged", function(event) {
 	var voices = speechSynthesis.getVoices();
 
-	voices.forEach(function(voice, i) {
+	voices.forEach(function(voice) {
 		var option = document.createElement('option');
 		option.innerHTML = voice.name;
 		voiceSelect.appendChild(option);
 	});
-};
+});
 
 
 /*

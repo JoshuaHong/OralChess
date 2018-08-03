@@ -88,7 +88,7 @@ function secret() {
 	input.style.backgroundColor = "red";
 	inputLock.className = "fa fa-lock";
 	modalContent.style.borderColor = "red";
-	
+
 	//Executes secret
 	
 }
