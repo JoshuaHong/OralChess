@@ -1,7 +1,8 @@
 body {
 	width: 350px;
 	display: inline-block;
-	background-size: 350px 510px;
+	background-image: url("../icons/background.png");
+	background-size: cover;
 }
 
 .title {
