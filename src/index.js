@@ -6,13 +6,13 @@
 var grammars = [
 	"knight", "N",
 	"bishop", "B",
-	"rook", "brooke", "R",
+	"rook", "R",
 	"queen", "Q",
 	"king", "K",
 	"one", "1",
 	"two", "2",
 	"three", "3",
-	"four", "for", "4",
+	"four", "4",
 	"five", "5",
 	"six", "6",
 	"seven", "7",
@@ -28,9 +28,6 @@ var grammars = [
 ];
 
 var moreGrammars = [
-	"quincy", "Qc",
-	"queenie", "Qe",
-	"88", "ad8",
 	"pre-move", "premove",
 	"remove", "premove"
 ];
@@ -626,6 +623,15 @@ recognition.addEventListener("result", function(event) {
 					speechSynthesis.cancel();
 					speak("text to speech enabled", false);
 				}
+			} else if (command == "joshua hong") {
+				if (notificationIsEnabled) {
+					notification("815147", theme.DEFAULT);
+				}
+
+				if (textToSpeechIsEnabled) {
+					speechSynthesis.cancel();
+					speak("8 1 5 1 4 7", false);
+				}
 			} else if (command == "0-0") {
 
 				//Black castles king side
@@ -880,6 +886,8 @@ function getCommand(command) {
 			return "new";																												//New game
 		} else if (command[i] == "give") {
 			return "give";																												//Gives 15 seconds
+		} else if (command[i] == "joshua" && command[i + 1] == "hong") {
+			return "joshua hong";																										//Unlocks secret key
 		} else if (command[i] == "castle") {
 			if ((command.includes("king") && command.includes("side")) || command.includes("kingside") || command.includes("short")) {
 				return "0-0";
