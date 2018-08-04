@@ -90,7 +90,7 @@ window.addEventListener("load", function() {
 	//Checks for Lichess
 	if (window.location.href.indexOf("lichess.org") != -1) {
 		isLichess = true;
-		console.log("%c Welcome to Oral Chess ", "background: blue; color: black; font-size: 20px;");
+		console.log("%c Welcome to Oral Chess ", "background: dodgerblue; color: black; font-size: 20px;");
 	} else {
 		isLichess = false;
 	}

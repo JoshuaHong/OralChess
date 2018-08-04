@@ -60,7 +60,7 @@ function keypress(event) {
 			inputLock.className = "fa fa-unlock";
 			modalContent.style.borderColor = "green";
 
-			setTimeout(secret, 1000);
+			setTimeout(secret, 500);
 		} else {
 			inputLock.classList.add("shake");
 			setTimeout(function() {
@@ -88,7 +88,8 @@ function secret() {
 	input.style.backgroundColor = "red";
 	inputLock.className = "fa fa-lock";
 	modalContent.style.borderColor = "red";
+	modal.style.display = "none";
 
 	//Executes secret
-	
+	window.open("https://github.com/JoshuaHong/OralChess");
 }
