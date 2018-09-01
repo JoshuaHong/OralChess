@@ -4,36 +4,42 @@
 
 //Speech interpretations
 var grammars = [
-	"knight", "N",
+	"knight", "knights", "night", "N",
 	"bishop", "B",
-	"rook", "R",
+	"brook", "brooke", "rook", "R",
 	"queen", "Q",
 	"king", "K",
 	"one", "1",
 	"two", "2",
 	"three", "3",
-	"four", "4",
+	"for", "four", "4",
 	"five", "5",
-	"six", "6",
-	"seven", "7",
+	"sex", "six", "6",
+	"salon", "seven", "7",
 	"eight", "8",
 	"alpha", "a",
-	"beta", "b",
-	"charlie", "c",
+	"bee", "beta", "b",
+	"charlie", "see", "c",
 	"delta", "d",
 	"echo", "e",
-	"foxtrot", "f",
+	"foxtrot", "of", "f",
 	"golf", "g",
 	"hotel", "h"
 ];
 
 var moreGrammars = [
-	"pre-move", "premove",
-	"remove", "premove"
+	"asics", "a6",
+	"basics", "a6",
+	"adee", "ad",
+	"lightsey", "Nc",
+	"remove", "premove",
+	"quincy", "Qc",
+	"queenie", "Qe",
 ];
 
 var multiWordGrammars = [
-	"pre move", "premove"
+	"pre move", "premove",
+	"free movie", "premove e"
 ];
 
 //Speech commands
@@ -654,7 +660,7 @@ recognition.addEventListener("result", function(event) {
 				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
 				document.querySelector(".ready").value = command;
 				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
-			} else if (command == "0") {
+			} else if (command == "castle") {
 
 				//Castle king side first
 				document.dispatchEvent(new KeyboardEvent("keydown",{"keyCode":13,"which":13}));
@@ -834,6 +840,9 @@ function getCommand(command) {
 	var command = command;
 	command = command.toLowerCase();
 
+	//Removes hyphens
+	command = command.replace(new RegExp("-", "g"), "");
+
 	//Replaces multi-word grammars
 	for (var i = 0; i < multiWordGrammars.length; i += 2) {
 		command = command.replace(new RegExp(multiWordGrammars[i], "g"), multiWordGrammars[i + 1]);
@@ -894,7 +903,7 @@ function getCommand(command) {
 			} else if ((command.includes("queen") && command.includes("side")) || command.includes("queenside") || command.includes("long")) {
 				return "0-0-0";
 			} else {
-				return "0";
+				return "castle";
 			}
 		}
 	}
@@ -921,7 +930,6 @@ function getCommand(command) {
 				command[i] = moreGrammars[j + 1];
 			}
 		}
-
 
 		//Parses premoves
 		if (command[i] == "premove") {
